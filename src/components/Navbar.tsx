@@ -1,9 +1,12 @@
 
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -13,6 +16,10 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   return (
     <nav 
@@ -24,26 +31,40 @@ const Navbar = () => {
       )}
     >
       <div className="container mx-auto flex items-center justify-between px-6 lg:px-10">
-        <a 
-          href="#" 
+        <Link 
+          to="/" 
           className="text-2xl font-bold tracking-tighter"
         >
           STARTUP OS
-        </a>
+        </Link>
         <div className="hidden md:flex items-center space-x-8">
-          <a href="#about" className="hover:text-gray-600 transition-colors">About</a>
-          <a href="#services" className="hover:text-gray-600 transition-colors">Services</a>
-          <a href="#work" className="hover:text-gray-600 transition-colors">Work</a>
-          <a href="#contact" className="hover:text-gray-600 transition-colors">Contact</a>
+          <Link to="/" className="hover:text-gray-600 transition-colors">Home</Link>
+          <Link to="/blog" className="hover:text-gray-600 transition-colors">Blog</Link>
+          <Link to="/podcast" className="hover:text-gray-600 transition-colors">Podcast</Link>
+          <Link to="/chatbot" className="hover:text-gray-600 transition-colors">AI Chat</Link>
+          <Link to="/health-check" className="hover:text-gray-600 transition-colors">Health Check</Link>
         </div>
-        <button className="md:hidden">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
+        <button className="md:hidden" onClick={toggleMobileMenu}>
+          {mobileMenuOpen ? (
+            <X width={24} height={24} />
+          ) : (
+            <Menu width={24} height={24} />
+          )}
         </button>
       </div>
+
+      {/* Mobile menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white w-full py-4 px-6 shadow-md">
+          <div className="flex flex-col space-y-4">
+            <Link to="/" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Home</Link>
+            <Link to="/blog" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Blog</Link>
+            <Link to="/podcast" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Podcast</Link>
+            <Link to="/chatbot" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>AI Chat</Link>
+            <Link to="/health-check" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Health Check</Link>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
