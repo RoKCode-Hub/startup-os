@@ -9,6 +9,7 @@ const Hero = () => {
       
       {/* Content */}
       <div className="relative z-10 container mx-auto text-center px-6">
+        <h2 className="text-xl md:text-2xl text-gray-300 mb-2 fade-in-up">STARTUP OS</h2>
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 fade-in-up">
           Minimal Design. <br />
           Maximum Impact.

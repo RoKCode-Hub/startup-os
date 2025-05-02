@@ -28,7 +28,7 @@ const Navbar = () => {
           href="#" 
           className="text-2xl font-bold tracking-tighter"
         >
-          MINIMAL
+          STARTUP OS
         </a>
         <div className="hidden md:flex items-center space-x-8">
           <a href="#about" className="hover:text-gray-600 transition-colors">About</a>

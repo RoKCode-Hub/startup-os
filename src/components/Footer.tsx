@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="container mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
-            <h3 className="text-2xl font-bold mb-6">MINIMAL</h3>
+            <h3 className="text-2xl font-bold mb-6">STARTUP OS</h3>
             <p className="text-gray-400 max-w-xs">
               A design studio creating minimal, beautiful digital experiences that connect brands with people.
             </p>
@@ -26,7 +26,7 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-medium mb-6">Contact</h4>
             <ul className="space-y-3 text-gray-400">
-              <li>hello@minimal.com</li>
+              <li>hello@startupos.com</li>
               <li>+1 (555) 123-4567</li>
               <li>123 Design St, Creative City</li>
             </ul>
@@ -34,7 +34,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-500">© {year} Minimal. All rights reserved.</p>
+          <p className="text-gray-500">© {year} Startup OS. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="text-gray-400 hover:text-white transition-colors">
               <span className="sr-only">Twitter</span>
