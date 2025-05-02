@@ -5,8 +5,16 @@ import Section from "@/components/Section";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useBlogStore } from "@/stores/blogStore";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const { posts } = useBlogStore();
+  const navigate = useNavigate();
+  
+  // Get the latest 3 posts
+  const latestPosts = posts.slice(0, 3);
+
   return (
     <div className="min-h-screen">
       {/* Navigation */}
@@ -14,6 +22,44 @@ const Index = () => {
       
       {/* Hero Section */}
       <Hero />
+      
+      {/* Blog Preview Section */}
+      <Section
+        id="blog-preview"
+        title="Latest Blog Posts"
+        description="Discover our most recent insights and articles"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {latestPosts.map((post) => (
+            <Card key={post.id} className="overflow-hidden hover:shadow-md transition-shadow duration-300">
+              <div className="h-48 bg-gray-100"></div>
+              <CardContent className="p-6">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-sm text-gray-600">{post.category}</span>
+                  <span className="text-sm text-gray-600">{post.date}</span>
+                </div>
+                <h3 className="text-xl font-bold mb-2">{post.title}</h3>
+                <p className="text-gray-700 mb-4 line-clamp-2">{post.excerpt}</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">By {post.author}</span>
+                  <Button 
+                    variant="ghost" 
+                    onClick={() => navigate(`/blog/post/${post.id}`)}
+                    className="text-black font-medium hover:underline px-0"
+                  >
+                    Read More
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <div className="text-center mt-12">
+          <Button onClick={() => navigate("/blog")} className="px-8">
+            View All Posts
+          </Button>
+        </div>
+      </Section>
       
       {/* About Section */}
       <Section 
