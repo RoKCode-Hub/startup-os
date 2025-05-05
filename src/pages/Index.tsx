@@ -87,7 +87,7 @@ const Index = () => {
                   <span className="text-sm text-gray-400">{episode.date}</span>
                   <span className="text-sm text-gray-400">{episode.duration}</span>
                 </div>
-                <h3 className="text-xl font-bold mb-2 text-white">{episode.title}</h3>
+                <h3 className="text-xl font-bold mb-2 text-black">{episode.title}</h3>
                 <p className="text-gray-400 mb-4 line-clamp-2">{episode.description}</p>
                 <p className="text-sm text-gray-500 mb-4">With {episode.guests}</p>
                 <Button 
