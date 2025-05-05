@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { Menu, X, User } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
 import { toast } from '@/components/ui/sonner';
 
@@ -55,29 +55,18 @@ const Navbar = () => {
           <Link to="/chatbot" className="hover:text-gray-600 transition-colors">Chat Bot</Link>
           <Link to="/health-check" className="hover:text-gray-600 transition-colors">Health Check</Link>
           
-          {isAuthenticated ? (
+          {isAuthenticated && (
             <>
               {user?.role === 'admin' && (
-                <>
-                  <Link to="/blog/new" className="hover:text-gray-600 transition-colors">New Post</Link>
-                </>
+                <Link to="/blog/new" className="hover:text-gray-600 transition-colors">New Post</Link>
               )}
               <button 
                 onClick={handleLogout}
-                className="hover:text-gray-600 transition-colors flex items-center gap-1"
+                className="hover:text-gray-600 transition-colors"
               >
-                <User size={16} />
                 Logout
               </button>
             </>
-          ) : (
-            <Link 
-              to="/login" 
-              className="hover:text-gray-600 transition-colors flex items-center gap-1"
-            >
-              <User size={16} />
-              Login
-            </Link>
           )}
         </div>
         <button className="md:hidden" onClick={toggleMobileMenu}>
@@ -106,22 +95,12 @@ const Navbar = () => {
                 )}
                 <button 
                   onClick={handleLogout}
-                  className="hover:text-gray-600 transition-colors text-left flex items-center gap-1"
+                  className="hover:text-gray-600 transition-colors text-left"
                 >
-                  <User size={16} />
                   Logout
                 </button>
               </>
-            ) : (
-              <Link 
-                to="/login" 
-                className="hover:text-gray-600 transition-colors flex items-center gap-1"
-                onClick={toggleMobileMenu}
-              >
-                <User size={16} />
-                Login
-              </Link>
-            )}
+            ) : null}
           </div>
         </div>
       )}

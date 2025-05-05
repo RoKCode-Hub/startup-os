@@ -17,8 +17,9 @@ const Hero = () => {
       
       {/* Content */}
       <div className="relative z-10 container mx-auto text-center px-6">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 fade-in-up">
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 fade-in-up relative inline-block">
           Startup OS
+          <span className="absolute left-0 bottom-0 w-full h-1 bg-[#EE6352]"></span>
         </h1>
         <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 fade-in-up" style={{animationDelay: '0.2s'}}>
           Build an operating system that supports growth, rather than blocking it.
