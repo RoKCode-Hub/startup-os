@@ -6,8 +6,11 @@ import Section from "@/components/Section";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Play, Pause } from "lucide-react";
+import PodcastUploadForm from "@/components/PodcastUploadForm";
+import { useAuthStore } from "@/stores/authStore";
 
 const Podcast = () => {
+  const { isAuthenticated } = useAuthStore();
   const [episodes] = useState([
     {
       id: 1,
@@ -66,11 +69,22 @@ const Podcast = () => {
       <Navbar />
       
       <main className="flex-grow pt-24">
+        {isAuthenticated && (
+          <Section
+            id="podcast-upload"
+            title="Upload Podcast"
+            description="Add a new episode to the Startup OS Podcast"
+            className="py-10"
+          >
+            <PodcastUploadForm />
+          </Section>
+        )}
+        
         <Section
           id="podcast-header"
           title="Startup OS Podcast"
           description="Conversations with founders, investors, and experts about building successful startups"
-          className="pt-16"
+          className={isAuthenticated ? "pt-0" : "pt-16"}
         >
           <div className="space-y-6">
             {episodes.map((episode) => (
