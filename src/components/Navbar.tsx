@@ -39,8 +39,8 @@ const Navbar = () => {
         </Link>
         <div className="hidden md:flex items-center space-x-8">
           <Link to="/" className="hover:text-gray-600 transition-colors">Home</Link>
-          <Link to="/blog" className="hover:text-gray-600 transition-colors">Blog</Link>
           <Link to="/podcast" className="hover:text-gray-600 transition-colors">Podcast</Link>
+          <Link to="/blog" className="hover:text-gray-600 transition-colors">Blog</Link>
           <Link to="/chatbot" className="hover:text-gray-600 transition-colors">AI Chat</Link>
           <Link to="/health-check" className="hover:text-gray-600 transition-colors">Health Check</Link>
         </div>
@@ -58,8 +58,8 @@ const Navbar = () => {
         <div className="md:hidden bg-white w-full py-4 px-6 shadow-md">
           <div className="flex flex-col space-y-4">
             <Link to="/" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Home</Link>
-            <Link to="/blog" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Blog</Link>
             <Link to="/podcast" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Podcast</Link>
+            <Link to="/blog" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Blog</Link>
             <Link to="/chatbot" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>AI Chat</Link>
             <Link to="/health-check" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Health Check</Link>
           </div>
