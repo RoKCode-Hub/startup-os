@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useBlogStore } from "@/stores/blogStore";
 import { useNavigate } from "react-router-dom";
+import { Play } from "lucide-react";
 
 const Index = () => {
   const { posts } = useBlogStore();
@@ -14,6 +15,34 @@ const Index = () => {
   
   // Get the latest 3 posts
   const latestPosts = posts.slice(0, 3);
+  
+  // Mock podcast episodes data
+  const podcastEpisodes = [
+    {
+      id: 1,
+      title: "Founding a Tech Startup",
+      description: "We talk with successful founders about the challenges of starting a tech company.",
+      duration: "45:23",
+      date: "May 2, 2025",
+      guests: "Emily White, CEO of TechLaunch"
+    },
+    {
+      id: 2,
+      title: "Venture Capital Insights",
+      description: "Understanding how VCs evaluate startups and what they look for in founders.",
+      duration: "51:07",
+      date: "April 25, 2025",
+      guests: "Mark Johnson, Partner at Horizon Ventures"
+    },
+    {
+      id: 3,
+      title: "Building Remote Teams",
+      description: "How to build and manage highly effective remote teams across time zones.",
+      duration: "38:15",
+      date: "April 18, 2025",
+      guests: "Lisa Chen, COO of DistantWork"
+    }
+  ];
 
   return (
     <div className="min-h-screen">
@@ -22,6 +51,66 @@ const Index = () => {
       
       {/* Hero Section */}
       <Hero />
+      
+      {/* About Section - Moved up */}
+      <Section 
+        id="about" 
+        title="About Us"
+        description="We are a team of designers and developers creating beautiful digital experiences."
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div>
+            <p className="text-lg mb-6">
+              Founded in 2020, our studio brings together passionate creatives who believe in the power of minimalist design to create maximum impact.
+            </p>
+            <p className="text-lg mb-6">
+              We work closely with clients to understand their unique needs and create tailored solutions that elevate their brand and connect with their audience.
+            </p>
+            <Button className="mt-4">Learn More</Button>
+          </div>
+          <div className="aspect-square bg-gray-100 rounded-lg"></div>
+        </div>
+      </Section>
+      
+      {/* Latest Podcast Episodes Section - Added */}
+      <Section
+        id="podcast-preview"
+        title="Latest Podcast Episodes"
+        description="Listen to our conversations with founders, investors, and experts"
+        dark={true}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {podcastEpisodes.map((episode) => (
+            <Card key={episode.id} className="bg-black border border-gray-800 hover:border-gray-700 transition-all overflow-hidden">
+              <CardContent className="p-6">
+                <div className="flex justify-between items-start mb-3">
+                  <span className="text-sm text-gray-400">{episode.date}</span>
+                  <span className="text-sm text-gray-400">{episode.duration}</span>
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-white">{episode.title}</h3>
+                <p className="text-gray-400 mb-4 line-clamp-2">{episode.description}</p>
+                <p className="text-sm text-gray-500 mb-4">With {episode.guests}</p>
+                <Button 
+                  variant="outline" 
+                  className="border-gray-700 text-white hover:bg-gray-800 flex items-center gap-2"
+                  onClick={() => navigate(`/podcast`)}
+                >
+                  <Play size={16} />
+                  Listen Now
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <div className="text-center mt-12">
+          <Button 
+            onClick={() => navigate("/podcast")} 
+            className="bg-white text-black hover:bg-gray-100 px-8"
+          >
+            View All Episodes
+          </Button>
+        </div>
+      </Section>
       
       {/* Blog Preview Section */}
       <Section
@@ -58,93 +147,6 @@ const Index = () => {
           <Button onClick={() => navigate("/blog")} className="px-8">
             View All Posts
           </Button>
-        </div>
-      </Section>
-      
-      {/* About Section */}
-      <Section 
-        id="about" 
-        title="About Us"
-        description="We are a team of designers and developers creating beautiful digital experiences."
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className="text-lg mb-6">
-              Founded in 2020, our studio brings together passionate creatives who believe in the power of minimalist design to create maximum impact.
-            </p>
-            <p className="text-lg mb-6">
-              We work closely with clients to understand their unique needs and create tailored solutions that elevate their brand and connect with their audience.
-            </p>
-            <Button className="mt-4">Learn More</Button>
-          </div>
-          <div className="aspect-square bg-gray-100 rounded-lg"></div>
-        </div>
-      </Section>
-      
-      {/* Services Section */}
-      <Section 
-        id="services" 
-        title="Our Services"
-        description="We specialize in creating beautiful experiences across digital platforms."
-        dark={true}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[
-            {
-              title: "Web Design",
-              description: "Creating beautiful, responsive websites that look great on any device and deliver exceptional user experiences."
-            },
-            {
-              title: "Brand Identity",
-              description: "Developing cohesive brand identities that communicate your values and connect with your target audience."
-            },
-            {
-              title: "UI/UX Design",
-              description: "Crafting intuitive interfaces and seamless user experiences that delight and engage your users."
-            },
-            {
-              title: "Digital Marketing",
-              description: "Implementing strategic digital marketing campaigns to increase your online presence and reach."
-            },
-            {
-              title: "Content Creation",
-              description: "Producing high-quality content that tells your story and resonates with your audience."
-            },
-            {
-              title: "Development",
-              description: "Building robust, scalable applications and websites using modern technologies and best practices."
-            }
-          ].map((service, index) => (
-            <Card key={index} className="bg-black border border-gray-800 hover:border-gray-700 transition-all">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-                <p className="text-gray-400">{service.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </Section>
-      
-      {/* Work Section */}
-      <Section 
-        id="work" 
-        title="Our Work"
-        description="A selection of projects we've delivered for our clients."
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {[1, 2, 3, 4].map((item) => (
-            <div key={item} className="group relative overflow-hidden rounded-lg aspect-video bg-gray-100">
-              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-70 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
-                <div className="text-center p-6">
-                  <h3 className="text-xl font-bold text-white mb-2">Project {item}</h3>
-                  <p className="text-gray-300 mb-4">Branding & Web Design</p>
-                  <Button variant="outline" className="border-white text-white hover:bg-white hover:text-black">
-                    View Project
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
       </Section>
       
