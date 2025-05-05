@@ -41,7 +41,7 @@ const Navbar = () => {
           <Link to="/" className="hover:text-gray-600 transition-colors">Home</Link>
           <Link to="/podcast" className="hover:text-gray-600 transition-colors">Podcast</Link>
           <Link to="/blog" className="hover:text-gray-600 transition-colors">Blog</Link>
-          <Link to="/chatbot" className="hover:text-gray-600 transition-colors">AI Chat</Link>
+          <Link to="/chatbot" className="hover:text-gray-600 transition-colors">Chat Bot</Link>
           <Link to="/health-check" className="hover:text-gray-600 transition-colors">Health Check</Link>
         </div>
         <button className="md:hidden" onClick={toggleMobileMenu}>
@@ -60,7 +60,7 @@ const Navbar = () => {
             <Link to="/" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Home</Link>
             <Link to="/podcast" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Podcast</Link>
             <Link to="/blog" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Blog</Link>
-            <Link to="/chatbot" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>AI Chat</Link>
+            <Link to="/chatbot" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Chat Bot</Link>
             <Link to="/health-check" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Health Check</Link>
           </div>
         </div>
