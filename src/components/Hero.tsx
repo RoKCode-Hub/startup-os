@@ -1,7 +1,15 @@
 
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+  const navigate = useNavigate();
+  
+  const scrollToContact = () => {
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="relative h-screen flex items-center justify-center">
       {/* Background */}
@@ -16,10 +24,16 @@ const Hero = () => {
           Build an operating system that supports growth, rather than blocking it.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4 fade-in-up" style={{animationDelay: '0.4s'}}>
-          <Button className="bg-white text-black hover:bg-gray-100 px-8 py-6 text-lg">
+          <Button 
+            className="bg-white text-black hover:bg-gray-100 px-8 py-6 text-lg"
+            onClick={() => navigate('/podcast')}
+          >
             Podcast
           </Button>
-          <Button className="bg-white text-black hover:bg-gray-100 px-8 py-6 text-lg">
+          <Button 
+            className="bg-white text-black hover:bg-gray-100 px-8 py-6 text-lg"
+            onClick={scrollToContact}
+          >
             Get in Touch
           </Button>
         </div>
