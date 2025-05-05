@@ -7,11 +7,14 @@ import Section from "@/components/Section";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useBlogStore } from "@/stores/blogStore";
+import { useAuthStore } from "@/stores/authStore";
 import { FilePen } from "lucide-react";
 
 const Blog = () => {
   const navigate = useNavigate();
   const { posts } = useBlogStore();
+  const { isAuthenticated, user } = useAuthStore();
+  const isAdmin = isAuthenticated && user?.role === 'admin';
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -24,12 +27,14 @@ const Blog = () => {
           description="Insights, thoughts and stories about startup development, design and technology"
           className="pt-16"
         >
-          <div className="flex justify-end mb-8">
-            <Button onClick={() => navigate("/blog/new")} className="flex items-center gap-2">
-              <FilePen className="h-4 w-4" />
-              New Post
-            </Button>
-          </div>
+          {isAdmin && (
+            <div className="flex justify-end mb-8">
+              <Button onClick={() => navigate("/blog/new")} className="flex items-center gap-2">
+                <FilePen className="h-4 w-4" />
+                New Post
+              </Button>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((post) => (

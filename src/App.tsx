@@ -12,6 +12,8 @@ import Podcast from "./pages/Podcast";
 import ChatBot from "./pages/ChatBot";
 import HealthCheck from "./pages/HealthCheck";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -25,10 +27,15 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/post/:id" element={<BlogPost />} />
-          <Route path="/blog/new" element={<BlogEditor />} />
+          <Route path="/blog/new" element={
+            <ProtectedRoute>
+              <BlogEditor />
+            </ProtectedRoute>
+          } />
           <Route path="/podcast" element={<Podcast />} />
           <Route path="/chatbot" element={<ChatBot />} />
           <Route path="/health-check" element={<HealthCheck />} />
+          <Route path="/login" element={<Login />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

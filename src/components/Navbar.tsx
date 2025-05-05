@@ -1,12 +1,16 @@
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User } from 'lucide-react';
+import { useAuthStore } from '@/stores/authStore';
+import { toast } from '@/components/ui/sonner';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isAuthenticated, user, logout } = useAuthStore();
+  const navigate = useNavigate();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +23,13 @@ const Navbar = () => {
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    toast.success("Logged out successfully");
+    navigate("/");
+    setMobileMenuOpen(false);
   };
 
   return (
@@ -43,6 +54,31 @@ const Navbar = () => {
           <Link to="/blog" className="hover:text-gray-600 transition-colors">Blog</Link>
           <Link to="/chatbot" className="hover:text-gray-600 transition-colors">Chat Bot</Link>
           <Link to="/health-check" className="hover:text-gray-600 transition-colors">Health Check</Link>
+          
+          {isAuthenticated ? (
+            <>
+              {user?.role === 'admin' && (
+                <>
+                  <Link to="/blog/new" className="hover:text-gray-600 transition-colors">New Post</Link>
+                </>
+              )}
+              <button 
+                onClick={handleLogout}
+                className="hover:text-gray-600 transition-colors flex items-center gap-1"
+              >
+                <User size={16} />
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link 
+              to="/login" 
+              className="hover:text-gray-600 transition-colors flex items-center gap-1"
+            >
+              <User size={16} />
+              Login
+            </Link>
+          )}
         </div>
         <button className="md:hidden" onClick={toggleMobileMenu}>
           {mobileMenuOpen ? (
@@ -62,6 +98,30 @@ const Navbar = () => {
             <Link to="/blog" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Blog</Link>
             <Link to="/chatbot" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Chat Bot</Link>
             <Link to="/health-check" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Health Check</Link>
+            
+            {isAuthenticated ? (
+              <>
+                {user?.role === 'admin' && (
+                  <Link to="/blog/new" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>New Post</Link>
+                )}
+                <button 
+                  onClick={handleLogout}
+                  className="hover:text-gray-600 transition-colors text-left flex items-center gap-1"
+                >
+                  <User size={16} />
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link 
+                to="/login" 
+                className="hover:text-gray-600 transition-colors flex items-center gap-1"
+                onClick={toggleMobileMenu}
+              >
+                <User size={16} />
+                Login
+              </Link>
+            )}
           </div>
         </div>
       )}
