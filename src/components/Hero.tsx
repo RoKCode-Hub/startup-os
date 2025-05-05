@@ -9,19 +9,17 @@ const Hero = () => {
       
       {/* Content */}
       <div className="relative z-10 container mx-auto text-center px-6">
-        <h2 className="text-xl md:text-2xl text-gray-300 mb-2 fade-in-up">STARTUP OS</h2>
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 fade-in-up">
-          Startup OS. <br />
-          Maximum Impact.
+          Startup OS
         </h1>
         <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 fade-in-up" style={{animationDelay: '0.2s'}}>
-          Creating bold, beautiful experiences that connect brands with their audience.
+          Build an operating system that supports growth, rather than blocking it.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4 fade-in-up" style={{animationDelay: '0.4s'}}>
           <Button className="bg-white text-black hover:bg-gray-100 px-8 py-6 text-lg">
-            Our Work
+            Podcast
           </Button>
-          <Button variant="outline" className="border-white text-white hover:bg-white/10 px-8 py-6 text-lg">
+          <Button className="bg-white text-black hover:bg-gray-100 px-8 py-6 text-lg">
             Get in Touch
           </Button>
         </div>
