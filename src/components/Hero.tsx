@@ -18,16 +18,16 @@ const Hero = () => {
       {/* Background with gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black to-gray-900">
         <div className="absolute inset-0 opacity-10">
-          {/* Background gradient elements removed */}
+          {/* Left triangle decoration - positioned symmetrically on the left side */}
+          <div className="absolute top-[40%] left-[15%] w-64 h-64 rounded-full bg-accent4 blur-[100px]" />
+          {/* Right triangle decoration - rotated properly and positioned symmetrically on the right */}
+          <div className="absolute top-[40%] right-[15%] w-72 h-72 rounded-full bg-accent3 blur-[120px] transform rotate-90" />
+          <div className="absolute bottom-20 left-[20%] w-80 h-80 rounded-full bg-accent2 blur-[120px]" />
         </div>
       </div>
       
       {/* Content */}
       <div className="relative z-10 container mx-auto text-center px-6 max-w-5xl">
-        {/* Decorative triangle elements */}
-        <div className="absolute -top-6 -left-6 w-16 h-16 border-t-2 border-l-2 border-accent1/30"></div>
-        <div className="absolute -bottom-6 -right-6 w-16 h-16 border-b-2 border-r-2 border-accent1/30"></div>
-        
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 fade-in-up tracking-tight">
           <span className="pen-stroke-underline">
             Startup OS
