@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap');
 
 @tailwind base;
@@ -139,6 +138,11 @@
     transform: rotate(-2deg);
     border-radius: 3px;
     transform-origin: left bottom;
-    clip-path: polygon(0% 0%, 39% 0%, 39% 100%, 53% 100%, 53% 0%, 100% 0%, 100% 100%, 0% 100%);
+    mask-image: url('/lovable-uploads/920df126-b595-4a92-93c9-c509392b9242.png');
+    mask-size: 100% 100%;
+    mask-position: bottom;
+    -webkit-mask-image: url('/lovable-uploads/920df126-b595-4a92-93c9-c509392b9242.png');
+    -webkit-mask-size: 100% 100%;
+    -webkit-mask-position: bottom;
   }
 }
