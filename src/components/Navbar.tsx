@@ -86,7 +86,7 @@ const Navbar = () => {
               scrolled ? "text-gray-800" : "text-white"
             )}
           >
-            Chat Bot
+            Chatbot
           </Link>
           <Link 
             to="/health-check" 
