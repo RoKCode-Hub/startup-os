@@ -17,13 +17,7 @@ const Hero = () => {
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background with gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black to-gray-900">
-        <div className="absolute inset-0 opacity-10">
-          {/* Left triangle decoration - positioned symmetrically on the left side */}
-          <div className="absolute top-[40%] left-[15%] w-64 h-64 rounded-full bg-accent4 blur-[100px]" />
-          {/* Right triangle decoration - rotated properly and positioned symmetrically on the right */}
-          <div className="absolute top-[40%] right-[15%] w-72 h-72 rounded-full bg-accent3 blur-[120px] transform rotate-90" />
-          <div className="absolute bottom-20 left-[20%] w-80 h-80 rounded-full bg-accent2 blur-[120px]" />
-        </div>
+        {/* Remove the triangle decorations previously here */}
       </div>
       
       {/* Content */}
@@ -52,10 +46,6 @@ const Hero = () => {
             Get in Touch
           </Button>
         </div>
-        
-        {/* Abstract design element */}
-        <div className="absolute left-0 bottom-32 w-32 h-32 border-l-2 border-b-2 border-accent1/30 hidden lg:block"></div>
-        <div className="absolute right-0 bottom-64 w-32 h-32 border-r-2 border-b-2 border-accent1/30 hidden lg:block"></div>
       </div>
       
       {/* Scroll Indicator with click functionality */}
