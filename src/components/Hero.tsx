@@ -28,7 +28,7 @@ const Hero = () => {
       
       {/* Content */}
       <div className="relative z-10 container mx-auto text-center px-6 max-w-5xl">
-        <h1 className="text-5xl md:text-10xl lg:text-8xl font-bold text-white mb-8 fade-in-up tracking-tight">
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 fade-in-up tracking-tight">
           <span className="pen-stroke-underline">
             Startup OS
           </span>
