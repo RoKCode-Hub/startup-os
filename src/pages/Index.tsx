@@ -102,7 +102,7 @@ const Index = () => {
                 <p className="text-sm text-gray-400 mb-6">With <span className="text-white">{episode.guests}</span></p>
                 <Button 
                   variant="outline" 
-                  className="border-gray-600 text-white hover:bg-gray-700 flex items-center gap-3 w-full justify-center rounded-full"
+                  className="border-gray-600 text-black hover:bg-gray-700 flex items-center gap-3 w-full justify-center rounded-full"
                   onClick={() => navigate(`/podcast`)}
                 >
                   <Play size={18} className="text-accent1" />
