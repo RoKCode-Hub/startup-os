@@ -45,34 +45,44 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-hidden">
       {/* Navigation */}
       <Navbar />
       
       {/* Hero Section */}
       <Hero />
       
-      {/* About Section - Moved up */}
+      {/* About Section */}
       <Section 
         id="about" 
         title="About Us"
         description="We are a team of designers and developers creating beautiful digital experiences."
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className="text-lg mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div className="order-2 md:order-1">
+            <p className="text-lg mb-6 leading-relaxed opacity-80">
               Founded in 2020, our studio brings together passionate creatives who believe in the power of minimalist design to create maximum impact.
             </p>
-            <p className="text-lg mb-6">
+            <p className="text-lg mb-8 leading-relaxed opacity-80">
               We work closely with clients to understand their unique needs and create tailored solutions that elevate their brand and connect with their audience.
             </p>
-            <Button className="mt-4">Learn More</Button>
+            <Button className="mt-4 rounded-full px-8 py-6 bg-accent1 hover:bg-accent1/90 text-white font-medium">
+              Learn More
+            </Button>
           </div>
-          <div className="aspect-square bg-gray-100 rounded-lg"></div>
+          <div className="order-1 md:order-2 relative">
+            <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shadow-elegant flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+            </div>
+            <div className="absolute -bottom-8 -left-8 w-2/3 h-16 bg-accent3/10 rounded-lg -z-10"></div>
+            <div className="absolute -top-8 -right-8 w-2/3 h-16 bg-accent1/10 rounded-lg -z-10"></div>
+          </div>
         </div>
       </Section>
       
-      {/* Latest Podcast Episodes Section - Added */}
+      {/* Latest Podcast Episodes Section */}
       <Section
         id="podcast-preview"
         title="Latest Podcast Episodes"
@@ -81,31 +91,31 @@ const Index = () => {
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {podcastEpisodes.map((episode) => (
-            <Card key={episode.id} className="bg-black border border-gray-800 hover:border-gray-700 transition-all overflow-hidden">
-              <CardContent className="p-6">
-                <div className="flex justify-between items-start mb-3">
-                  <span className="text-sm text-gray-400">{episode.date}</span>
-                  <span className="text-sm text-gray-400">{episode.duration}</span>
+            <Card key={episode.id} className="bg-gray-800 border-gray-700 hover:border-gray-600 transition-all overflow-hidden rounded-xl card-hover">
+              <CardContent className="p-8">
+                <div className="flex justify-between items-start mb-3 text-sm">
+                  <span className="text-gray-400">{episode.date}</span>
+                  <span className="bg-accent1/20 text-accent1 px-3 py-1 rounded-full font-medium">{episode.duration}</span>
                 </div>
-                <h3 className="text-xl font-bold mb-2 text-black">{episode.title}</h3>
-                <p className="text-gray-400 mb-4 line-clamp-2">{episode.description}</p>
-                <p className="text-sm text-gray-500 mb-4">With {episode.guests}</p>
+                <h3 className="text-2xl font-bold mb-3 text-white">{episode.title}</h3>
+                <p className="text-gray-300 mb-6 line-clamp-2 leading-relaxed">{episode.description}</p>
+                <p className="text-sm text-gray-400 mb-6">With <span className="text-white">{episode.guests}</span></p>
                 <Button 
                   variant="outline" 
-                  className="border-gray-700 text-black hover:bg-gray-800 flex items-center gap-2"
+                  className="border-gray-600 text-white hover:bg-gray-700 flex items-center gap-3 w-full justify-center rounded-full"
                   onClick={() => navigate(`/podcast`)}
                 >
-                  <Play size={16} />
+                  <Play size={18} className="text-accent1" />
                   Listen Now
                 </Button>
               </CardContent>
             </Card>
           ))}
         </div>
-        <div className="text-center mt-12">
+        <div className="text-center mt-16">
           <Button 
             onClick={() => navigate("/podcast")} 
-            className="bg-white text-black hover:bg-gray-100 px-8"
+            className="bg-white text-gray-900 hover:bg-gray-100 px-10 py-6 rounded-full text-lg font-medium shadow-elegant"
           >
             View All Episodes
           </Button>
@@ -120,21 +130,23 @@ const Index = () => {
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {latestPosts.map((post) => (
-            <Card key={post.id} className="overflow-hidden hover:shadow-md transition-shadow duration-300">
-              <div className="h-48 bg-gray-100"></div>
-              <CardContent className="p-6">
+            <Card key={post.id} className="overflow-hidden rounded-xl border-0 shadow-soft hover:shadow-elegant transition-all duration-300 card-hover">
+              <div className="h-56 bg-gray-100 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-accent2/20 to-accent3/20"></div>
+              </div>
+              <CardContent className="p-8">
                 <div className="flex justify-between items-center mb-3">
-                  <span className="text-sm text-gray-600">{post.category}</span>
-                  <span className="text-sm text-gray-600">{post.date}</span>
+                  <span className="text-sm font-medium px-3 py-1 bg-accent2/10 text-accent2 rounded-full">{post.category}</span>
+                  <span className="text-sm text-gray-500">{post.date}</span>
                 </div>
-                <h3 className="text-xl font-bold mb-2">{post.title}</h3>
-                <p className="text-gray-700 mb-4 line-clamp-2">{post.excerpt}</p>
+                <h3 className="text-xl font-bold mb-3 leading-tight">{post.title}</h3>
+                <p className="text-gray-600 mb-6 line-clamp-2 leading-relaxed">{post.excerpt}</p>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">By {post.author}</span>
+                  <span className="text-sm text-gray-500">By <span className="font-medium text-black">{post.author}</span></span>
                   <Button 
                     variant="ghost" 
                     onClick={() => navigate(`/blog/post/${post.id}`)}
-                    className="text-black font-medium hover:underline px-0"
+                    className="text-accent1 font-medium hover:text-accent1/80 hover:bg-transparent px-0 underline-animation"
                   >
                     Read More
                   </Button>
@@ -143,8 +155,11 @@ const Index = () => {
             </Card>
           ))}
         </div>
-        <div className="text-center mt-12">
-          <Button onClick={() => navigate("/blog")} className="px-8">
+        <div className="text-center mt-16">
+          <Button 
+            onClick={() => navigate("/blog")} 
+            className="bg-accent1 text-white hover:bg-accent1/90 px-10 py-6 rounded-full text-lg font-medium shadow-elegant"
+          >
             View All Posts
           </Button>
         </div>
@@ -157,48 +172,52 @@ const Index = () => {
         description="Interested in working together? We'd love to hear from you."
         dark={true}
       >
-        <div className="max-w-xl mx-auto">
-          <form className="space-y-6">
+        <div className="max-w-2xl mx-auto relative">
+          {/* Decorative elements */}
+          <div className="absolute -top-6 -left-6 w-12 h-12 border-t-2 border-l-2 border-accent1/30"></div>
+          <div className="absolute -bottom-6 -right-6 w-12 h-12 border-b-2 border-r-2 border-accent1/30"></div>
+          
+          <form className="space-y-8 bg-gray-800 p-8 md:p-12 rounded-2xl shadow-elegant">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium mb-2">Name</label>
+                <label htmlFor="name" className="block text-sm font-medium mb-2 text-gray-300">Name</label>
                 <input 
                   type="text" 
                   id="name" 
-                  className="w-full bg-transparent border border-gray-700 rounded-md p-3 text-white focus:border-white focus:outline-none"
+                  className="w-full bg-gray-700 border border-gray-600 rounded-lg p-4 text-white focus:border-accent1 focus:ring-2 focus:ring-accent1/30 focus:outline-none transition-all"
                   placeholder="Your Name"
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">Email</label>
+                <label htmlFor="email" className="block text-sm font-medium mb-2 text-gray-300">Email</label>
                 <input 
                   type="email" 
                   id="email" 
-                  className="w-full bg-transparent border border-gray-700 rounded-md p-3 text-white focus:border-white focus:outline-none"
+                  className="w-full bg-gray-700 border border-gray-600 rounded-lg p-4 text-white focus:border-accent1 focus:ring-2 focus:ring-accent1/30 focus:outline-none transition-all"
                   placeholder="your.email@example.com"
                 />
               </div>
             </div>
             <div>
-              <label htmlFor="subject" className="block text-sm font-medium mb-2">Subject</label>
+              <label htmlFor="subject" className="block text-sm font-medium mb-2 text-gray-300">Subject</label>
               <input 
                 type="text" 
                 id="subject" 
-                className="w-full bg-transparent border border-gray-700 rounded-md p-3 text-white focus:border-white focus:outline-none"
+                className="w-full bg-gray-700 border border-gray-600 rounded-lg p-4 text-white focus:border-accent1 focus:ring-2 focus:ring-accent1/30 focus:outline-none transition-all"
                 placeholder="Project Inquiry"
               />
             </div>
             <div>
-              <label htmlFor="message" className="block text-sm font-medium mb-2">Message</label>
+              <label htmlFor="message" className="block text-sm font-medium mb-2 text-gray-300">Message</label>
               <textarea 
                 id="message" 
                 rows={5}
-                className="w-full bg-transparent border border-gray-700 rounded-md p-3 text-white focus:border-white focus:outline-none"
+                className="w-full bg-gray-700 border border-gray-600 rounded-lg p-4 text-white focus:border-accent1 focus:ring-2 focus:ring-accent1/30 focus:outline-none transition-all"
                 placeholder="Tell us about your project..."
               ></textarea>
             </div>
             <div>
-              <Button className="w-full bg-white text-black hover:bg-gray-100">
+              <Button className="w-full bg-accent1 text-white hover:bg-accent1/90 py-6 rounded-lg text-lg font-medium">
                 Send Message
               </Button>
             </div>

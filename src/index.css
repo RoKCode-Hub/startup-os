@@ -1,4 +1,6 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,38 +8,46 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
+    --foreground: 240 10% 3.9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 0%;
+    --card-foreground: 240 10% 3.9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
+    --popover-foreground: 240 10% 3.9%;
 
-    --primary: 0 0% 0%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 0%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
 
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 0%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 0 0% 0%;
-    --radius: 0.5rem;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 1rem;
   }
 
   * {
     @apply border-border;
     scroll-behavior: smooth;
+  }
+
+  html {
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Serif Display', serif;
   }
 
   body {
@@ -48,12 +58,24 @@
 
 @layer utilities {
   .section-padding {
-    @apply py-20 px-6 md:px-12 lg:px-24;
+    @apply py-24 px-6 md:px-12 lg:px-24;
   }
   
   .fade-in-up {
     animation: fadeInUp 0.8s ease-out forwards;
     opacity: 0;
+  }
+
+  .stagger-1 {
+    animation-delay: 0.1s;
+  }
+
+  .stagger-2 {
+    animation-delay: 0.2s;
+  }
+
+  .stagger-3 {
+    animation-delay: 0.3s;
   }
 
   @keyframes fadeInUp {
@@ -65,5 +87,38 @@
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  .underline-animation {
+    position: relative;
+    display: inline-block;
+  }
+
+  .underline-animation::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+  }
+
+  .underline-animation:hover::after {
+    width: 100%;
+  }
+
+  .card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .gradient-bg {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   }
 }

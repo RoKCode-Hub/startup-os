@@ -52,7 +52,12 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
-				}
+				},
+				accent1: '#EE6352',
+				accent2: '#59CD90',
+				accent3: '#3FA7D6',
+				accent4: '#FAC05E',
+				accent5: '#F79D84',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -67,11 +72,20 @@ export default {
 				'accordion-up': {
 					from: { height: 'var(--radix-accordion-content-height)' },
 					to: { height: '0' }
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'float': 'float 6s ease-in-out infinite'
+			},
+			boxShadow: {
+				'soft': '0 10px 50px -12px rgba(0, 0, 0, 0.05)',
+				'elegant': '0 20px 40px -14px rgba(0, 0, 0, 0.1)'
 			}
 		}
 	},

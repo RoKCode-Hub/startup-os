@@ -35,41 +35,89 @@ const Navbar = () => {
   return (
     <nav 
       className={cn(
-        'fixed top-0 left-0 w-full z-50 transition-all duration-300',
+        'fixed top-0 left-0 w-full z-50 transition-all duration-500',
         scrolled 
-          ? 'py-2 bg-white shadow-md' 
+          ? 'py-3 bg-white/90 backdrop-blur-md shadow-soft' 
           : 'py-6 bg-transparent'
       )}
     >
       <div className="container mx-auto flex items-center justify-between px-6 lg:px-10">
         <Link 
           to="/" 
-          className="text-2xl font-bold tracking-tighter"
+          className={cn(
+            "text-2xl font-bold tracking-tight font-serif transition-colors",
+            scrolled ? "text-black" : "text-white"
+          )}
         >
           STARTUP OS
         </Link>
-        <div className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="hover:text-gray-600 transition-colors">Home</Link>
-          <Link to="/podcast" className="hover:text-gray-600 transition-colors">Podcast</Link>
-          <Link to="/blog" className="hover:text-gray-600 transition-colors">Blog</Link>
-          <Link to="/chatbot" className="hover:text-gray-600 transition-colors">Chat Bot</Link>
-          <Link to="/health-check" className="hover:text-gray-600 transition-colors">Health Check</Link>
+        <div className="hidden md:flex items-center space-x-10">
+          <Link 
+            to="/" 
+            className={cn(
+              "underline-animation font-medium", 
+              scrolled ? "text-gray-800" : "text-white"
+            )}
+          >
+            Home
+          </Link>
+          <Link 
+            to="/podcast" 
+            className={cn(
+              "underline-animation font-medium", 
+              scrolled ? "text-gray-800" : "text-white"
+            )}
+          >
+            Podcast
+          </Link>
+          <Link 
+            to="/blog" 
+            className={cn(
+              "underline-animation font-medium", 
+              scrolled ? "text-gray-800" : "text-white"
+            )}
+          >
+            Blog
+          </Link>
+          <Link 
+            to="/chatbot" 
+            className={cn(
+              "underline-animation font-medium", 
+              scrolled ? "text-gray-800" : "text-white"
+            )}
+          >
+            Chat Bot
+          </Link>
+          <Link 
+            to="/health-check" 
+            className={cn(
+              "underline-animation font-medium", 
+              scrolled ? "text-gray-800" : "text-white"
+            )}
+          >
+            Health Check
+          </Link>
           
-          {isAuthenticated && (
-            <>
-              {user?.role === 'admin' && (
-                <Link to="/blog/new" className="hover:text-gray-600 transition-colors">New Post</Link>
+          {isAuthenticated && user?.role === 'admin' && (
+            <Link 
+              to="/blog/new" 
+              className={cn(
+                "underline-animation font-medium", 
+                scrolled ? "text-gray-800" : "text-white"
               )}
-              <button 
-                onClick={handleLogout}
-                className="hover:text-gray-600 transition-colors"
-              >
-                Logout
-              </button>
-            </>
+            >
+              New Post
+            </Link>
           )}
         </div>
-        <button className="md:hidden" onClick={toggleMobileMenu}>
+
+        <button 
+          className={cn(
+            "md:hidden transition-colors",
+            scrolled ? "text-black" : "text-white"
+          )} 
+          onClick={toggleMobileMenu}
+        >
           {mobileMenuOpen ? (
             <X width={24} height={24} />
           ) : (
@@ -80,27 +128,17 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white w-full py-4 px-6 shadow-md">
-          <div className="flex flex-col space-y-4">
-            <Link to="/" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Home</Link>
-            <Link to="/podcast" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Podcast</Link>
-            <Link to="/blog" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Blog</Link>
-            <Link to="/chatbot" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Chat Bot</Link>
-            <Link to="/health-check" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>Health Check</Link>
+        <div className="md:hidden bg-white w-full py-6 px-6 shadow-md absolute top-full left-0 animate-fade-in-up">
+          <div className="flex flex-col space-y-5">
+            <Link to="/" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Home</Link>
+            <Link to="/podcast" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Podcast</Link>
+            <Link to="/blog" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Blog</Link>
+            <Link to="/chatbot" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Chat Bot</Link>
+            <Link to="/health-check" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Health Check</Link>
             
-            {isAuthenticated ? (
-              <>
-                {user?.role === 'admin' && (
-                  <Link to="/blog/new" className="hover:text-gray-600 transition-colors" onClick={toggleMobileMenu}>New Post</Link>
-                )}
-                <button 
-                  onClick={handleLogout}
-                  className="hover:text-gray-600 transition-colors text-left"
-                >
-                  Logout
-                </button>
-              </>
-            ) : null}
+            {isAuthenticated && user?.role === 'admin' && (
+              <Link to="/blog/new" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>New Post</Link>
+            )}
           </div>
         </div>
       )}
