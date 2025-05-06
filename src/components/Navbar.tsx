@@ -133,7 +133,7 @@ const Navbar = () => {
             <Link to="/" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Home</Link>
             <Link to="/podcast" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Podcast</Link>
             <Link to="/blog" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Blog</Link>
-            <Link to="/chatbot" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Chat Bot</Link>
+            <Link to="/chatbot" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Chatbot</Link>
             <Link to="/health-check" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Health Check</Link>
             
             {isAuthenticated && user?.role === 'admin' && (
