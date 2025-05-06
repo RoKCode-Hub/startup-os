@@ -14,18 +14,19 @@ const Hero = () => {
       {/* Background with gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black to-gray-900">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-[10%] w-64 h-64 rounded-full bg-accent2 blur-[100px]" />
-          <div className="absolute top-40 right-[15%] w-72 h-72 rounded-full bg-accent3 blur-[120px]" />
-          <div className="absolute bottom-20 left-[20%] w-80 h-80 rounded-full bg-accent4 blur-[120px]" />
+          {/* Left triangle decoration - positioned on the left side of the text */}
+          <div className="absolute top-[40%] left-[15%] w-64 h-64 rounded-full bg-accent4 blur-[100px]" />
+          {/* Right triangle decoration - rotated 90° and positioned on the right side of the text */}
+          <div className="absolute top-[40%] right-[15%] w-72 h-72 rounded-full bg-accent3 blur-[120px]" />
+          <div className="absolute bottom-20 left-[20%] w-80 h-80 rounded-full bg-accent2 blur-[120px]" />
         </div>
       </div>
       
       {/* Content */}
       <div className="relative z-10 container mx-auto text-center px-6 max-w-5xl">
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 fade-in-up tracking-tight">
-          <span className="relative inline-block">
+          <span className="pen-stroke-underline">
             Startup OS
-            <span className="absolute left-0 bottom-0 w-full h-1.5 bg-accent1"></span>
           </span>
         </h1>
         
