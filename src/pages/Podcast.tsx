@@ -97,7 +97,7 @@ const Podcast = () => {
               <img 
                 src="/lovable-uploads/05f93660-2a5f-490e-b2cc-4edcdabdc38c.png" 
                 alt="Listen on Apple Podcasts" 
-                className="h-16 md:h-20"
+                className="h-32 md:h-40"
               />
             </a>
             <a 
@@ -109,7 +109,7 @@ const Podcast = () => {
               <img 
                 src="/lovable-uploads/0284a6f9-70a6-4651-9fe4-d1e194989d2c.png" 
                 alt="Listen on Spotify" 
-                className="h-16 md:h-20"
+                className="h-32 md:h-40"
               />
             </a>
           </div>
