@@ -87,7 +87,7 @@ const Podcast = () => {
           className={isAuthenticated ? "pt-0" : "pt-16"}
         >
           {/* Listen on platforms buttons */}
-          <div className="flex flex-wrap justify-center gap-6 mb-16 mt-8">
+          <div className="flex flex-wrap justify-center gap-8 mb-16 mt-8">
             <a 
               href="https://podcasts.apple.com" 
               target="_blank" 
@@ -97,7 +97,7 @@ const Podcast = () => {
               <img 
                 src="/lovable-uploads/05f93660-2a5f-490e-b2cc-4edcdabdc38c.png" 
                 alt="Listen on Apple Podcasts" 
-                className="h-12"
+                className="h-16 md:h-20"
               />
             </a>
             <a 
@@ -109,7 +109,7 @@ const Podcast = () => {
               <img 
                 src="/lovable-uploads/0284a6f9-70a6-4651-9fe4-d1e194989d2c.png" 
                 alt="Listen on Spotify" 
-                className="h-12"
+                className="h-16 md:h-20"
               />
             </a>
           </div>
