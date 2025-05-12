@@ -132,11 +132,11 @@ const Index = () => {
           {latestPosts.map((post) => (
             <Card key={post.id} className="overflow-hidden rounded-xl border-0 shadow-soft hover:shadow-elegant transition-all duration-300 card-hover">
               <div className="h-56 bg-gray-100 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-accent2/20 to-accent3/20"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-100"></div>
               </div>
               <CardContent className="p-8">
                 <div className="flex justify-between items-center mb-3">
-                  <span className="text-sm font-medium px-3 py-1 bg-accent2/10 text-accent2 rounded-full">{post.category}</span>
+                  <span className="text-sm font-medium px-3 py-1 bg-gray-200 text-gray-800 rounded-full">{post.category}</span>
                   <span className="text-sm text-gray-500">{post.date}</span>
                 </div>
                 <h3 className="text-xl font-bold mb-3 leading-tight">{post.title}</h3>
