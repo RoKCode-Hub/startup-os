@@ -197,7 +197,7 @@ const Index = () => {
                   type="email" 
                   id="email" 
                   className="w-full bg-gray-700 border border-gray-600 rounded-lg p-4 text-white focus:border-accent1 focus:ring-2 focus:ring-accent1/30 focus:outline-none transition-all"
-                  placeholder="your.email@example.com"
+                  placeholder="contact@howto-venture.com"
                 />
               </div>
             </div>
