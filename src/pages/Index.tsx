@@ -89,7 +89,7 @@ const Index = () => {
       <Section
         id="podcast-preview"
         title="Latest Podcast Episodes"
-        description="Listen to our conversations with founders, investors, and experts"
+        description="Listen to our conversations with founders, operators and experts"
         dark={true}
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
