@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import Section from "@/components/Section";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, Apple, ExternalLink } from "lucide-react";
+import { Play, Pause } from "lucide-react";
 import PodcastUploadForm from "@/components/PodcastUploadForm";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -87,17 +87,18 @@ const Podcast = () => {
           className={isAuthenticated ? "pt-0" : "pt-16"}
         >
           {/* Listen on platforms buttons */}
-          <div className="flex flex-wrap justify-center gap-4 mb-16 mt-8">
+          <div className="flex flex-wrap justify-center gap-6 mb-16 mt-8">
             <a 
               href="https://podcasts.apple.com" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-block transition-transform hover:scale-105"
             >
-              <div className="flex items-center bg-black text-white px-6 py-3 rounded-full">
-                <Apple className="mr-2" />
-                <span className="font-medium">Listen on Apple Podcasts</span>
-              </div>
+              <img 
+                src="/lovable-uploads/05f93660-2a5f-490e-b2cc-4edcdabdc38c.png" 
+                alt="Listen on Apple Podcasts" 
+                className="h-12"
+              />
             </a>
             <a 
               href="https://spotify.com" 
@@ -105,10 +106,11 @@ const Podcast = () => {
               rel="noopener noreferrer"
               className="inline-block transition-transform hover:scale-105"
             >
-              <div className="flex items-center bg-black text-white px-6 py-3 rounded-full">
-                <ExternalLink className="mr-2" />
-                <span className="font-medium">Listen on Spotify</span>
-              </div>
+              <img 
+                src="/lovable-uploads/0284a6f9-70a6-4651-9fe4-d1e194989d2c.png" 
+                alt="Listen on Spotify" 
+                className="h-12"
+              />
             </a>
           </div>
           
