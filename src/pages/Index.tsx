@@ -61,10 +61,13 @@ const Index = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div className="order-2 md:order-1">
             <p className="text-lg mb-6 leading-relaxed opacity-80">
-              Founded in 2020, our studio brings together passionate creatives who believe in the power of minimalist design to create maximum impact.
+              Your company is growing and so is the time you spend managing and putting out internal fires.
             </p>
             <p className="text-lg mb-8 leading-relaxed opacity-80">
-              We work closely with clients to understand their unique needs and create tailored solutions that elevate their brand and connect with their audience.
+              We have been working with and in startups since 2015. We have seen first-hand the leverage of having the right operating system. It frees up time so that you can focus on growth and your customers. Therefore, we have founded Startup OS. To share hands on knowledge from founders and operators.
+            </p>
+             <p className="text-lg mb-10 leading-relaxed opacity-80">
+              Proven. Practical. Scalable.
             </p>
             <Button className="mt-4 rounded-full px-8 py-6 bg-accent1 hover:bg-accent1/90 text-white font-medium">
               Learn More
