@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import Section from "@/components/Section";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play, Pause } from "lucide-react";
+import { Play, Pause, Apple, ExternalLink } from "lucide-react";
 import PodcastUploadForm from "@/components/PodcastUploadForm";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -86,6 +86,32 @@ const Podcast = () => {
           description="Conversations with founders, investors, and experts about building successful startups"
           className={isAuthenticated ? "pt-0" : "pt-16"}
         >
+          {/* Listen on platforms buttons */}
+          <div className="flex flex-wrap justify-center gap-4 mb-16 mt-8">
+            <a 
+              href="https://podcasts.apple.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-block transition-transform hover:scale-105"
+            >
+              <div className="flex items-center bg-black text-white px-6 py-3 rounded-full">
+                <Apple className="mr-2" />
+                <span className="font-medium">Listen on Apple Podcasts</span>
+              </div>
+            </a>
+            <a 
+              href="https://spotify.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-block transition-transform hover:scale-105"
+            >
+              <div className="flex items-center bg-black text-white px-6 py-3 rounded-full">
+                <ExternalLink className="mr-2" />
+                <span className="font-medium">Listen on Spotify</span>
+              </div>
+            </a>
+          </div>
+          
           <div className="space-y-6">
             {episodes.map((episode) => (
               <Card key={episode.id} className="overflow-hidden">
