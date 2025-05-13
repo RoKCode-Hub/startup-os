@@ -13,6 +13,8 @@ import ChatBot from "./pages/ChatBot";
 import HealthCheck from "./pages/HealthCheck";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
+import Imprint from "./pages/Imprint";
+import DataPrivacy from "./pages/DataPrivacy";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -36,6 +38,8 @@ const App = () => (
           <Route path="/chatbot" element={<ChatBot />} />
           <Route path="/health-check" element={<HealthCheck />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/imprint" element={<Imprint />} />
+          <Route path="/data-privacy" element={<DataPrivacy />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

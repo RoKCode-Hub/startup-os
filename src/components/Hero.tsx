@@ -29,7 +29,8 @@ const Hero = () => {
         </h1>
         
         <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-12 fade-in-up stagger-1 leading-relaxed">
-          Build an operating system that <span className="text-white font-semibold">supports growth</span>, rather than blocking it.
+          Build an operating system that <span className="text-white font-semibold">supports growth,</span><br />
+          rather than blocking it.
         </p>
         
         <div className="flex flex-col sm:flex-row justify-center gap-5 fade-in-up stagger-2">
