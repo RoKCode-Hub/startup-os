@@ -190,7 +190,7 @@ const Index = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-16">
           <Button 
             onClick={() => navigate("/podcast")} 
-            className="bg-white text-gray-900 hover:bg-gray-100 px-10 py-6 rounded-full text-lg font-medium shadow-elegant"
+            className="bg-accent1 text-white hover:bg-accent1/90 px-10 py-6 rounded-full text-lg font-medium shadow-elegant"
           >
             View All Episodes
           </Button>
