@@ -10,6 +10,7 @@ const Imprint = () => {
       
       <div className="pt-32 pb-20">
         <Section 
+          id="imprint"
           title="Imprint"
           description="Legal information about our website"
         >

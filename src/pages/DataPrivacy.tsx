@@ -10,6 +10,7 @@ const DataPrivacy = () => {
       
       <div className="pt-32 pb-20">
         <Section 
+          id="data-privacy"
           title="Data Privacy"
           description="Information about how we handle your data"
         >
