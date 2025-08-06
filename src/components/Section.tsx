@@ -28,13 +28,7 @@ const Section = ({
         className
       )}
     >
-      {/* Decorative elements for visual interest */}
-      {!dark && (
-        <>
-          <div className="absolute top-0 left-0 w-64 h-64 bg-accent2/5 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent3/5 rounded-full translate-x-1/3 translate-y-1/3"></div>
-        </>
-      )}
+      {/* Decorative elements removed for uniform background */}
       
       {dark && (
         <>
