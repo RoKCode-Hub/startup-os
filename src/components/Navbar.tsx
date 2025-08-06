@@ -63,22 +63,13 @@ const Navbar = () => {
             Home
           </Link>
           <Link 
-            to="/podcast" 
+            to="/#latest-content" 
             className={cn(
               "underline-animation font-medium", 
               scrolled ? "text-gray-800" : "text-white"
             )}
           >
-            Podcast
-          </Link>
-          <Link 
-            to="/blog" 
-            className={cn(
-              "underline-animation font-medium", 
-              scrolled ? "text-gray-800" : "text-white"
-            )}
-          >
-            Blog
+            Content
           </Link>
           <Link 
             to="/chatbot" 
@@ -132,8 +123,7 @@ const Navbar = () => {
         <div className="md:hidden bg-white w-full py-6 px-6 shadow-md absolute top-full left-0 animate-fade-in-up">
           <div className="flex flex-col space-y-5">
             <Link to="/" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Home</Link>
-            <Link to="/podcast" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Podcast</Link>
-            <Link to="/blog" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Blog</Link>
+            <Link to="/#latest-content" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Content</Link>
             <Link to="/chatbot" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Chatbot</Link>
             <Link to="/health-check" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Health Check</Link>
             
