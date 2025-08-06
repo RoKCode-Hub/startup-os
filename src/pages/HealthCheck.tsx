@@ -20,7 +20,7 @@ interface CategoryWithIcon extends Category {
 }
 
 const HealthCheck = () => {
-  const [view, setView] = useState<'intro' | 'questionnaire' | 'assessment' | 'results'>('intro');
+  const [view, setView] = useState<'intro' | 'assessment' | 'results'>('intro');
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [categoriesWithIcons, setCategoriesWithIcons] = useState<CategoryWithIcon[]>([]);
   const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
@@ -148,7 +148,7 @@ const HealthCheck = () => {
           
           <div className="text-center pt-4">
             <Button 
-              onClick={() => setView('questionnaire')} 
+              onClick={() => setView('assessment')} 
               className="px-8 py-6 text-lg font-medium rounded-full bg-destructive hover:bg-destructive/90"
             >
               Begin Assessment <ArrowRight className="ml-2 h-5 w-5" />
@@ -166,47 +166,11 @@ const HealthCheck = () => {
       <main className="flex-grow pt-24">
         <Section
           id="health-header"
-          title={view === 'intro' ? "Business Health Assessment" : view === 'questionnaire' ? "Business Categories" : view === 'assessment' ? "Assessment" : "Assessment Results"}
-          description={view === 'intro' ? "Evaluate your startup's operating system across critical dimensions" : view === 'questionnaire' ? "Select a category to begin your business health assessment" : view === 'assessment' ? "Rate each statement based on how well it describes your current situation" : "Your comprehensive business health analysis"}
+          title={view === 'intro' ? "Business Health Assessment" : view === 'assessment' ? "Assessment" : "Assessment Results"}
+          description={view === 'intro' ? "Evaluate your startup's operating system across critical dimensions" : view === 'assessment' ? "Rate each statement based on how well it describes your current situation" : "Your comprehensive business health analysis"}
           className="pt-16"
         >
           {view === 'intro' && renderIntroView()}
-          
-          {view === 'questionnaire' && (
-            <div className="space-y-6">
-              <div className="flex justify-between items-center mb-6">
-                <Button variant="outline" onClick={() => setView('intro')}>
-                  ← Back to Intro
-                </Button>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {categoriesWithIcons.map((category, index) => (
-                  category.IconComponent && (
-                    <motion.div
-                      key={category.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <CategoryCard
-                        title={category.title}
-                        description={category.description}
-                        score={category.score}
-                        maxScore={category.maxScore}
-                        icon={category.IconComponent}
-                        onClick={() => {
-                          setCurrentCategoryIndex(index);
-                          setCurrentQuestionIndex(0);
-                          setView('assessment');
-                        }}
-                      />
-                    </motion.div>
-                  )
-                ))}
-              </div>
-            </div>
-          )}
           
           {view === 'assessment' && currentQuestion && (
             <motion.div
@@ -215,8 +179,8 @@ const HealthCheck = () => {
               className="space-y-6"
             >
               <div className="flex justify-between items-center mb-6">
-                <Button variant="outline" onClick={() => setView('questionnaire')}>
-                  ← Back to Categories
+                <Button variant="outline" onClick={() => setView('intro')}>
+                  ← Back to Intro
                 </Button>
                 <div className="text-sm text-muted-foreground">
                   Question {completedQuestions + 1} of {totalQuestions}
