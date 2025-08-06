@@ -127,7 +127,7 @@ const Index = () => {
                 )}
               </div>
               
-              <CardContent className="p-8">
+              <CardContent className="p-8 flex flex-col h-80">
                 <div className="flex justify-between items-start mb-3 text-sm">
                   <span className={`px-3 py-1 rounded-full font-medium ${
                     item.type === 'podcast' 
@@ -150,37 +150,41 @@ const Index = () => {
                 <h3 className="font-bold mb-3 leading-tight text-xl text-black">
                   {item.title}
                 </h3>
-                <p className="mb-6 line-clamp-2 leading-relaxed text-gray-600">
+                <p className="mb-4 line-clamp-2 leading-relaxed text-gray-600 flex-grow">
                   {item.type === 'podcast' ? (item as any).description : (item as any).excerpt}
                 </p>
-                {item.type === 'podcast' ? (
-                  <>
-                    <p className="text-sm text-gray-500 mb-6">
-                      With <span className="font-medium text-black">{(item as any).guests}</span>
-                    </p>
-                    <Button 
-                      variant="outline" 
-                      className="flex items-center gap-3 w-full justify-center rounded-full border-accent1 text-accent1 hover:bg-accent1 hover:text-white"
-                      onClick={() => navigate(`/podcast`)}
-                    >
-                      <Play size={18} />
-                      Listen Now
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-sm text-gray-500 mb-6">
-                      By <span className="font-medium text-black">{(item as any).author}</span>
-                    </p>
-                    <Button 
-                      variant="outline" 
-                      className="flex items-center gap-3 w-full justify-center rounded-full border-accent1 text-accent1 hover:bg-accent1 hover:text-white"
-                      onClick={() => navigate(`/blog/post/${item.id}`)}
-                    >
-                      Read More
-                    </Button>
-                  </>
-                )}
+                
+                {/* Fixed height bottom section for consistent button positioning */}
+                <div className="mt-auto">
+                  {item.type === 'podcast' ? (
+                    <>
+                      <p className="text-sm text-gray-500 mb-4">
+                        With <span className="font-medium text-black">{(item as any).guests}</span>
+                      </p>
+                      <Button 
+                        variant="outline" 
+                        className="flex items-center gap-3 w-full justify-center rounded-full border-accent1 text-accent1 hover:bg-accent1 hover:text-white"
+                        onClick={() => navigate(`/podcast`)}
+                      >
+                        <Play size={18} />
+                        Listen Now
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-sm text-gray-500 mb-4">
+                        By <span className="font-medium text-black">{(item as any).author}</span>
+                      </p>
+                      <Button 
+                        variant="outline" 
+                        className="flex items-center gap-3 w-full justify-center rounded-full border-accent1 text-accent1 hover:bg-accent1 hover:text-white"
+                        onClick={() => navigate(`/blog/post/${item.id}`)}
+                      >
+                        Read More
+                      </Button>
+                    </>
+                  )}
+                </div>
               </CardContent>
             </Card>
           ))}
