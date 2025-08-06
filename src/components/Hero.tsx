@@ -34,11 +34,17 @@ const Hero = () => {
         </p>
         
         <div className="flex flex-col sm:flex-row justify-center gap-5 fade-in-up stagger-2">
-        <Button 
+          <Button 
             className="bg-accent1 text-white hover:bg-accent1/90 px-10 py-7 text-lg rounded-full shadow-elegant transition-all duration-300 hover:shadow-soft"
             onClick={scrollToContact}
           >
             Get in Touch
+          </Button>
+          <Button 
+            className="bg-white text-black hover:bg-gray-100 px-10 py-7 text-lg rounded-full shadow-elegant transition-all duration-300 hover:shadow-soft"
+            onClick={() => navigate('/health-check')}
+          >
+            Health Check
           </Button>
         </div>
       </div>
