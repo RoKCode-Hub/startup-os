@@ -104,24 +104,13 @@ const HexagonSection = () => {
                 
                 return (
                   <g key={element.id}>
-                    {/* Clickable circle */}
-                    <circle
-                      cx={x}
-                      cy={y}
-                      r="25"
-                      fill={isSelected ? "hsl(var(--accent1))" : "hsl(var(--gray-800))"}
-                      stroke="hsl(var(--accent1))"
-                      strokeWidth="2"
-                      className="cursor-pointer transition-all duration-300 hover:scale-110"
-                      onClick={() => setSelectedElement(element)}
-                    />
-                    {/* Text label */}
+                    {/* Text label only - circles removed */}
                     <text
                       x={x}
                       y={y + 5}
                       textAnchor="middle"
                       className={`text-sm font-medium cursor-pointer transition-all duration-300 ${
-                        isSelected ? 'fill-white' : 'fill-white'
+                        isSelected ? 'fill-accent1' : 'fill-white'
                       }`}
                       onClick={() => setSelectedElement(element)}
                     >
@@ -185,14 +174,7 @@ const HexagonSection = () => {
                 );
               })}
               
-              {/* Center circle */}
-              <circle
-                cx="200"
-                cy="200"
-                r="15"
-                fill="hsl(var(--accent1))"
-                className="transition-all duration-300"
-              />
+              {/* Center circle removed */}
             </svg>
           </div>
         </div>
