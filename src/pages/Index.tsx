@@ -89,7 +89,7 @@ const Index = () => {
                 strokeWidth="1"
               />
             </svg>
-            <svg className="absolute -top-8 -right-8 w-16 h-16 -z-10" viewBox="0 0 100 100">
+            <svg className="absolute -top-2 -right-2 w-16 h-16 -z-10" viewBox="0 0 100 100">
               <polygon 
                 points="50,10 85,30 85,70 50,90 15,70 15,30" 
                 fill="hsl(var(--accent1) / 0.1)" 
