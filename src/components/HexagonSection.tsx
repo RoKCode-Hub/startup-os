@@ -198,7 +198,7 @@ const HexagonSection = () => {
         </div>
         
         {/* Content on the right */}
-        <div className="space-y-8 lg:pl-4 flex-1 max-w-md">
+        <div className="space-y-8 lg:pl-4 flex-1">
           <div className="transition-all duration-500 ease-in-out min-h-[300px] flex flex-col justify-start">
             <h3 className="text-3xl font-bold mb-6 text-white">
               {selectedElement.content.title}
