@@ -153,11 +153,11 @@ const Index = () => {
                       With <span className="font-medium text-black">{(item as any).guests}</span>
                     </p>
                     <Button 
-                      variant="ghost" 
-                      className="text-accent1 font-medium hover:text-accent1/80 hover:bg-transparent px-0 underline-animation flex items-center gap-3 w-full justify-center"
+                      variant="outline" 
+                      className="flex items-center gap-3 w-full justify-center rounded-full border-accent1 text-accent1 hover:bg-accent1 hover:text-white"
                       onClick={() => navigate(`/podcast`)}
                     >
-                      <Play size={18} className="text-accent1" />
+                      <Play size={18} />
                       Listen Now
                     </Button>
                   </>
