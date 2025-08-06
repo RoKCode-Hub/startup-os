@@ -166,7 +166,7 @@ const HealthCheck = () => {
       <main className="flex-grow pt-24">
         <Section
           id="health-header"
-          title={view === 'intro' ? "Health Check" : view === 'assessment' ? "Assessment" : "Assessment Results"}
+          title={view === 'intro' ? "Health Check" : view === 'assessment' ? "Health Check" : "Health Check Results"}
           description={view === 'intro' ? "Evaluate your startup's operating system across critical dimensions" : view === 'assessment' ? "Rate each statement based on how well it describes the current situation in your company" : "Your comprehensive business health analysis"}
           className="pt-16"
         >
@@ -243,13 +243,13 @@ const HealthCheck = () => {
                   ← Back to Intro
                 </Button>
                 <Button onClick={resetAssessment}>
-                  Retake Assessment
+                  Retake Health Check
                 </Button>
               </div>
               
               <Card>
                 <CardHeader className="text-center">
-                  <CardTitle>Assessment Results</CardTitle>
+                  <CardTitle>Health Check Results</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
                   <div className="text-4xl font-light text-primary mb-4">
