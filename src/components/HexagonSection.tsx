@@ -67,8 +67,8 @@ const HexagonSection = () => {
   return (
     <Section 
       id="startup-os-elements" 
-      title="Key Elements of a Startup Operating System"
-      description="Click on any element to explore how it contributes to startup success"
+      title="Key Components of a Startup Operating System"
+      description="Click on the component to see how it contributes to startup success"
       dark={true}
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
