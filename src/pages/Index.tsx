@@ -1,6 +1,7 @@
 
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import HexagonSection from "@/components/HexagonSection";
 import Section from "@/components/Section";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -51,6 +52,9 @@ const Index = () => {
       
       {/* Hero Section */}
       <Hero />
+      
+      {/* Hexagon Section */}
+      <HexagonSection />
       
       {/* About Section */}
       <Section 
