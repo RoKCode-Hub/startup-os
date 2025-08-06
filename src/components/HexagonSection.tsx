@@ -131,6 +131,34 @@ const HexagonSection = () => {
                 );
               })}
               
+              {/* Hexagon connecting lines */}
+              {hexagonElements.map((element, index) => {
+                const angles = [0, 60, 120, 180, 240, 300];
+                const angle = angles[index];
+                const nextAngle = angles[(index + 1) % 6];
+                const radian = (angle * Math.PI) / 180;
+                const nextRadian = (nextAngle * Math.PI) / 180;
+                const radius = 120;
+                
+                const x1 = 200 + radius * Math.cos(radian - Math.PI / 2);
+                const y1 = 200 + radius * Math.sin(radian - Math.PI / 2);
+                const x2 = 200 + radius * Math.cos(nextRadian - Math.PI / 2);
+                const y2 = 200 + radius * Math.sin(nextRadian - Math.PI / 2);
+                
+                return (
+                  <line
+                    key={`hexagon-line-${element.id}`}
+                    x1={x1}
+                    y1={y1}
+                    x2={x2}
+                    y2={y2}
+                    stroke="white"
+                    strokeWidth="2"
+                    className="transition-all duration-300"
+                  />
+                );
+              })}
+              
               {/* Center connecting lines */}
               {hexagonElements.map((element, index) => {
                 const angles = [0, 60, 120, 180, 240, 300];
