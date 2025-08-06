@@ -166,8 +166,8 @@ const HealthCheck = () => {
       <main className="flex-grow pt-24">
         <Section
           id="health-header"
-          title={view === 'intro' ? "Business Health Assessment" : view === 'assessment' ? "Assessment" : "Assessment Results"}
-          description={view === 'intro' ? "Evaluate your startup's operating system across critical dimensions" : view === 'assessment' ? "Rate each statement based on how well it describes your current situation" : "Your comprehensive business health analysis"}
+          title={view === 'intro' ? "Health Check" : view === 'assessment' ? "Assessment" : "Assessment Results"}
+          description={view === 'intro' ? "Evaluate your startup's operating system across critical dimensions" : view === 'assessment' ? "Rate each statement based on how well it describes the current situation in your company" : "Your comprehensive business health analysis"}
           className="pt-16"
         >
           {view === 'intro' && renderIntroView()}
