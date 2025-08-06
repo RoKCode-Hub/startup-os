@@ -12,7 +12,11 @@ const Footer = () => {
       <div className="container mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
           <div className="md:col-span-5">
-            <h3 className="text-3xl font-serif font-bold mb-6">STARTUP OS</h3>
+            <img 
+              src="/lovable-uploads/3b67b68b-e71e-473f-a16a-d2d847f6d902.png" 
+              alt="Startup OS Logo" 
+              className="h-12 w-auto mb-6"
+            />
             <p className="text-gray-400 max-w-md text-lg leading-relaxed">
               Build scalable operating systems.
             </p>
