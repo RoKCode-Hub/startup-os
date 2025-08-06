@@ -109,7 +109,7 @@ const HexagonSection = () => {
                       x={x}
                       y={y + 5}
                       textAnchor="middle"
-                      className={`text-sm font-medium cursor-pointer transition-all duration-300 hover:fill-accent1 ${
+                      className={`text-sm font-medium cursor-pointer transition-all duration-300 hover:fill-accent1/40 ${
                         isSelected ? 'fill-accent1' : 'fill-white'
                       }`}
                       onClick={() => setSelectedElement(element)}
