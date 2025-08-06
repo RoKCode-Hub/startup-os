@@ -44,12 +44,13 @@ const Navbar = () => {
       <div className="container mx-auto flex items-center justify-between px-6 lg:px-10">
         <Link 
           to="/" 
-          className={cn(
-            "text-2xl font-bold tracking-tight font-serif transition-colors",
-            scrolled ? "text-black" : "text-white"
-          )}
+          className="flex items-center"
         >
-          STARTUP OS
+          <img 
+            src="/lovable-uploads/3b67b68b-e71e-473f-a16a-d2d847f6d902.png" 
+            alt="Startup OS Logo" 
+            className="h-8 w-auto"
+          />
         </Link>
         <div className="hidden md:flex items-center space-x-10">
           <Link 
