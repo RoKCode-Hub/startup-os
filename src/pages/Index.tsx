@@ -168,18 +168,18 @@ const Index = () => {
                     </Button>
                   </>
                 ) : (
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">
+                  <>
+                    <p className="text-sm text-gray-500 mb-6">
                       By <span className="font-medium text-black">{(item as any).author}</span>
-                    </span>
+                    </p>
                     <Button 
-                      variant="ghost" 
+                      variant="outline" 
+                      className="flex items-center gap-3 w-full justify-center rounded-full border-accent1 text-accent1 hover:bg-accent1 hover:text-white"
                       onClick={() => navigate(`/blog/post/${item.id}`)}
-                      className="text-accent1 font-medium hover:text-accent1/80 hover:bg-transparent px-0 underline-animation"
                     >
                       Read More
                     </Button>
-                  </div>
+                  </>
                 )}
               </CardContent>
             </Card>
