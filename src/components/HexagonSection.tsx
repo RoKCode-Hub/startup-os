@@ -69,6 +69,7 @@ const HexagonSection = () => {
       id="startup-os-elements" 
       title="Key Elements of a Startup Operating System"
       description="Click on any element to explore how it contributes to startup success"
+      dark={true}
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Hexagon on the left */}
@@ -84,9 +85,9 @@ const HexagonSection = () => {
               {/* Hexagon background */}
               <polygon 
                 points="200,50 320,125 320,275 200,350 80,275 80,125" 
-                fill="hsl(var(--accent1) / 0.1)" 
+                fill="none" 
                 stroke="hsl(var(--accent1))" 
-                strokeWidth="2"
+                strokeWidth="3"
                 className="transition-all duration-300"
               />
               
@@ -108,7 +109,7 @@ const HexagonSection = () => {
                       cx={x}
                       cy={y}
                       r="25"
-                      fill={isSelected ? "hsl(var(--accent1))" : "hsl(var(--background))"}
+                      fill={isSelected ? "hsl(var(--accent1))" : "hsl(var(--gray-800))"}
                       stroke="hsl(var(--accent1))"
                       strokeWidth="2"
                       className="cursor-pointer transition-all duration-300 hover:scale-110"
@@ -120,7 +121,7 @@ const HexagonSection = () => {
                       y={y + 5}
                       textAnchor="middle"
                       className={`text-sm font-medium cursor-pointer transition-all duration-300 ${
-                        isSelected ? 'fill-white' : 'fill-current'
+                        isSelected ? 'fill-white' : 'fill-white'
                       }`}
                       onClick={() => setSelectedElement(element)}
                     >
@@ -170,10 +171,10 @@ const HexagonSection = () => {
         {/* Content on the right */}
         <div className="space-y-8">
           <div className="transition-all duration-500 ease-in-out">
-            <h3 className="text-3xl font-bold mb-6 text-foreground">
+            <h3 className="text-3xl font-bold mb-6 text-white">
               {selectedElement.content.title}
             </h3>
-            <p className="text-lg leading-relaxed opacity-80">
+            <p className="text-lg leading-relaxed opacity-80 text-gray-300">
               {selectedElement.content.description}
             </p>
           </div>
@@ -187,7 +188,7 @@ const HexagonSection = () => {
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                   selectedElement.id === element.id
                     ? 'bg-accent1 text-white'
-                    : 'bg-accent1/10 text-foreground hover:bg-accent1/20'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                 }`}
               >
                 {element.label}
