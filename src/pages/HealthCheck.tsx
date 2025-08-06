@@ -20,7 +20,7 @@ interface CategoryWithIcon extends Category {
 }
 
 const HealthCheck = () => {
-  const [view, setView] = useState<'intro' | 'assessment' | 'results'>('intro');
+  const [view, setView] = useState<'intro' | 'assess,emt' | 'results'>('intro');
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [categoriesWithIcons, setCategoriesWithIcons] = useState<CategoryWithIcon[]>([]);
   const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
@@ -151,7 +151,7 @@ const HealthCheck = () => {
               onClick={() => setView('assessment')} 
               className="px-8 py-6 text-lg font-medium rounded-full bg-destructive hover:bg-destructive/90"
             >
-              Begin Assessment <ArrowRight className="ml-2 h-5 w-5" />
+              Begin Health Check <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
         </CardContent>
