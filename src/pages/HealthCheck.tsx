@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import Section from "@/components/Section";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, AlertCircle, HelpCircle, ArrowRight, BarChart3 } from "lucide-react";
+import { ArrowRight, Clock, FileQuestion, Grid3X3 } from "lucide-react";
 import { categories as initialCategories } from '@/data/questionnaire';
 import { Category } from '@/types/questionnaire';
 import { dynamicIconImport } from '@/utils/dynamicIconImport';
@@ -14,65 +14,18 @@ import CategoryCard from '@/components/CategoryCard';
 import QuestionCard from '@/components/QuestionCard';
 import ResultsChart from '@/components/ResultsChart';
 import { LucideIcon } from 'lucide-react';
-import { toast } from "@/components/ui/use-toast";
 
 interface CategoryWithIcon extends Category {
   IconComponent: LucideIcon | null;
 }
 
 const HealthCheck = () => {
-  const [view, setView] = useState<'systems' | 'questionnaire' | 'assessment' | 'results'>('systems');
+  const [view, setView] = useState<'intro' | 'questionnaire' | 'assessment' | 'results'>('intro');
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [categoriesWithIcons, setCategoriesWithIcons] = useState<CategoryWithIcon[]>([]);
   const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   
-  const [systems] = useState([
-    {
-      id: 1,
-      name: "User Authentication",
-      status: "operational",
-      lastChecked: "2 minutes ago",
-      uptime: "99.99%"
-    },
-    {
-      id: 2,
-      name: "Database Services",
-      status: "operational",
-      lastChecked: "5 minutes ago",
-      uptime: "99.98%"
-    },
-    {
-      id: 3,
-      name: "API Gateway",
-      status: "operational",
-      lastChecked: "3 minutes ago",
-      uptime: "99.95%"
-    },
-    {
-      id: 4,
-      name: "Storage System",
-      status: "operational",
-      lastChecked: "7 minutes ago",
-      uptime: "99.99%"
-    },
-    {
-      id: 5,
-      name: "Payment Processing",
-      status: "degraded",
-      lastChecked: "10 minutes ago",
-      uptime: "99.50%",
-      message: "We're experiencing delays in payment processing. Our team is working on it."
-    },
-    {
-      id: 6,
-      name: "Email Service",
-      status: "operational",
-      lastChecked: "4 minutes ago",
-      uptime: "99.97%"
-    }
-  ]);
-
   useEffect(() => {
     const loadIcons = async () => {
       const withIcons = await Promise.all(
@@ -132,33 +85,7 @@ const HealthCheck = () => {
     setCategories(resetCategories);
     setCurrentCategoryIndex(0);
     setCurrentQuestionIndex(0);
-    setView('questionnaire');
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "operational":
-        return <CheckCircle className="text-green-500" size={20} />;
-      case "degraded":
-        return <AlertCircle className="text-yellow-500" size={20} />;
-      case "outage":
-        return <AlertCircle className="text-red-500" size={20} />;
-      default:
-        return <HelpCircle className="text-gray-500" size={20} />;
-    }
-  };
-
-  const getStatusClass = (status: string) => {
-    switch (status) {
-      case "operational":
-        return "bg-green-100 text-green-800";
-      case "degraded":
-        return "bg-yellow-100 text-yellow-800";
-      case "outage":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
+    setView('intro');
   };
 
   const currentCategory = categories[currentCategoryIndex];
@@ -175,74 +102,61 @@ const HealthCheck = () => {
 
   const progress = totalQuestions > 0 ? (completedQuestions / totalQuestions) * 100 : 0;
 
-  const renderSystemsView = () => (
-    <>
-      <Card className="mb-8">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-medium">Current Status</h3>
-            <span className="text-sm text-gray-500">Last updated: May 2, 2025 at 10:35 AM</span>
+  const renderIntroView = () => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="max-w-2xl mx-auto"
+    >
+      <Card className="border-none bg-card/90 backdrop-blur-sm shadow-lg">
+        <CardHeader className="text-center pb-4">
+          <CardTitle className="text-3xl font-light mb-4">Startup OS Health Check</CardTitle>
+          <p className="text-muted-foreground text-lg">
+            A quick evaluation of your company's operating system across five key dimensions
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <p className="text-center text-muted-foreground">
+            This questionnaire evaluates 5 categories: Direction, Traction, Leadership, Collaboration, and Organizational Setup. Rate each statement on a scale of 1-5.
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-6">
+            <div className="flex items-center space-x-3 p-4 bg-secondary/50 rounded-lg">
+              <Clock className="h-5 w-5 text-primary" />
+              <div>
+                <div className="font-medium">Estimated time:</div>
+                <div className="text-sm text-muted-foreground">Approx. 5 minutes</div>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-3 p-4 bg-secondary/50 rounded-lg">
+              <FileQuestion className="h-5 w-5 text-primary" />
+              <div>
+                <div className="font-medium">Questions:</div>
+                <div className="text-sm text-muted-foreground">{totalQuestions} total</div>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-3 p-4 bg-secondary/50 rounded-lg">
+              <Grid3X3 className="h-5 w-5 text-primary" />
+              <div>
+                <div className="font-medium">Categories:</div>
+                <div className="text-sm text-muted-foreground">{categories.length} sections</div>
+              </div>
+            </div>
           </div>
           
-          <div className="flex gap-4 flex-wrap">
-            <div className="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-              All Systems Operational
-            </div>
-            <div className="px-4 py-2 bg-gray-100 text-gray-800 rounded-full text-sm">
-              Uptime: 99.98%
-            </div>
+          <div className="text-center pt-4">
+            <Button 
+              onClick={() => setView('questionnaire')} 
+              className="px-8 py-6 text-lg font-medium rounded-full bg-destructive hover:bg-destructive/90"
+            >
+              Begin Assessment <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
           </div>
         </CardContent>
       </Card>
-      
-      <div className="space-y-4 mb-8">
-        {systems.map((system) => (
-          <Card key={system.id} className="overflow-hidden">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  {getStatusIcon(system.status)}
-                  <h3 className="ml-2 font-medium">{system.name}</h3>
-                </div>
-                <div className="flex items-center">
-                  <span className="text-sm text-gray-500 mr-3">
-                    Checked {system.lastChecked}
-                  </span>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusClass(system.status)}`}>
-                    {system.status.charAt(0).toUpperCase() + system.status.slice(1)}
-                  </span>
-                </div>
-              </div>
-              {system.message && (
-                <div className="mt-2 text-sm text-gray-600 bg-gray-50 p-2 rounded">
-                  {system.message}
-                </div>
-              )}
-              <div className="mt-2 text-sm text-gray-500">
-                Uptime: {system.uptime}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-      
-      <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-medium mb-2">Business Health Assessment</h3>
-              <p className="text-muted-foreground mb-4">
-                Beyond system monitoring, evaluate your overall business health across key areas
-              </p>
-            </div>
-            <BarChart3 className="h-12 w-12 text-primary opacity-60" />
-          </div>
-          <Button onClick={() => setView('questionnaire')} className="w-full sm:w-auto">
-            Start Assessment <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </CardContent>
-      </Card>
-    </>
+    </motion.div>
   );
 
   return (
@@ -252,17 +166,17 @@ const HealthCheck = () => {
       <main className="flex-grow pt-24">
         <Section
           id="health-header"
-          title={view === 'systems' ? "System Health Status" : view === 'questionnaire' ? "Business Categories" : view === 'assessment' ? "Assessment" : "Assessment Results"}
-          description={view === 'systems' ? "Real-time monitoring of all Startup OS services and components" : view === 'questionnaire' ? "Select a category to begin your business health assessment" : view === 'assessment' ? "Rate each statement based on how well it describes your current situation" : "Your comprehensive business health analysis"}
+          title={view === 'intro' ? "Business Health Assessment" : view === 'questionnaire' ? "Business Categories" : view === 'assessment' ? "Assessment" : "Assessment Results"}
+          description={view === 'intro' ? "Evaluate your startup's operating system across critical dimensions" : view === 'questionnaire' ? "Select a category to begin your business health assessment" : view === 'assessment' ? "Rate each statement based on how well it describes your current situation" : "Your comprehensive business health analysis"}
           className="pt-16"
         >
-          {view === 'systems' && renderSystemsView()}
+          {view === 'intro' && renderIntroView()}
           
           {view === 'questionnaire' && (
             <div className="space-y-6">
               <div className="flex justify-between items-center mb-6">
-                <Button variant="outline" onClick={() => setView('systems')}>
-                  ← Back to Systems
+                <Button variant="outline" onClick={() => setView('intro')}>
+                  ← Back to Intro
                 </Button>
               </div>
               
@@ -359,8 +273,8 @@ const HealthCheck = () => {
               className="space-y-8"
             >
               <div className="flex justify-between items-center">
-                <Button variant="outline" onClick={() => setView('systems')}>
-                  ← Back to Systems
+                <Button variant="outline" onClick={() => setView('intro')}>
+                  ← Back to Intro
                 </Button>
                 <Button onClick={resetAssessment}>
                   Retake Assessment
