@@ -18,7 +18,7 @@ const Footer = () => {
               className="h-12 w-auto mb-6"
             />
             <p className="text-gray-400 max-w-md text-lg leading-relaxed">
-              Build scalable operating systems.
+              Build scalable operating systems
             </p>
             <div className="mt-8 flex space-x-5">
               <a href="#" className="text-gray-400 hover:text-white transition-all transform hover:scale-110">
