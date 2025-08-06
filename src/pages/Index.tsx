@@ -117,11 +117,7 @@ const Index = () => {
             }
             return mixedContent;
           })().map((item) => (
-            <Card key={`${item.type}-${item.id}`} className={`overflow-hidden rounded-xl transition-all duration-300 card-hover ${
-              item.type === 'podcast' 
-                ? 'bg-gray-900 border-gray-800 hover:border-gray-700' 
-                : 'border-0 shadow-soft hover:shadow-elegant bg-white'
-            }`}>
+            <Card key={`${item.type}-${item.id}`} className="overflow-hidden rounded-xl transition-all duration-300 card-hover border-0 shadow-soft hover:shadow-elegant bg-white">
               {item.type === 'blog' && (
                 <div className="h-56 bg-gray-100 relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-100"></div>
@@ -136,7 +132,7 @@ const Index = () => {
                   }`}>
                     {item.type === 'podcast' ? 'Podcast' : (item as any).category}
                   </span>
-                  <span className={item.type === 'podcast' ? 'text-gray-400' : 'text-gray-500'}>
+                  <span className="text-gray-500">
                     {item.date}
                   </span>
                   {item.type === 'podcast' && (
@@ -145,24 +141,20 @@ const Index = () => {
                     </span>
                   )}
                 </div>
-                <h3 className={`font-bold mb-3 leading-tight ${
-                  item.type === 'podcast' ? 'text-2xl text-white' : 'text-xl text-black'
-                }`}>
+                <h3 className="font-bold mb-3 leading-tight text-xl text-black">
                   {item.title}
                 </h3>
-                <p className={`mb-6 line-clamp-2 leading-relaxed ${
-                  item.type === 'podcast' ? 'text-gray-300' : 'text-gray-600'
-                }`}>
+                <p className="mb-6 line-clamp-2 leading-relaxed text-gray-600">
                   {item.type === 'podcast' ? (item as any).description : (item as any).excerpt}
                 </p>
                 {item.type === 'podcast' ? (
                   <>
-                    <p className="text-sm text-gray-400 mb-6">
-                      With <span className="text-white">{(item as any).guests}</span>
+                    <p className="text-sm text-gray-500 mb-6">
+                      With <span className="font-medium text-black">{(item as any).guests}</span>
                     </p>
                     <Button 
-                      variant="outline" 
-                      className="border-gray-600 text-white hover:bg-gray-800 flex items-center gap-3 w-full justify-center rounded-full"
+                      variant="ghost" 
+                      className="text-accent1 font-medium hover:text-accent1/80 hover:bg-transparent px-0 underline-animation flex items-center gap-3 w-full justify-center"
                       onClick={() => navigate(`/podcast`)}
                     >
                       <Play size={18} className="text-accent1" />
