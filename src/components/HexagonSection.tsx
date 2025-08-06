@@ -131,7 +131,7 @@ const HexagonSection = () => {
                 );
               })}
               
-              {/* Hexagon connecting lines */}
+              {/* Hexagon connecting lines - interrupted to avoid text overlap */}
               {hexagonElements.map((element, index) => {
                 const angles = [0, 60, 120, 180, 240, 300];
                 const angle = angles[index];
@@ -139,11 +139,12 @@ const HexagonSection = () => {
                 const radian = (angle * Math.PI) / 180;
                 const nextRadian = (nextAngle * Math.PI) / 180;
                 const radius = 120;
+                const gapRadius = 30; // Distance to stop before the circle
                 
-                const x1 = 200 + radius * Math.cos(radian - Math.PI / 2);
-                const y1 = 200 + radius * Math.sin(radian - Math.PI / 2);
-                const x2 = 200 + radius * Math.cos(nextRadian - Math.PI / 2);
-                const y2 = 200 + radius * Math.sin(nextRadian - Math.PI / 2);
+                const x1 = 200 + (radius - gapRadius) * Math.cos(radian - Math.PI / 2);
+                const y1 = 200 + (radius - gapRadius) * Math.sin(radian - Math.PI / 2);
+                const x2 = 200 + (radius - gapRadius) * Math.cos(nextRadian - Math.PI / 2);
+                const y2 = 200 + (radius - gapRadius) * Math.sin(nextRadian - Math.PI / 2);
                 
                 return (
                   <line
