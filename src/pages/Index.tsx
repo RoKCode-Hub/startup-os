@@ -116,11 +116,17 @@ const Index = () => {
             return mixedContent;
           })().map((item) => (
             <Card key={`${item.type}-${item.id}`} className="overflow-hidden rounded-xl transition-all duration-300 card-hover border-0 shadow-soft hover:shadow-elegant bg-white">
-              {item.type === 'blog' && (
-                <div className="h-56 bg-gray-100 relative overflow-hidden">
+              {/* Unified header image section for both blog and podcast */}
+              <div className="h-56 relative overflow-hidden">
+                {item.type === 'blog' ? (
                   <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-100"></div>
-                </div>
-              )}
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent1/20 to-accent1/10 flex items-center justify-center">
+                    <Play size={48} className="text-accent1" />
+                  </div>
+                )}
+              </div>
+              
               <CardContent className="p-8">
                 <div className="flex justify-between items-start mb-3 text-sm">
                   <span className={`px-3 py-1 rounded-full font-medium ${
@@ -130,14 +136,16 @@ const Index = () => {
                   }`}>
                     {item.type === 'podcast' ? 'Podcast' : (item as any).category}
                   </span>
-                  <span className="text-gray-500">
-                    {item.date}
-                  </span>
-                  {item.type === 'podcast' && (
-                    <span className="bg-accent1/20 text-accent1 px-3 py-1 rounded-full font-medium ml-2">
-                      {(item as any).duration}
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-500">
+                      {item.date}
                     </span>
-                  )}
+                    {item.type === 'podcast' && (
+                      <span className="bg-accent1/20 text-accent1 px-3 py-1 rounded-full font-medium">
+                        {(item as any).duration}
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <h3 className="font-bold mb-3 leading-tight text-xl text-black">
                   {item.title}
