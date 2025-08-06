@@ -80,23 +80,6 @@ const Index = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
             </div>
-            {/* Hexagon background elements */}
-            <svg className="absolute -bottom-8 -left-8 w-20 h-20 -z-10" viewBox="0 0 100 100">
-              <polygon 
-                points="50,10 85,30 85,70 50,90 15,70 15,30" 
-                fill="hsl(var(--accent3) / 0.1)" 
-                stroke="hsl(var(--accent3) / 0.2)" 
-                strokeWidth="1"
-              />
-            </svg>
-            <svg className="absolute top-4 right-4 w-16 h-16 -z-10" viewBox="0 0 100 100">
-              <polygon 
-                points="50,10 85,30 85,70 50,90 15,70 15,30" 
-                fill="hsl(var(--accent1) / 0.1)" 
-                stroke="hsl(var(--accent1) / 0.2)" 
-                strokeWidth="1"
-              />
-            </svg>
           </div>
         </div>
       </Section>
