@@ -68,7 +68,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-800 mt-16 pt-10 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-500">© {year} Startup OS. All rights reserved.</p>
+          <p className="text-gray-500">© {year} StartupOS. All rights reserved.</p>
           
           <div className="flex items-center mt-6 md:mt-0">
             {isAuthenticated ? (
