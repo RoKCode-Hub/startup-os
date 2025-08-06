@@ -125,6 +125,7 @@
   .pen-stroke-underline {
     position: relative;
     display: inline-block;
+    z-index: 2;
   }
 
   .pen-stroke-underline::after {
@@ -138,5 +139,6 @@
     border-radius: 3px;
     transform: rotate(-1deg);
     clip-path: polygon(0 0, 100% 25%, 100% 75%, 0 100%);
+    z-index: -1;
   }
 }
