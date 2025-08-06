@@ -94,20 +94,34 @@ const Index = () => {
         id="latest-content"
         title="Latest Content"
         description="Our newest podcast episodes and blog posts"
-        dark={true}
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Combine and display first 6 items (3 podcasts + 3 blog posts) */}
-          {[
-            // Add podcast episodes with type indicator
-            ...podcastEpisodes.map(episode => ({ ...episode, type: 'podcast' })),
-            // Add blog posts with type indicator  
-            ...latestPosts.map(post => ({ ...post, type: 'blog' }))
-          ].slice(0, 6).map((item) => (
+          {/* Create alternating pattern: blog, podcast, blog, podcast, etc. */}
+          {(() => {
+            const mixedContent = [];
+            const maxItems = Math.min(3, Math.max(podcastEpisodes.length, latestPosts.length));
+            
+            for (let i = 0; i < maxItems * 2; i++) {
+              if (i % 2 === 0) {
+                // Even index: add blog post
+                const postIndex = Math.floor(i / 2);
+                if (postIndex < latestPosts.length) {
+                  mixedContent.push({ ...latestPosts[postIndex], type: 'blog' });
+                }
+              } else {
+                // Odd index: add podcast episode
+                const podcastIndex = Math.floor(i / 2);
+                if (podcastIndex < podcastEpisodes.length) {
+                  mixedContent.push({ ...podcastEpisodes[podcastIndex], type: 'podcast' });
+                }
+              }
+            }
+            return mixedContent.slice(0, 6);
+          })().map((item) => (
             <Card key={`${item.type}-${item.id}`} className={`overflow-hidden rounded-xl transition-all duration-300 card-hover ${
               item.type === 'podcast' 
-                ? 'bg-gray-800 border-gray-700 hover:border-gray-600' 
-                : 'border-0 shadow-soft hover:shadow-elegant'
+                ? 'bg-gray-900 border-gray-800 hover:border-gray-700' 
+                : 'border-0 shadow-soft hover:shadow-elegant bg-white'
             }`}>
               {item.type === 'blog' && (
                 <div className="h-56 bg-gray-100 relative overflow-hidden">
@@ -149,7 +163,7 @@ const Index = () => {
                     </p>
                     <Button 
                       variant="outline" 
-                      className="border-gray-600 text-black hover:bg-gray-700 flex items-center gap-3 w-full justify-center rounded-full"
+                      className="border-gray-600 text-white hover:bg-gray-800 flex items-center gap-3 w-full justify-center rounded-full"
                       onClick={() => navigate(`/podcast`)}
                     >
                       <Play size={18} className="text-accent1" />
