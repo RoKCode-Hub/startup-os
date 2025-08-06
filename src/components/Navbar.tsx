@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Menu, X } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
@@ -11,6 +11,11 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isAuthenticated, user, logout } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Check if we're on pages with light backgrounds that need dark text
+  const isLightBackgroundPage = ['/imprint', '/data-privacy'].includes(location.pathname);
+  const shouldUseDarkText = scrolled || isLightBackgroundPage;
   
   useEffect(() => {
     const handleScroll = () => {
@@ -57,7 +62,7 @@ const Navbar = () => {
             to="/" 
             className={cn(
               "underline-animation font-medium", 
-              scrolled ? "text-gray-800" : "text-white"
+              shouldUseDarkText ? "text-gray-800" : "text-white"
             )}
           >
             Home
@@ -66,7 +71,7 @@ const Navbar = () => {
             to="/#latest-content" 
             className={cn(
               "underline-animation font-medium", 
-              scrolled ? "text-gray-800" : "text-white"
+              shouldUseDarkText ? "text-gray-800" : "text-white"
             )}
           >
             Content
@@ -75,7 +80,7 @@ const Navbar = () => {
             to="/chatbot" 
             className={cn(
               "underline-animation font-medium", 
-              scrolled ? "text-gray-800" : "text-white"
+              shouldUseDarkText ? "text-gray-800" : "text-white"
             )}
           >
             Chatbot
@@ -84,7 +89,7 @@ const Navbar = () => {
             to="/health-check" 
             className={cn(
               "underline-animation font-medium", 
-              scrolled ? "text-gray-800" : "text-white"
+              shouldUseDarkText ? "text-gray-800" : "text-white"
             )}
           >
             Health Check
@@ -95,7 +100,7 @@ const Navbar = () => {
               to="/blog/new" 
               className={cn(
                 "underline-animation font-medium", 
-                scrolled ? "text-gray-800" : "text-white"
+                shouldUseDarkText ? "text-gray-800" : "text-white"
               )}
             >
               New Post
@@ -106,7 +111,7 @@ const Navbar = () => {
         <button 
           className={cn(
             "md:hidden transition-colors",
-            scrolled ? "text-black" : "text-white"
+            shouldUseDarkText ? "text-black" : "text-white"
           )} 
           onClick={toggleMobileMenu}
         >
