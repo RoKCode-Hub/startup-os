@@ -29,7 +29,7 @@ const Hero = () => {
         </h1>
         
         <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-12 fade-in-up stagger-1 leading-relaxed">
-          Build an operating system that supports growth, 
+          Build an operating system that supports growth,<br />
           rather than blocking it.
         </p>
         
