@@ -14,7 +14,7 @@ const Footer = () => {
           <div className="md:col-span-5">
             <h3 className="text-3xl font-serif font-bold mb-6">STARTUP OS</h3>
             <p className="text-gray-400 max-w-md text-lg leading-relaxed">
-              A design studio creating minimal, beautiful digital experiences that connect brands with people.
+              Build scalable operating systems.
             </p>
             <div className="mt-8 flex space-x-5">
               <a href="#" className="text-gray-400 hover:text-white transition-all transform hover:scale-110">
