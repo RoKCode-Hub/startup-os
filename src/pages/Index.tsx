@@ -89,80 +89,98 @@ const Index = () => {
       {/* Hexagon Section */}
       <HexagonSection />
       
-      {/* Latest Podcast Episodes Section */}
+      {/* Latest Content Section - Combined Podcast & Blog */}
       <Section
-        id="podcast-preview"
-        title="Latest Podcast Episodes"
-        description="Listen to our conversations with founders, operators and experts"
+        id="latest-content"
+        title="Latest Content"
+        description="Our newest podcast episodes and blog posts"
         dark={true}
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {podcastEpisodes.map((episode) => (
-            <Card key={episode.id} className="bg-gray-800 border-gray-700 hover:border-gray-600 transition-all overflow-hidden rounded-xl card-hover">
+          {/* Combine and display first 6 items (3 podcasts + 3 blog posts) */}
+          {[
+            // Add podcast episodes with type indicator
+            ...podcastEpisodes.map(episode => ({ ...episode, type: 'podcast' })),
+            // Add blog posts with type indicator  
+            ...latestPosts.map(post => ({ ...post, type: 'blog' }))
+          ].slice(0, 6).map((item) => (
+            <Card key={`${item.type}-${item.id}`} className={`overflow-hidden rounded-xl transition-all duration-300 card-hover ${
+              item.type === 'podcast' 
+                ? 'bg-gray-800 border-gray-700 hover:border-gray-600' 
+                : 'border-0 shadow-soft hover:shadow-elegant'
+            }`}>
+              {item.type === 'blog' && (
+                <div className="h-56 bg-gray-100 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-100"></div>
+                </div>
+              )}
               <CardContent className="p-8">
                 <div className="flex justify-between items-start mb-3 text-sm">
-                  <span className="text-gray-400">{episode.date}</span>
-                  <span className="bg-accent1/20 text-accent1 px-3 py-1 rounded-full font-medium">{episode.duration}</span>
+                  <span className={`px-3 py-1 rounded-full font-medium ${
+                    item.type === 'podcast' 
+                      ? 'bg-accent1/20 text-accent1' 
+                      : 'bg-gray-200 text-gray-800'
+                  }`}>
+                    {item.type === 'podcast' ? 'Podcast' : (item as any).category}
+                  </span>
+                  <span className={item.type === 'podcast' ? 'text-gray-400' : 'text-gray-500'}>
+                    {item.date}
+                  </span>
+                  {item.type === 'podcast' && (
+                    <span className="bg-accent1/20 text-accent1 px-3 py-1 rounded-full font-medium ml-2">
+                      {(item as any).duration}
+                    </span>
+                  )}
                 </div>
-                <h3 className="text-2xl font-bold mb-3 text-white">{episode.title}</h3>
-                <p className="text-gray-300 mb-6 line-clamp-2 leading-relaxed">{episode.description}</p>
-                <p className="text-sm text-gray-400 mb-6">With <span className="text-white">{episode.guests}</span></p>
-                <Button 
-                  variant="outline" 
-                  className="border-gray-600 text-black hover:bg-gray-700 flex items-center gap-3 w-full justify-center rounded-full"
-                  onClick={() => navigate(`/podcast`)}
-                >
-                  <Play size={18} className="text-accent1" />
-                  Listen Now
-                </Button>
+                <h3 className={`font-bold mb-3 leading-tight ${
+                  item.type === 'podcast' ? 'text-2xl text-white' : 'text-xl text-black'
+                }`}>
+                  {item.title}
+                </h3>
+                <p className={`mb-6 line-clamp-2 leading-relaxed ${
+                  item.type === 'podcast' ? 'text-gray-300' : 'text-gray-600'
+                }`}>
+                  {item.type === 'podcast' ? (item as any).description : (item as any).excerpt}
+                </p>
+                {item.type === 'podcast' ? (
+                  <>
+                    <p className="text-sm text-gray-400 mb-6">
+                      With <span className="text-white">{(item as any).guests}</span>
+                    </p>
+                    <Button 
+                      variant="outline" 
+                      className="border-gray-600 text-black hover:bg-gray-700 flex items-center gap-3 w-full justify-center rounded-full"
+                      onClick={() => navigate(`/podcast`)}
+                    >
+                      <Play size={18} className="text-accent1" />
+                      Listen Now
+                    </Button>
+                  </>
+                ) : (
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">
+                      By <span className="font-medium text-black">{(item as any).author}</span>
+                    </span>
+                    <Button 
+                      variant="ghost" 
+                      onClick={() => navigate(`/blog/post/${item.id}`)}
+                      className="text-accent1 font-medium hover:text-accent1/80 hover:bg-transparent px-0 underline-animation"
+                    >
+                      Read More
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
           ))}
         </div>
-        <div className="text-center mt-16">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-16">
           <Button 
             onClick={() => navigate("/podcast")} 
             className="bg-white text-gray-900 hover:bg-gray-100 px-10 py-6 rounded-full text-lg font-medium shadow-elegant"
           >
             View All Episodes
           </Button>
-        </div>
-      </Section>
-      
-      {/* Blog Preview Section */}
-      <Section
-        id="blog-preview"
-        title="Latest Blog Posts"
-        description="Discover our most recent insights and articles"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {latestPosts.map((post) => (
-            <Card key={post.id} className="overflow-hidden rounded-xl border-0 shadow-soft hover:shadow-elegant transition-all duration-300 card-hover">
-              <div className="h-56 bg-gray-100 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-100"></div>
-              </div>
-              <CardContent className="p-8">
-                <div className="flex justify-between items-center mb-3">
-                  <span className="text-sm font-medium px-3 py-1 bg-gray-200 text-gray-800 rounded-full">{post.category}</span>
-                  <span className="text-sm text-gray-500">{post.date}</span>
-                </div>
-                <h3 className="text-xl font-bold mb-3 leading-tight">{post.title}</h3>
-                <p className="text-gray-600 mb-6 line-clamp-2 leading-relaxed">{post.excerpt}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">By <span className="font-medium text-black">{post.author}</span></span>
-                  <Button 
-                    variant="ghost" 
-                    onClick={() => navigate(`/blog/post/${post.id}`)}
-                    className="text-accent1 font-medium hover:text-accent1/80 hover:bg-transparent px-0 underline-animation"
-                  >
-                    Read More
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        <div className="text-center mt-16">
           <Button 
             onClick={() => navigate("/blog")} 
             className="bg-accent1 text-white hover:bg-accent1/90 px-10 py-6 rounded-full text-lg font-medium shadow-elegant"
