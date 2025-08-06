@@ -246,17 +246,19 @@ const HealthCheck = () => {
                 onRatingChange={updateQuestionRating}
               />
               
-              <div className="flex justify-between">
+              <div className="flex justify-center items-center space-x-8 mt-8">
                 <Button 
                   variant="outline" 
                   onClick={prevQuestion}
                   disabled={currentCategoryIndex === 0 && currentQuestionIndex === 0}
+                  className="px-6"
                 >
                   Previous
                 </Button>
                 <Button 
                   onClick={nextQuestion}
                   disabled={currentQuestion.rating === 0}
+                  className="px-6"
                 >
                   {(currentCategoryIndex === categories.length - 1 && 
                     currentQuestionIndex === currentCategory.questions.length - 1) 
