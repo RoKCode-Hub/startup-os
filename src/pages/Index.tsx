@@ -99,9 +99,8 @@ const Index = () => {
           {/* Create alternating pattern: blog, podcast, blog, podcast, etc. */}
           {(() => {
             const mixedContent = [];
-            const maxItems = Math.min(3, Math.max(podcastEpisodes.length, latestPosts.length));
             
-            for (let i = 0; i < maxItems * 2; i++) {
+            for (let i = 0; i < 3; i++) {
               if (i % 2 === 0) {
                 // Even index: add blog post
                 const postIndex = Math.floor(i / 2);
@@ -116,7 +115,7 @@ const Index = () => {
                 }
               }
             }
-            return mixedContent.slice(0, 6);
+            return mixedContent;
           })().map((item) => (
             <Card key={`${item.type}-${item.id}`} className={`overflow-hidden rounded-xl transition-all duration-300 card-hover ${
               item.type === 'podcast' 
