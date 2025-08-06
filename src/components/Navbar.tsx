@@ -54,7 +54,10 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/3b67b68b-e71e-473f-a16a-d2d847f6d902.png" 
             alt="Startup OS Logo" 
-            className="h-12 w-auto"
+            className={cn(
+              "h-12 w-auto transition-all duration-300",
+              isLightBackgroundPage ? "filter drop-shadow-md" : ""
+            )}
           />
         </Link>
         <div className="hidden md:flex items-center space-x-10">
