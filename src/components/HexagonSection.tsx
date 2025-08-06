@@ -71,9 +71,9 @@ const HexagonSection = () => {
       description="Click on the component to see how it contributes to startup success"
       dark={true}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 items-start">
-        {/* Hexagon on the left - takes 1/3 of width */}
-        <div className="flex justify-center lg:justify-start lg:col-span-1">
+      <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-start">
+        {/* Hexagon on the left */}
+        <div className="flex justify-center lg:justify-start flex-shrink-0">
           <div className="relative w-[580px] h-[580px] flex-shrink-0">
             {/* SVG Hexagon */}
             <svg 
@@ -196,8 +196,8 @@ const HexagonSection = () => {
           </div>
         </div>
         
-        {/* Content on the right - takes 2/3 of width */}
-        <div className="space-y-8 lg:pl-8 lg:col-span-2">
+        {/* Content on the right */}
+        <div className="space-y-8 lg:pl-8 flex-1">
           <div className="transition-all duration-500 ease-in-out">
             <h3 className="text-3xl font-bold mb-6 text-white">
               {selectedElement.content.title}
