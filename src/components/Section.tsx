@@ -28,7 +28,27 @@ const Section = ({
         className
       )}
     >
-      {/* Decorative elements removed for uniform background */}
+      {/* Decorative hexagon elements for visual interest */}
+      {!dark && (
+        <>
+          <svg className="absolute top-0 left-0 w-64 h-64 -translate-x-1/2 -translate-y-1/2" viewBox="0 0 100 100">
+            <polygon 
+              points="50,10 85,30 85,70 50,90 15,70 15,30" 
+              fill="hsl(var(--accent2) / 0.05)" 
+              stroke="hsl(var(--accent2) / 0.1)" 
+              strokeWidth="0.5"
+            />
+          </svg>
+          <svg className="absolute bottom-0 right-0 w-96 h-96 translate-x-1/3 translate-y-1/3" viewBox="0 0 100 100">
+            <polygon 
+              points="50,10 85,30 85,70 50,90 15,70 15,30" 
+              fill="hsl(var(--accent3) / 0.05)" 
+              stroke="hsl(var(--accent3) / 0.1)" 
+              strokeWidth="0.5"
+            />
+          </svg>
+        </>
+      )}
       
       {dark && (
         <>
