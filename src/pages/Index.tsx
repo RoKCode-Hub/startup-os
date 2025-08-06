@@ -53,9 +53,6 @@ const Index = () => {
       {/* Hero Section */}
       <Hero />
       
-      {/* Hexagon Section */}
-      <HexagonSection />
-      
       {/* About Section */}
       <Section 
         id="about" 
@@ -88,6 +85,9 @@ const Index = () => {
           </div>
         </div>
       </Section>
+      
+      {/* Hexagon Section */}
+      <HexagonSection />
       
       {/* Latest Podcast Episodes Section */}
       <Section
