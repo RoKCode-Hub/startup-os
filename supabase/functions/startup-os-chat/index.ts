@@ -14,11 +14,18 @@ serve(async (req) => {
 
   try {
     const { message } = await req.json();
-    const apiKey = Deno.env.get('API_KEY');
+    
+    // Try different possible secret names
+    const apiKey = Deno.env.get('API_KEY') || 
+                   Deno.env.get('OPENAI_API_KEY') || 
+                   Deno.env.get('API Key');
+
+    console.log('Available environment variables:', Object.keys(Deno.env.toObject()));
+    console.log('API Key found:', !!apiKey);
 
     if (!apiKey) {
-      console.error('API_KEY not found in environment');
-      return new Response(JSON.stringify({ error: 'API key not configured' }), {
+      console.error('No API key found. Checked: API_KEY, OPENAI_API_KEY, API Key');
+      return new Response(JSON.stringify({ error: 'API key not configured. Please check your Supabase secrets.' }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
