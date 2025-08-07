@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([
-    { id: 1, text: "Hello! I'm ChatGPT. How can I help you today?", sender: "bot" }
+    { id: 1, text: "Hi, I'm your StartupOS AI coach. How can I help you?", sender: "bot" }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
