@@ -1,12 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Section from "@/components/Section";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Bot, Send, Sparkles } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Bot, ExternalLink, MessageSquare, Target, Lightbulb, TrendingUp, Users, CheckCircle } from "lucide-react";
 
 // Analytics tracking
 const trackEvent = (eventName: string, properties: Record<string, any> = {}) => {
@@ -15,194 +13,160 @@ const trackEvent = (eventName: string, properties: Record<string, any> = {}) => 
 };
 
 const ChatBot = () => {
-  const [messages, setMessages] = useState([
-    { id: 1, text: "Hi, I'm your StartupOS AI coach. How can I help you?", sender: "bot" }
-  ]);
-  const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
-
   useEffect(() => {
     // Track page view
-    trackEvent('chatbot_page_viewed', {
+    trackEvent('startup_coach_landing_viewed', {
       timestamp: new Date().toISOString(),
       session_id: Date.now()
     });
   }, []);
 
-  const handleSend = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isLoading) return;
-    
-    // Track prompt sent
-    trackEvent('prompt_sent', {
-      message_length: input.length,
+  const handleLaunchCoach = () => {
+    trackEvent('startup_coach_launched', {
       timestamp: new Date().toISOString()
     });
-    
-    // Add user message
-    const userMessage = { id: Date.now(), text: input, sender: "user" };
-    setMessages((prev) => [...prev, userMessage]);
-    const currentInput = input;
-    setInput("");
-    
-    // Get AI response
-    setIsLoading(true);
-    const startTime = Date.now();
-    
-    try {
-      const { data, error } = await supabase.functions.invoke('startup-os-chat', {
-        body: { message: currentInput }
-      });
-
-      if (error) {
-        console.error('Error calling edge function:', error);
-        throw error;
-      }
-
-      const responseTime = Date.now() - startTime;
-      
-      // Track successful response
-      trackEvent('response_received', {
-        response_time_ms: responseTime,
-        response_length: data.reply?.length || 0,
-        timestamp: new Date().toISOString()
-      });
-
-      const botMessage = {
-        id: Date.now() + 1,
-        text: data.reply || "I apologize, but I'm having trouble responding right now. Please try again.",
-        sender: "bot"
-      };
-      
-      setMessages((prev) => [...prev, botMessage]);
-    } catch (error) {
-      console.error('Error:', error);
-      
-      // Track error
-      trackEvent('response_error', {
-        error: error.toString(),
-        timestamp: new Date().toISOString()
-      });
-      
-      const errorMessage = error.toString().includes('Rate limit') 
-        ? "You're sending messages too quickly. Please wait a moment before trying again."
-        : "I'm experiencing some technical difficulties. Please try again in a moment.";
-        
-      const errorResponse = {
-        id: Date.now() + 1,
-        text: errorMessage,
-        sender: "bot"
-      };
-      setMessages((prev) => [...prev, errorResponse]);
-      
-      // Show toast for rate limiting
-      if (error.toString().includes('Rate limit')) {
-        toast({
-          title: "Slow down there!",
-          description: "You're sending messages too quickly. Please wait a moment.",
-          variant: "destructive"
-        });
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    window.open('https://chatgpt.com/g/g-67f6498a8cb08191adc8b3f4402cdfbf-startup-os-coach', '_blank');
   };
+
+  const features = [
+    {
+      icon: Target,
+      title: "Strategic Planning",
+      description: "Get expert guidance on business strategy, market positioning, and growth planning tailored to your startup's unique situation."
+    },
+    {
+      icon: TrendingUp,
+      title: "Growth Optimization",
+      description: "Optimize your startup's operations, identify bottlenecks, and implement proven frameworks for sustainable growth."
+    },
+    {
+      icon: Users,
+      title: "Team Building",
+      description: "Build high-performing teams with guidance on hiring, culture, leadership, and organizational design."
+    },
+    {
+      icon: Lightbulb,
+      title: "Innovation Framework",
+      description: "Develop systematic approaches to innovation, product development, and market validation."
+    }
+  ];
+
+  const benefits = [
+    "24/7 availability for startup guidance",
+    "Personalized advice based on your specific context",
+    "Access to proven startup frameworks and methodologies",
+    "Strategic insights from successful startup patterns",
+    "Operational guidance for scaling your business"
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-primary/5">
       <Navbar />
       
       <main className="flex-grow pt-24">
+        {/* Hero Section */}
         <Section
-          id="chatbot-header"
+          id="hero"
           title="StartupOS AI Coach"
-          description="Your intelligent startup advisor powered by advanced AI"
-          className="pt-16"
+          description="Your personal startup advisor powered by advanced AI"
+          className="pt-16 pb-12"
         >
-          <div className="max-w-4xl mx-auto">
-            <Card className="h-[600px] flex flex-col border-0 shadow-2xl bg-card/80 backdrop-blur-sm">
-              <CardContent className="p-6 flex-grow overflow-y-auto flex flex-col space-y-4">
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div
-                      className={`rounded-2xl px-4 py-3 max-w-[85%] shadow-sm ${
-                        message.sender === 'user'
-                          ? 'bg-primary text-primary-foreground ml-4'
-                          : 'bg-muted/80 text-muted-foreground mr-4 border border-border/50'
-                      }`}
-                    >
-                      {message.sender === 'bot' && (
-                        <div className="flex items-center mb-2">
-                          <div className="relative">
-                            <Bot size={16} className="mr-2" />
-                            <Sparkles size={8} className="absolute -top-1 -right-1 text-primary" />
-                          </div>
-                          <span className="text-xs font-medium">StartupOS AI Coach</span>
-                        </div>
-                      )}
-                      <p className="text-sm leading-relaxed">{message.text}</p>
-                    </div>
-                  </div>
-                ))}
-                {isLoading && (
-                  <div className="flex justify-start">
-                    <div className="bg-muted/80 rounded-2xl px-4 py-3 mr-4 border border-border/50">
-                      <div className="flex items-center mb-2">
-                        <div className="relative">
-                          <Bot size={16} className="mr-2" />
-                          <Sparkles size={8} className="absolute -top-1 -right-1 text-primary" />
-                        </div>
-                        <span className="text-xs font-medium">StartupOS AI Coach</span>
-                      </div>
-                      <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce"></div>
-                        <div
-                          className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce"
-                          style={{ animationDelay: "0.2s" }}
-                        ></div>
-                        <div
-                          className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce"
-                          style={{ animationDelay: "0.4s" }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-              <form
-                onSubmit={handleSend}
-                className="border-t p-4 flex items-center gap-3 bg-muted/20 backdrop-blur-sm"
-              >
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask my anything about startup operating systems..."
-                  className="flex-grow border-0 bg-background/80 focus:outline-none text-foreground px-4 py-3 text-base rounded-xl shadow-sm"
-                  disabled={isLoading}
-                  maxLength={4000}
-                />
-                <Button 
-                  type="submit" 
-                  size="sm"
-                  disabled={isLoading || !input.trim()}
-                  className="rounded-xl px-6 py-3 shadow-sm"
-                >
-                  <Send size={16} />
-                </Button>
-              </form>
-            </Card>
-            
-            {/* Usage info */}
-            <div className="mt-6 text-center">
-              <p className="text-sm text-muted-foreground">
-                10 messages per minute • Responses are AI-generated and may contain errors
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/10 rounded-full blur-3xl opacity-50 animate-pulse"></div>
+              <div className="relative flex items-center justify-center w-32 h-32 mx-auto mb-8 bg-gradient-to-br from-primary to-primary/80 rounded-full shadow-2xl">
+                <Bot size={48} className="text-primary-foreground" />
+                <MessageSquare size={24} className="absolute -bottom-2 -right-2 text-primary bg-background rounded-full p-1 shadow-lg" />
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                Get Expert Startup Guidance 24/7
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Access personalized coaching, strategic insights, and proven frameworks to accelerate your startup's growth. 
+                Built specifically for entrepreneurs who want to build better businesses.
               </p>
             </div>
+
+            <Button 
+              onClick={handleLaunchCoach}
+              size="lg"
+              className="text-lg px-8 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+            >
+              <MessageSquare className="mr-2" size={20} />
+              Launch StartupOS Coach
+              <ExternalLink className="ml-2" size={16} />
+            </Button>
+
+            <p className="text-sm text-muted-foreground">
+              Free to use • No signup required • Powered by ChatGPT
+            </p>
+          </div>
+        </Section>
+
+        {/* Features Section */}
+        <Section
+          id="features"
+          title="What You'll Get"
+          description="Comprehensive startup guidance across all key areas"
+          className="py-16"
+        >
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {features.map((feature, index) => (
+                <Card key={index} className="p-6 border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 bg-card/80 backdrop-blur-sm">
+                  <CardContent className="p-0">
+                    <div className="flex items-center justify-center w-12 h-12 bg-primary/10 rounded-lg mb-4">
+                      <feature.icon size={24} className="text-primary" />
+                    </div>
+                    <h3 className="text-lg font-semibold mb-2 text-foreground">{feature.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </Section>
+
+        {/* Benefits Section */}
+        <Section
+          id="benefits"
+          title="Why Choose StartupOS Coach?"
+          description="Everything you need to build and scale your startup"
+          className="py-16"
+        >
+          <div className="max-w-4xl mx-auto">
+            <Card className="p-8 border-0 shadow-xl bg-card/80 backdrop-blur-sm">
+              <CardContent className="p-0">
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="space-y-4">
+                    {benefits.map((benefit, index) => (
+                      <div key={index} className="flex items-start space-x-3">
+                        <CheckCircle size={20} className="text-primary mt-1 flex-shrink-0" />
+                        <p className="text-foreground">{benefit}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold text-foreground">Ready to Get Started?</h3>
+                    <p className="text-muted-foreground">
+                      Join thousands of entrepreneurs who are already using StartupOS Coach to build better businesses. 
+                      Get instant access to expert guidance and start making better decisions today.
+                    </p>
+                    <Button 
+                      onClick={handleLaunchCoach}
+                      className="w-full md:w-auto rounded-xl"
+                    >
+                      <MessageSquare className="mr-2" size={16} />
+                      Start Coaching Session
+                      <ExternalLink className="ml-2" size={14} />
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </Section>
       </main>
