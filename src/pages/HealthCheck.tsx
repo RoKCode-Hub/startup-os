@@ -20,7 +20,7 @@ interface CategoryWithIcon extends Category {
 }
 
 const HealthCheck = () => {
-  const [view, setView] = useState<'intro' | 'assess,emt' | 'results'>('intro');
+  const [view, setView] = useState<'intro' | 'assessment' | 'results'>('intro');
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [categoriesWithIcons, setCategoriesWithIcons] = useState<CategoryWithIcon[]>([]);
   const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
