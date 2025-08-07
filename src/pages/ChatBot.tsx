@@ -6,43 +6,55 @@ import Section from "@/components/Section";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Bot, Send } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([
-    { id: 1, text: "Hello! I'm the Startup OS Assistant. How can I help you today?", sender: "bot" }
+    { id: 1, text: "Hello! I'm your Startup OS Coach. I'm here to help you navigate the entrepreneurial journey. What startup challenge can I help you tackle today?", sender: "bot" }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSend = (e: React.FormEvent) => {
+  const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
     
     // Add user message
     const userMessage = { id: Date.now(), text: input, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
+    const currentInput = input;
     setInput("");
     
-    // Simulate bot response
+    // Get AI response
     setIsLoading(true);
-    setTimeout(() => {
-      const responses = [
-        "I can help you with startup information and resources.",
-        "Would you like to learn more about our services?",
-        "Feel free to ask me anything about starting a business.",
-        "I'm here to assist with any questions about Startup OS.",
-        "I can provide resources on funding, team building, and product development."
-      ];
-      
+    try {
+      const { data, error } = await supabase.functions.invoke('startup-os-chat', {
+        body: { message: currentInput }
+      });
+
+      if (error) {
+        console.error('Error calling edge function:', error);
+        throw error;
+      }
+
       const botMessage = {
         id: Date.now() + 1,
-        text: responses[Math.floor(Math.random() * responses.length)],
+        text: data.reply || "I apologize, but I'm having trouble responding right now. Please try again.",
         sender: "bot"
       };
       
       setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      console.error('Error:', error);
+      const errorMessage = {
+        id: Date.now() + 1,
+        text: "I'm experiencing some technical difficulties. Please try again in a moment.",
+        sender: "bot"
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -73,8 +85,8 @@ const ChatBot = () => {
                     >
                       {message.sender === 'bot' && (
                         <div className="flex items-center mb-1">
-                          <Bot size={16} className="mr-2" />
-                          <span className="text-xs font-medium">Startup OS Assistant</span>
+                           <Bot size={16} className="mr-2" />
+                           <span className="text-xs font-medium">Startup OS Coach</span>
                         </div>
                       )}
                       <p>{message.text}</p>
