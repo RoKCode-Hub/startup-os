@@ -181,7 +181,7 @@ const ChatBot = () => {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask me anything about startups..."
+                  placeholder="Ask my anything about startup operating systems..."
                   className="flex-grow border-0 bg-background/80 focus:outline-none text-foreground px-4 py-3 text-base rounded-xl shadow-sm"
                   disabled={isLoading}
                   maxLength={4000}
