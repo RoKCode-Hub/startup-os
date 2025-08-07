@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([
-    { id: 1, text: "Hello! I'm your Startup OS Coach. I'm here to help you navigate the entrepreneurial journey. What startup challenge can I help you tackle today?", sender: "bot" }
+    { id: 1, text: "Hello! I'm ChatGPT. How can I help you today?", sender: "bot" }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -64,12 +64,12 @@ const ChatBot = () => {
       <main className="flex-grow pt-24">
         <Section
           id="chatbot-header"
-          title="AI Chat Assistant"
-          description="Get instant answers to your startup questions"
+          title="ChatGPT"
+          description="Chat with AI assistant powered by OpenAI"
           className="pt-16"
         >
-          <div className="max-w-2xl mx-auto">
-            <Card className="h-[500px] flex flex-col">
+            <div className="max-w-4xl mx-auto">
+            <Card className="h-[600px] flex flex-col border-0 shadow-lg">
               <CardContent className="p-4 flex-grow overflow-y-auto flex flex-col space-y-4">
                 {messages.map((message) => (
                   <div
@@ -77,16 +77,16 @@ const ChatBot = () => {
                     className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`rounded-lg px-4 py-2 max-w-[80%] ${
+                      className={`rounded-2xl px-4 py-3 max-w-[85%] ${
                         message.sender === 'user'
-                          ? 'bg-black text-white'
-                          : 'bg-gray-100 text-black'
+                          ? 'bg-primary text-primary-foreground ml-4'
+                          : 'bg-muted text-muted-foreground mr-4'
                       }`}
                     >
                       {message.sender === 'bot' && (
                         <div className="flex items-center mb-1">
                            <Bot size={16} className="mr-2" />
-                           <span className="text-xs font-medium">Startup OS Coach</span>
+                           <span className="text-xs font-medium">ChatGPT</span>
                         </div>
                       )}
                       <p>{message.text}</p>
@@ -95,15 +95,19 @@ const ChatBot = () => {
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-gray-100 rounded-lg px-4 py-2">
+                    <div className="bg-muted rounded-2xl px-4 py-3 mr-4">
+                      <div className="flex items-center mb-1">
+                        <Bot size={16} className="mr-2" />
+                        <span className="text-xs font-medium">ChatGPT</span>
+                      </div>
                       <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce"></div>
                         <div
-                          className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                          className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce"
                           style={{ animationDelay: "0.2s" }}
                         ></div>
                         <div
-                          className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                          className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce"
                           style={{ animationDelay: "0.4s" }}
                         ></div>
                       </div>
@@ -113,17 +117,23 @@ const ChatBot = () => {
               </CardContent>
               <form
                 onSubmit={handleSend}
-                className="border-t p-4 flex items-center gap-2"
+                className="border-t p-4 flex items-center gap-3 bg-muted/20"
               >
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Type your message..."
-                  className="flex-grow border rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-black"
+                  placeholder="Message ChatGPT..."
+                  className="flex-grow border-0 bg-background focus:outline-none text-foreground px-4 py-3 text-base"
+                  disabled={isLoading}
                 />
-                <Button type="submit" className="bg-black hover:bg-gray-800">
-                  <Send size={18} />
+                <Button 
+                  type="submit" 
+                  size="sm"
+                  disabled={isLoading || !input.trim()}
+                  className="rounded-lg"
+                >
+                  <Send size={16} />
                 </Button>
               </form>
             </Card>
