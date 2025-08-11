@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { supabase } from '@/integrations/supabase/client';
 
+let authListenerInitialized = false;
+
 interface User {
   id: string;
   username: string;
@@ -44,9 +46,9 @@ export const useAuthStore = create<AuthState>()(
         });
       };
 
-      // Run init once
-      if (!(get() as any)._inited) {
-        (set as any)({ _inited: true });
+      // Run init once (module-scoped flag avoids reading state before it's set)
+      if (!authListenerInitialized) {
+        authListenerInitialized = true;
         init();
       }
 
