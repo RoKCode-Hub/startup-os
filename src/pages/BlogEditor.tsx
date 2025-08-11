@@ -20,23 +20,25 @@ const BlogEditor = () => {
   const [excerpt, setExcerpt] = useState("");
   const [category, setCategory] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imageResizeEnabled, setImageResizeEnabled] = useState(false);
 
   const quillRef = useRef<ReactQuill | null>(null);
 
-  // Register image resize module once on client
+  // Register image resize module once on client and avoid race conditions
   useEffect(() => {
     let mounted = true;
     (async () => {
       try {
         const Quill = (await import('quill')).default;
-        // Ensure Quill is available globally for the plugin
-        if (mounted) {
-          (window as any).Quill = Quill;
-          const ImageResize = (await import('quill-image-resize-module' as any)).default as any;
-          Quill.register('modules/imageResize', ImageResize);
-        }
+        if (!mounted) return;
+        (window as any).Quill = Quill;
+        const mod: any = await import('quill-image-resize-module');
+        const ImageResize = mod?.default ?? mod;
+        Quill.register('modules/imageResize', ImageResize);
+        if (mounted) setImageResizeEnabled(true);
       } catch (e) {
         console.error('Failed to set up Quill image resize:', e);
+        if (mounted) setImageResizeEnabled(false);
       }
     })();
     return () => { mounted = false };
@@ -77,9 +79,9 @@ const BlogEditor = () => {
       ],
       handlers: { image: imageHandler },
     },
-    imageResize: {},
+    ...(imageResizeEnabled ? { imageResize: {} } : {}),
     clipboard: { matchVisual: false },
-  }), []);
+  }), [imageResizeEnabled]);
 
   const formats = [
     "header",
@@ -189,6 +191,7 @@ const BlogEditor = () => {
                 </label>
                 <div id="content">
                   <ReactQuill
+                    key={imageResizeEnabled ? 'quill-with-resize' : 'quill-no-resize'}
                     ref={quillRef}
                     theme="snow"
                     value={content}
