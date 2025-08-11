@@ -14,7 +14,7 @@ const Blog = () => {
   const navigate = useNavigate();
   const { posts } = useBlogStore();
   const { isAuthenticated, user } = useAuthStore();
-  const isAdmin = isAuthenticated && user?.role === 'admin';
+  const isAdmin = isAuthenticated && !!user;
 
   return (
     <div className="min-h-screen flex flex-col">

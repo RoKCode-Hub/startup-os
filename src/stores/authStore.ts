@@ -1,6 +1,6 @@
-
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { supabase } from '@/integrations/supabase/client';
 
 interface User {
   id: string;
@@ -11,41 +11,76 @@ interface User {
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
-  login: (username: string, password: string) => boolean;
-  logout: () => void;
+  login: (email: string, password: string) => Promise<boolean>;
+  register: (email: string, password: string) => Promise<{ error?: string }>;
+  logout: () => Promise<void>;
 }
-
-// In a real application, you would validate against a backend
-// This is a simplified mock implementation
-const ADMIN_CREDENTIALS = {
-  username: 'admin',
-  password: 'admin123'
-};
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set) => ({
-      user: null,
-      isAuthenticated: false,
-      login: (username, password) => {
-        // Simple mock authentication
-        if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+    (set, get) => {
+      // Initialize auth listener once
+      const init = () => {
+        // Listener: keep user/session in sync
+        supabase.auth.onAuthStateChange((_event, session) => {
+          const supaUser = session?.user ?? null;
           set({
-            user: {
-              id: '1',
-              username: 'admin',
-              role: 'admin'
-            },
-            isAuthenticated: true
+            user: supaUser
+              ? { id: supaUser.id, username: supaUser.email ?? 'user', role: 'admin' }
+              : null,
+            isAuthenticated: !!supaUser,
+          });
+        });
+
+        // Initial session
+        supabase.auth.getSession().then(({ data: { session } }) => {
+          const supaUser = session?.user ?? null;
+          set({
+            user: supaUser
+              ? { id: supaUser.id, username: supaUser.email ?? 'user', role: 'admin' }
+              : null,
+            isAuthenticated: !!supaUser,
+          });
+        });
+      };
+
+      // Run init once
+      if (!(get() as any)._inited) {
+        (set as any)({ _inited: true });
+        init();
+      }
+
+      return {
+        user: null,
+        isAuthenticated: false,
+        login: async (email: string, password: string) => {
+          const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+          if (error) return false;
+          const session = data.session;
+          const supaUser = session?.user ?? null;
+          set({
+            user: supaUser
+              ? { id: supaUser.id, username: supaUser.email ?? 'user', role: 'admin' }
+              : null,
+            isAuthenticated: !!supaUser,
           });
           return true;
-        }
-        return false;
-      },
-      logout: () => {
-        set({ user: null, isAuthenticated: false });
-      }
-    }),
+        },
+        register: async (email: string, password: string) => {
+          const redirectUrl = `${window.location.origin}/`;
+          const { error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: { emailRedirectTo: redirectUrl },
+          });
+          return { error: error?.message };
+        },
+        logout: async () => {
+          await supabase.auth.signOut();
+          set({ user: null, isAuthenticated: false });
+        },
+      };
+    },
     {
       name: 'auth-storage',
     }

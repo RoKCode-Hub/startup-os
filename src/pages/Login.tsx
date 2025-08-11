@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { toast } from "@/components/ui/sonner";
@@ -10,34 +9,43 @@ import { useAuthStore } from "@/stores/authStore";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useAuthStore();
-  const [username, setUsername] = useState("");
+  const { login, register, isAuthenticated } = useAuthStore();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
 
-  // Redirect if already authenticated
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
   }
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!username.trim() || !password.trim()) {
-      toast.error("Please enter both username and password");
+
+    if (!email.trim() || !password.trim()) {
+      toast.error("Please enter both email and password");
       return;
     }
-    
+
     setIsLoading(true);
-    
+
     try {
-      const success = login(username, password);
-      
-      if (success) {
-        toast.success("Login successful!");
-        navigate("/");
+      if (isSignUp) {
+        const { error } = await register(email, password);
+        if (error) {
+          toast.error(error);
+        } else {
+          toast.success("Sign up successful! Check your email to confirm.");
+          setIsSignUp(false);
+        }
       } else {
-        toast.error("Invalid username or password");
+        const success = await login(email, password);
+        if (success) {
+          toast.success("Login successful!");
+          navigate("/");
+        } else {
+          toast.error("Invalid credentials");
+        }
       }
     } finally {
       setIsLoading(false);
@@ -47,26 +55,28 @@ const Login = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      
+
       <main className="flex-grow pt-24 pb-16 flex items-center justify-center">
         <div className="max-w-md w-full mx-auto px-6">
           <div className="bg-white rounded-lg shadow-md p-8">
-            <h1 className="text-2xl font-bold mb-6 text-center">Admin Login</h1>
-            
-            <form onSubmit={handleLogin} className="space-y-4">
+            <h1 className="text-2xl font-bold mb-6 text-center">
+              {isSignUp ? "Create Account" : "Login"}
+            </h1>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="username" className="block text-sm font-medium mb-2">
-                  Username
+                <label htmlFor="email" className="block text-sm font-medium mb-2">
+                  Email
                 </label>
                 <Input
-                  id="username"
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="w-full"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="password" className="block text-sm font-medium mb-2">
                   Password
@@ -79,24 +89,24 @@ const Login = () => {
                   className="w-full"
                 />
               </div>
-              
-              <Button 
-                type="submit" 
-                className="w-full"
-                disabled={isLoading}
-              >
-                {isLoading ? "Logging in..." : "Login"}
+
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? (isSignUp ? "Signing up..." : "Logging in...") : isSignUp ? "Sign Up" : "Login"}
               </Button>
             </form>
-            
-            <div className="mt-6 text-center text-sm text-gray-500">
-              <p>Default admin credentials: admin/admin123</p>
-              <p className="mt-2">This is a simplified demo. In a production environment, use proper authentication.</p>
+
+            <div className="mt-6 text-center text-sm text-gray-600">
+              <button
+                className="underline"
+                onClick={() => setIsSignUp((v) => !v)}
+              >
+                {isSignUp ? "Have an account? Login" : "New here? Create an account"}
+              </button>
             </div>
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );

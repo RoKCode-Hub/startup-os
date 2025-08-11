@@ -16,6 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Mic } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuthStore } from "@/stores/authStore";
 
 const formSchema = z.object({
   title: z.string().min(3, { message: "Title must be at least 3 characters" }),
@@ -27,6 +29,7 @@ const formSchema = z.object({
 
 const PodcastUploadForm = () => {
   const [isUploading, setIsUploading] = useState(false);
+  const { user, isAuthenticated } = useAuthStore();
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,27 +41,58 @@ const PodcastUploadForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!isAuthenticated || !user) {
+      toast.error("You must be logged in to upload.");
+      return;
+    }
+
     setIsUploading(true);
-    
     try {
-      // In a real application, this would upload to a server
-      // For this demo, we'll simulate a successful upload
-      console.log("Podcast episode data:", values);
-      
-      // Simulate upload delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Show success message
+      const file = (values as any).audioFile as File;
+      if (!file) {
+        toast.error("Please select an audio file");
+        return;
+      }
+
+      const ext = file.name.split('.').pop();
+      const safeTitle = values.title.replace(/[^a-z0-9]+/gi, '-').toLowerCase();
+      const fileName = `${Date.now()}-${safeTitle}.${ext}`;
+      const filePath = `${user.id}/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('podcasts')
+        .upload(filePath, file, { cacheControl: '3600', upsert: false });
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const { data: publicData } = supabase.storage.from('podcasts').getPublicUrl(filePath);
+      const publicUrl = publicData.publicUrl;
+
+      const { error: insertError } = await supabase
+        .from('podcast_episodes')
+        .insert({
+          user_id: user.id,
+          title: values.title,
+          description: values.description,
+          guests: values.guests,
+          duration: values.duration,
+          audio_url: publicUrl,
+          audio_path: filePath,
+          published: true,
+        });
+
+      if (insertError) throw insertError;
+
       toast.success("Podcast episode uploaded successfully!", {
         description: `"${values.title}" has been published.`,
       });
-      
-      // Reset form
       form.reset();
-    } catch (error) {
+    } catch (error: any) {
       toast.error("Upload failed", {
-        description: "There was an error uploading your podcast episode. Please try again.",
+        description: error?.message || "There was an error uploading your podcast episode.",
       });
       console.error("Upload error:", error);
     } finally {
@@ -149,7 +183,7 @@ const PodcastUploadForm = () => {
               onChange={handleFileChange}
               className="cursor-pointer"
             />
-            <FormMessage>{form.formState.errors.audioFile?.message as string}</FormMessage>
+            <FormMessage>{(form.formState.errors as any).audioFile?.message as string}</FormMessage>
           </FormItem>
           
           <Button type="submit" className="w-full" disabled={isUploading}>
