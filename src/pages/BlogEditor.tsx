@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/components/ui/sonner";
 import Navbar from "@/components/Navbar";
@@ -9,6 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { FilePen } from "lucide-react";
 import { useBlogStore } from "@/stores/blogStore";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const BlogEditor = () => {
   const navigate = useNavigate();
@@ -18,6 +20,60 @@ const BlogEditor = () => {
   const [excerpt, setExcerpt] = useState("");
   const [category, setCategory] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const quillRef = useRef<ReactQuill | null>(null);
+
+  const imageHandler = () => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+    input.onchange = () => {
+      const file = input.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const quill = quillRef.current?.getEditor?.();
+          const range = quill?.getSelection(true);
+          if (quill) {
+            const index = range ? range.index : 0;
+            quill.insertEmbed(index, "image", reader.result as string, "user");
+            quill.setSelection(index + 1, 0, "user");
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+  };
+
+  const modules = useMemo(() => ({
+    toolbar: {
+      container: [
+        [{ header: [1, 2, 3, false] }],
+        ["bold", "italic", "underline", "strike"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["blockquote", "code-block"],
+        ["link", "image"],
+        ["clean"],
+      ],
+      handlers: { image: imageHandler },
+    },
+    clipboard: { matchVisual: false },
+  }), []);
+
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "code-block",
+    "list",
+    "bullet",
+    "link",
+    "image",
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,13 +167,17 @@ const BlogEditor = () => {
                 <label htmlFor="content" className="block text-sm font-medium mb-2">
                   Content
                 </label>
-                <Textarea
-                  id="content"
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  placeholder="Write your blog post content here..."
-                  className="w-full h-64"
-                />
+                <div id="content">
+                  <ReactQuill
+                    ref={quillRef}
+                    theme="snow"
+                    value={content}
+                    onChange={setContent}
+                    modules={modules}
+                    formats={formats}
+                    className="bg-background rounded-md"
+                  />
+                </div>
               </div>
               
               <div className="flex justify-end space-x-4">

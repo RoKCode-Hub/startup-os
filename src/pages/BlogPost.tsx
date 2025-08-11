@@ -62,9 +62,7 @@ const BlogPost = () => {
               {/* Post featured image would go here */}
             </div>
             
-            <div className="prose max-w-none">
-              <p className="whitespace-pre-line">{post.content}</p>
-            </div>
+            <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: post.content }} />
           </div>
         </div>
       </main>
