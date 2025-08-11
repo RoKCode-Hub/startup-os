@@ -1,5 +1,5 @@
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/components/ui/sonner";
 import Navbar from "@/components/Navbar";
@@ -22,6 +22,25 @@ const BlogEditor = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const quillRef = useRef<ReactQuill | null>(null);
+
+  // Register image resize module once on client
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const Quill = (await import('quill')).default;
+        // Ensure Quill is available globally for the plugin
+        if (mounted) {
+          (window as any).Quill = Quill;
+          const ImageResize = (await import('quill-image-resize-module' as any)).default as any;
+          Quill.register('modules/imageResize', ImageResize);
+        }
+      } catch (e) {
+        console.error('Failed to set up Quill image resize:', e);
+      }
+    })();
+    return () => { mounted = false };
+  }, []);
 
   const imageHandler = () => {
     const input = document.createElement("input");
@@ -58,6 +77,7 @@ const BlogEditor = () => {
       ],
       handlers: { image: imageHandler },
     },
+    imageResize: {},
     clipboard: { matchVisual: false },
   }), []);
 
