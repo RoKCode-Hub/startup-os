@@ -1,18 +1,47 @@
 
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import HexagonSection from "@/components/HexagonSection";
 import Section from "@/components/Section";
 import Footer from "@/components/Footer";
+import AboutUsImageUpload from "@/components/AboutUsImageUpload";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useBlogStore } from "@/stores/blogStore";
 import { useNavigate } from "react-router-dom";
 import { Play } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const { posts } = useBlogStore();
   const navigate = useNavigate();
+  const [aboutUsImage, setAboutUsImage] = useState<string | null>(null);
+  
+  // Load about us image on component mount
+  useEffect(() => {
+    const loadAboutUsImage = async () => {
+      try {
+        const { data } = await supabase.storage
+          .from('about-us')
+          .list('', {
+            limit: 1,
+            sortBy: { column: 'created_at', order: 'desc' }
+          });
+        
+        if (data && data.length > 0) {
+          const { data: { publicUrl } } = supabase.storage
+            .from('about-us')
+            .getPublicUrl(data[0].name);
+          setAboutUsImage(publicUrl);
+        }
+      } catch (error) {
+        console.error('Error loading about us image:', error);
+      }
+    };
+
+    loadAboutUsImage();
+  }, []);
   
   // Get the latest 3 posts
   const latestPosts = posts.slice(0, 3);
@@ -75,10 +104,22 @@ const Index = () => {
             </Button>
           </div>
           <div className="order-1 md:order-2 relative">
+            <AboutUsImageUpload 
+              onImageChange={setAboutUsImage} 
+              currentImageUrl={aboutUsImage}
+            />
             <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shadow-elegant flex items-center justify-center w-3/4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
+              {aboutUsImage ? (
+                <img 
+                  src={aboutUsImage} 
+                  alt="About Us" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              )}
             </div>
           </div>
         </div>
