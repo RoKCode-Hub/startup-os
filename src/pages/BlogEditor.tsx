@@ -119,6 +119,7 @@ const BlogEditor = () => {
         month: 'long', 
         day: 'numeric'
       }),
+      tags: [] // Default empty tags, could be enhanced with tag selection
     };
     
     try {

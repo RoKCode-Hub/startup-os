@@ -4,9 +4,17 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useBlogStore } from '@/stores/blogStore';
 import { useAuthStore } from '@/stores/authStore';
-import { FilePen, Play } from 'lucide-react';
+import { FilePen, Play, Filter } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface PodcastEpisode {
@@ -17,13 +25,25 @@ interface PodcastEpisode {
   guests: string;
   audio_url: string;
   created_at: string;
+  tags?: string[];
 }
+
+const STARTUP_OS_TAGS = [
+  "Strategy",
+  "People", 
+  "Operations",
+  "Product",
+  "Marketing",
+  "Finance"
+];
 
 const Content = () => {
   const navigate = useNavigate();
   const { posts } = useBlogStore();
   const { isAuthenticated, user } = useAuthStore();
   const [podcastEpisodes, setPodcastEpisodes] = useState<PodcastEpisode[]>([]);
+  const [contentTypeFilter, setContentTypeFilter] = useState<string>("all");
+  const [tagFilter, setTagFilter] = useState<string>("all");
 
   useEffect(() => {
     fetchPodcastEpisodes();
@@ -38,7 +58,14 @@ const Content = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setPodcastEpisodes(data || []);
+      
+      // Add mock tags to podcast episodes for demo
+      const episodesWithTags = (data || []).map((episode, index) => ({
+        ...episode,
+        tags: STARTUP_OS_TAGS.slice(index % 3, (index % 3) + 2) // Assign 2 tags to each episode
+      }));
+      
+      setPodcastEpisodes(episodesWithTags);
     } catch (error) {
       console.error('Error fetching podcast episodes:', error);
     }
@@ -57,6 +84,13 @@ const Content = () => {
       sortDate: new Date(episode.created_at)
     }))
   ].sort((a, b) => b.sortDate.getTime() - a.sortDate.getTime());
+
+  // Apply filters
+  const filteredContent = allContent.filter(item => {
+    const matchesContentType = contentTypeFilter === "all" || item.type === contentTypeFilter;
+    const matchesTag = tagFilter === "all" || (item.tags && item.tags.includes(tagFilter));
+    return matchesContentType && matchesTag;
+  });
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -86,6 +120,47 @@ const Content = () => {
               </p>
             </div>
 
+            {/* Filters */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-8 p-4 bg-card rounded-lg border">
+              <div className="flex items-center gap-2">
+                <Filter className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm font-medium">Filters:</span>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-4 flex-1">
+                <div className="min-w-[160px]">
+                  <Select value={contentTypeFilter} onValueChange={setContentTypeFilter}>
+                    <SelectTrigger className="bg-background border-border z-50">
+                      <SelectValue placeholder="Content Type" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border-border shadow-lg z-50">
+                      <SelectItem value="all">All Content</SelectItem>
+                      <SelectItem value="blog">Blog Posts</SelectItem>
+                      <SelectItem value="podcast">Podcasts</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="min-w-[160px]">
+                  <Select value={tagFilter} onValueChange={setTagFilter}>
+                    <SelectTrigger className="bg-background border-border z-50">
+                      <SelectValue placeholder="Startup OS Tag" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border-border shadow-lg z-50">
+                      <SelectItem value="all">All Tags</SelectItem>
+                      {STARTUP_OS_TAGS.map(tag => (
+                        <SelectItem key={tag} value={tag}>{tag}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
+              <div className="text-sm text-muted-foreground flex items-center">
+                {filteredContent.length} item{filteredContent.length !== 1 ? 's' : ''} found
+              </div>
+            </div>
+
             {isAuthenticated && user?.role === 'admin' && (
               <div className="flex justify-center gap-4 mb-8">
                 <Button 
@@ -99,7 +174,7 @@ const Content = () => {
             )}
 
             <div className="grid gap-6 md:gap-8">
-              {allContent.map((item) => (
+              {filteredContent.map((item) => (
                 <Card 
                   key={`${item.type}-${item.id}`}
                   className="group hover:shadow-lg transition-all duration-300 border border-border/50 hover:border-primary/20"
@@ -119,7 +194,7 @@ const Content = () => {
                       </div>
                       
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 mb-2">
+                        <div className="flex items-center gap-3 mb-3">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             item.type === 'blog' 
                               ? 'bg-primary/10 text-primary' 
@@ -141,9 +216,25 @@ const Content = () => {
                           {item.title}
                         </h3>
                         
-                        <p className="text-muted-foreground mb-4 line-clamp-2">
+                        <p className="text-muted-foreground mb-3 line-clamp-2">
                           {item.type === 'blog' ? item.excerpt : item.description}
                         </p>
+                        
+                        {/* Tags */}
+                        {item.tags && item.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {item.tags.map(tag => (
+                              <Badge 
+                                key={tag} 
+                                variant="secondary" 
+                                className="text-xs bg-secondary/50 hover:bg-secondary/70 cursor-pointer"
+                                onClick={() => setTagFilter(tag)}
+                              >
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
                         
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -183,11 +274,21 @@ const Content = () => {
               ))}
             </div>
 
-            {allContent.length === 0 && (
+            {filteredContent.length === 0 && (
               <div className="text-center py-12">
                 <p className="text-lg text-muted-foreground">
-                  No content available yet. Check back soon!
+                  No content found matching your filters. Try adjusting your selection.
                 </p>
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    setContentTypeFilter("all");
+                    setTagFilter("all");
+                  }}
+                  className="mt-4"
+                >
+                  Clear Filters
+                </Button>
               </div>
             )}
           </div>

@@ -10,6 +10,7 @@ export interface BlogPost {
   author: string;
   date: string;
   category: string;
+  tags: string[];
 }
 
 interface BlogStore {
@@ -20,7 +21,6 @@ interface BlogStore {
   getPostById: (id: number) => BlogPost | undefined;
 }
 
-// Initial blog posts data
 const initialPosts = [
   {
     id: 1,
@@ -29,7 +29,8 @@ const initialPosts = [
     content: "This is a detailed article about building modern web applications...",
     author: "Jane Smith",
     date: "May 1, 2025",
-    category: "Development"
+    category: "Development",
+    tags: ["Product", "Operations"]
   },
   {
     id: 2,
@@ -38,7 +39,8 @@ const initialPosts = [
     content: "Design principles are essential for creating products that users love...",
     author: "Mike Johnson",
     date: "April 25, 2025",
-    category: "Design"
+    category: "Design",
+    tags: ["Product", "Strategy"]
   },
   {
     id: 3,
@@ -47,7 +49,8 @@ const initialPosts = [
     content: "Artificial intelligence is revolutionizing how businesses operate...",
     author: "Sarah Lee",
     date: "April 18, 2025",
-    category: "AI"
+    category: "AI",
+    tags: ["Strategy", "Operations"]
   },
   {
     id: 4,
@@ -56,7 +59,8 @@ const initialPosts = [
     content: "Choosing the right technologies for your startup is crucial...",
     author: "David Chen",
     date: "April 10, 2025",
-    category: "Technology"
+    category: "Technology",
+    tags: ["Operations", "Product"]
   },
   {
     id: 5,
@@ -65,7 +69,8 @@ const initialPosts = [
     content: "User-centered design is all about putting the user first...",
     author: "Alex Rivera",
     date: "April 5, 2025",
-    category: "Design"
+    category: "Design",
+    tags: ["Product", "Marketing"]
   },
   {
     id: 6,
@@ -74,7 +79,8 @@ const initialPosts = [
     content: "Scaling a startup comes with unique challenges and opportunities...",
     author: "Chris Taylor",
     date: "March 28, 2025",
-    category: "Business"
+    category: "Business",
+    tags: ["Strategy", "People", "Finance"]
   }
 ];
 
