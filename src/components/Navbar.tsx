@@ -14,7 +14,7 @@ const Navbar = () => {
   const location = useLocation();
   
   // Check if we're on pages with light backgrounds that need dark text
-  const isLightBackgroundPage = ['/imprint', '/data-privacy', '/health-check', '/chatbot'].includes(location.pathname);
+  const isLightBackgroundPage = ['/imprint', '/data-privacy', '/health-check', '/chatbot', '/content', '/blog', '/podcast', '/login'].includes(location.pathname) || location.pathname.startsWith('/blog/');
   const shouldUseDarkText = scrolled || isLightBackgroundPage;
   
   useEffect(() => {
