@@ -173,28 +173,28 @@ const Content = () => {
               </div>
             )}
 
-            <div className="grid gap-6 md:gap-8">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
               {filteredContent.map((item) => (
                 <Card 
                   key={`${item.type}-${item.id}`}
-                  className="group hover:shadow-lg transition-all duration-300 border border-border/50 hover:border-primary/20"
+                  className="group hover:shadow-lg transition-all duration-300 border border-border/50 hover:border-primary/20 h-full flex flex-col"
                 >
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
+                  <CardContent className="p-4 flex flex-col h-full">
+                    <div className="flex items-start gap-3 flex-1">
                       <div className="flex-shrink-0">
                         {item.type === 'blog' ? (
-                          <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                            <FilePen className="w-6 h-6 text-primary" />
+                          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                            <FilePen className="w-5 h-5 text-primary" />
                           </div>
                         ) : (
-                          <div className="w-12 h-12 rounded-lg bg-accent1/10 flex items-center justify-center">
-                            <Play className="w-6 h-6 text-accent1" />
+                          <div className="w-10 h-10 rounded-lg bg-accent1/10 flex items-center justify-center">
+                            <Play className="w-5 h-5 text-accent1" />
                           </div>
                         )}
                       </div>
                       
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 mb-3">
+                      <div className="flex-1 min-w-0 flex flex-col">
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             item.type === 'blog' 
                               ? 'bg-primary/10 text-primary' 
@@ -202,32 +202,32 @@ const Content = () => {
                           }`}>
                             {item.type === 'blog' ? 'Blog Post' : 'Podcast'}
                           </span>
-                          <span className="text-sm text-muted-foreground">
+                          <span className="text-xs text-muted-foreground">
                             {formatDate(getDisplayDate(item))}
                           </span>
                           {item.type === 'podcast' && item.duration && (
-                            <span className="text-sm text-muted-foreground">
+                            <span className="text-xs text-muted-foreground">
                               {item.duration}
                             </span>
                           )}
                         </div>
                         
-                        <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+                        <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors line-clamp-2">
                           {item.title}
                         </h3>
                         
-                        <p className="text-muted-foreground mb-3 line-clamp-2">
+                        <p className="text-sm text-muted-foreground mb-3 line-clamp-3 flex-1">
                           {item.type === 'blog' ? item.excerpt : item.description}
                         </p>
                         
                         {/* Tags */}
                         {item.tags && item.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-2 mb-4">
+                          <div className="flex flex-wrap gap-1 mb-3">
                             {item.tags.map(tag => (
                               <Badge 
                                 key={tag} 
                                 variant="secondary" 
-                                className="text-xs bg-secondary/50 hover:bg-secondary/70 cursor-pointer"
+                                className="text-xs bg-secondary/50 hover:bg-secondary/70 cursor-pointer px-2 py-1"
                                 onClick={() => setTagFilter(tag)}
                               >
                                 {tag}
@@ -236,8 +236,8 @@ const Content = () => {
                           </div>
                         )}
                         
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <div className="flex items-center justify-between mt-auto">
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
                             {item.type === 'blog' ? (
                               <>
                                 <span>By {item.author}</span>
