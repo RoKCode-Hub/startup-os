@@ -230,18 +230,12 @@ const Index = () => {
             </Card>
           ))}
         </div>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-16">
+        <div className="flex justify-center mt-16">
           <Button 
-            onClick={() => navigate("/podcast")} 
+            onClick={() => navigate("/content")} 
             className="bg-accent1 text-white hover:bg-accent1/90 px-10 py-6 rounded-full text-lg font-medium shadow-elegant"
           >
-            View All Episodes
-          </Button>
-          <Button 
-            onClick={() => navigate("/blog")} 
-            className="bg-accent1 text-white hover:bg-accent1/90 px-10 py-6 rounded-full text-lg font-medium shadow-elegant"
-          >
-            View All Posts
+            View All Content
           </Button>
         </div>
       </Section>

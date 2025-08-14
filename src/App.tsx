@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import BlogEditor from "./pages/BlogEditor";
+import Content from "./pages/Content";
 import Podcast from "./pages/Podcast";
 import ChatBot from "./pages/ChatBot";
 import HealthCheck from "./pages/HealthCheck";
@@ -34,6 +35,7 @@ const App = () => (
               <BlogEditor />
             </ProtectedRoute>
           } />
+          <Route path="/content" element={<Content />} />
           <Route path="/podcast" element={<Podcast />} />
           <Route path="/chatbot" element={<ChatBot />} />
           <Route path="/health-check" element={<HealthCheck />} />

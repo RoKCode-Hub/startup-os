@@ -70,7 +70,7 @@ const Navbar = () => {
             Home
           </Link>
           <Link 
-            to="/#latest-content" 
+            to="/content" 
             className={cn(
               "underline-animation font-medium", 
               shouldUseDarkText ? "text-gray-800" : "text-white"
@@ -130,7 +130,7 @@ const Navbar = () => {
         <div className="md:hidden bg-white w-full py-6 px-6 shadow-md absolute top-full left-0 animate-fade-in-up">
           <div className="flex flex-col space-y-5">
             <Link to="/" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Home</Link>
-            <Link to="/#latest-content" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Content</Link>
+            <Link to="/content" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Content</Link>
             <Link to="/chatbot" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Chatbot</Link>
             <Link to="/health-check" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Health Check</Link>
             
