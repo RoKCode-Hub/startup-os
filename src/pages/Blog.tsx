@@ -49,12 +49,25 @@ const Blog = () => {
                   <p className="text-gray-700 mb-4">{post.excerpt}</p>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">By {post.author}</span>
-                    <button 
-                      onClick={() => navigate(`/blog/post/${post.id}`)} 
-                      className="text-black font-medium hover:underline"
-                    >
-                      Read More
-                    </button>
+                    <div className="flex items-center gap-2">
+                      {isAdmin && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => navigate(`/blog/edit/${post.id}`)}
+                          className="flex items-center gap-1"
+                        >
+                          <FilePen className="h-3 w-3" />
+                          Edit
+                        </Button>
+                      )}
+                      <button 
+                        onClick={() => navigate(`/blog/post/${post.id}`)} 
+                        className="text-black font-medium hover:underline"
+                      >
+                        Read More
+                      </button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>

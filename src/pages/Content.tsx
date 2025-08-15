@@ -18,6 +18,7 @@ import { FilePen, Play, Filter, Plus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import PodcastUploadForm from '@/components/PodcastUploadForm';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import PodcastEditForm from '@/components/PodcastEditForm';
 
 interface PodcastEpisode {
   id: string;
@@ -47,6 +48,7 @@ const Content = () => {
   const [contentTypeFilter, setContentTypeFilter] = useState<string>("all");
   const [tagFilter, setTagFilter] = useState<string>("all");
   const [showPodcastUpload, setShowPodcastUpload] = useState(false);
+  const [editingEpisode, setEditingEpisode] = useState<PodcastEpisode | null>(null);
 
   useEffect(() => {
     fetchPodcastEpisodes();
@@ -194,6 +196,25 @@ const Content = () => {
               </div>
             )}
 
+            {/* Podcast Edit Modal */}
+            <Dialog open={!!editingEpisode} onOpenChange={() => setEditingEpisode(null)}>
+              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Edit Podcast Episode</DialogTitle>
+                </DialogHeader>
+                {editingEpisode && (
+                  <PodcastEditForm
+                    episode={editingEpisode}
+                    onSuccess={() => {
+                      setEditingEpisode(null);
+                      fetchPodcastEpisodes(); // Refresh the episodes list
+                    }}
+                    onCancel={() => setEditingEpisode(null)}
+                  />
+                )}
+              </DialogContent>
+            </Dialog>
+
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
               {filteredContent.map((item) => (
                 <Card 
@@ -274,19 +295,38 @@ const Content = () => {
                             )}
                           </div>
                           
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            onClick={() => {
-                              if (item.type === 'blog') {
-                                navigate(`/blog/post/${item.id}`);
-                              } else {
-                                navigate('/podcast');
-                              }
-                            }}
-                          >
-                            {item.type === 'blog' ? 'Read More' : 'Listen Now'}
-                          </Button>
+                          <div className="flex items-center gap-2">
+                            {isAuthenticated && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  if (item.type === 'blog') {
+                                    navigate(`/blog/edit/${item.id}`);
+                                  } else {
+                                    setEditingEpisode(item as PodcastEpisode);
+                                  }
+                                }}
+                                className="flex items-center gap-1"
+                              >
+                                <FilePen className="h-3 w-3" />
+                                Edit
+                              </Button>
+                            )}
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => {
+                                if (item.type === 'blog') {
+                                  navigate(`/blog/post/${item.id}`);
+                                } else {
+                                  navigate('/podcast');
+                                }
+                              }}
+                            >
+                              {item.type === 'blog' ? 'Read More' : 'Listen Now'}
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>

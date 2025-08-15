@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import BlogEditor from "./pages/BlogEditor";
+import BlogEdit from "./pages/BlogEdit";
 import Content from "./pages/Content";
 import Podcast from "./pages/Podcast";
 import ChatBot from "./pages/ChatBot";
@@ -33,6 +34,11 @@ const App = () => (
           <Route path="/blog/new" element={
             <ProtectedRoute>
               <BlogEditor />
+            </ProtectedRoute>
+          } />
+          <Route path="/blog/edit/:id" element={
+            <ProtectedRoute>
+              <BlogEdit />
             </ProtectedRoute>
           } />
           <Route path="/content" element={<Content />} />
