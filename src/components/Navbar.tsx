@@ -97,17 +97,6 @@ const Navbar = () => {
             Health Check
           </Link>
           
-          {isAuthenticated && user?.role === 'admin' && (
-            <Link 
-              to="/blog/new" 
-              className={cn(
-                "underline-animation font-medium", 
-                shouldUseDarkText ? "text-gray-800" : "text-white"
-              )}
-            >
-              New Post
-            </Link>
-          )}
         </div>
 
         <button 
@@ -134,9 +123,6 @@ const Navbar = () => {
             <Link to="/chatbot" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Chatbot</Link>
             <Link to="/health-check" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>Health Check</Link>
             
-            {isAuthenticated && user?.role === 'admin' && (
-              <Link to="/blog/new" className="text-lg font-medium hover:text-accent1 transition-colors" onClick={toggleMobileMenu}>New Post</Link>
-            )}
           </div>
         </div>
       )}
