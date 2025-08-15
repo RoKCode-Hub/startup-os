@@ -36,7 +36,7 @@ const BlogPost = () => {
       <Navbar />
       
       <main className="flex-grow pt-24">
-        <div className="container mx-auto px-6 lg:px-10">
+        <div className="container mx-auto px-6 lg:px-10 pb-16">
           <div className="max-w-4xl mx-auto">
             <Button
               variant="ghost"
