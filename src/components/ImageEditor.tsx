@@ -25,23 +25,31 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
   useEffect(() => {
     if (!canvasRef.current || !isOpen) return;
 
+    console.log('Initializing Fabric.js canvas...');
+
     const canvas = new FabricCanvas(canvasRef.current, {
       width: 600,
       height: 400,
       backgroundColor: '#ffffff',
     });
 
+    console.log('Canvas created:', canvas);
     setFabricCanvas(canvas);
 
     // Load the image
+    console.log('Loading image from URL:', imageUrl);
     FabricImage.fromURL(imageUrl, {
       crossOrigin: 'anonymous'
     }).then((img) => {
+      console.log('Image loaded successfully:', img);
+      
       // Scale image to fit canvas
       const scale = Math.min(
         canvas.width! / img.width!,
         canvas.height! / img.height!
       );
+      
+      console.log('Scaling image with factor:', scale);
       
       img.set({
         scaleX: scale,
@@ -54,6 +62,7 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
       canvas.centerObject(img);
       setOriginalImage(img);
       canvas.renderAll();
+      console.log('Image added to canvas successfully');
       toast.success("Image loaded successfully!");
     }).catch((error) => {
       console.error('Error loading image:', error);
@@ -61,6 +70,7 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
     });
 
     return () => {
+      console.log('Disposing canvas...');
       canvas.dispose();
     };
   }, [imageUrl, isOpen]);
@@ -101,19 +111,35 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
   }, [isGrayscale, brightness, contrast, originalImage, fabricCanvas]);
 
   const handleZoom = () => {
-    if (!originalImage || !fabricCanvas) return;
+    if (!originalImage || !fabricCanvas) {
+      console.log('Cannot zoom: missing originalImage or fabricCanvas');
+      return;
+    }
+
+    // Store the original scale for reference
+    const originalScale = Math.min(
+      fabricCanvas.width! / originalImage.width!,
+      fabricCanvas.height! / originalImage.height!
+    );
 
     const zoomLevel = zoom[0] / 100;
+    const newScale = originalScale * zoomLevel;
+    
+    console.log('Applying zoom:', zoomLevel, 'New scale:', newScale);
+    
     originalImage.set({
-      scaleX: originalImage.scaleX! * zoomLevel,
-      scaleY: originalImage.scaleY! * zoomLevel,
+      scaleX: newScale,
+      scaleY: newScale,
     });
     fabricCanvas.renderAll();
   };
 
   useEffect(() => {
-    handleZoom();
-  }, [zoom]);
+    // Only apply zoom if image is loaded
+    if (originalImage && fabricCanvas) {
+      handleZoom();
+    }
+  }, [zoom, originalImage, fabricCanvas]);
 
   const handleReset = () => {
     if (!originalImage || !fabricCanvas) return;
@@ -148,8 +174,18 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
 
   const handleSave = () => {
     console.log('Save button clicked');
+    console.log('fabricCanvas state:', fabricCanvas);
+    console.log('originalImage state:', originalImage);
+    
     if (!fabricCanvas) {
       console.error('No fabric canvas available');
+      toast.error("Canvas not ready. Please wait for the image to load.");
+      return;
+    }
+
+    if (!originalImage) {
+      console.error('No original image available');
+      toast.error("No image loaded to save.");
       return;
     }
 
