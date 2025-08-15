@@ -25,7 +25,6 @@ const BlogEdit = () => {
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [quillImageResize, setQuillImageResize] = useState<any>(null);
 
   useEffect(() => {
     if (!post) {
@@ -38,19 +37,6 @@ const BlogEdit = () => {
     setExcerpt(post.excerpt);
     setContent(post.content);
   }, [post, navigate]);
-
-  useEffect(() => {
-    const loadQuillImageResize = async () => {
-      try {
-        const imageResize = await import('quill-image-resize-module');
-        setQuillImageResize(imageResize.default);
-      } catch (error) {
-        console.error('Failed to load quill-image-resize-module:', error);
-      }
-    };
-
-    loadQuillImageResize();
-  }, []);
 
   const imageHandler = () => {
     const input = document.createElement('input');
@@ -88,8 +74,7 @@ const BlogEdit = () => {
         image: imageHandler
       }
     },
-    ...(quillImageResize && { imageResize: quillImageResize })
-  }), [quillImageResize]);
+  }), []);
 
   const formats = [
     'header', 'bold', 'italic', 'underline', 'strike',
@@ -208,10 +193,6 @@ const BlogEdit = () => {
                   formats={formats}
                   placeholder="Write your blog post content here..."
                   style={{ height: '350px' }}
-                  onFocus={() => {
-                    const quillElement = document.querySelector('.ql-editor') as any;
-                    (window as any).quillEditor = quillElement?.__quill;
-                  }}
                 />
               </div>
             </div>
