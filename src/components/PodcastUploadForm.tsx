@@ -90,6 +90,9 @@ const onSubmit = async (values: z.infer<typeof formSchema>) => {
         description: `"${values.title}" has been published.`,
       });
       form.reset();
+      
+      // Refresh the page to show the new episode
+      window.location.reload();
     } catch (error: any) {
       toast.error("Upload failed", {
         description: error?.message || "There was an error uploading your podcast episode.",
@@ -109,12 +112,7 @@ const onSubmit = async (values: z.infer<typeof formSchema>) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <div className="flex items-center gap-2 mb-4">
-        <Mic className="h-5 w-5 text-primary" />
-        <h3 className="text-xl font-bold">Upload New Podcast Episode</h3>
-      </div>
-      
+    <div className="p-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField

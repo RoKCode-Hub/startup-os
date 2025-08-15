@@ -14,8 +14,10 @@ import {
 } from "@/components/ui/select";
 import { useBlogStore } from '@/stores/blogStore';
 import { useAuthStore } from '@/stores/authStore';
-import { FilePen, Play, Filter } from 'lucide-react';
+import { FilePen, Play, Filter, Plus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import PodcastUploadForm from '@/components/PodcastUploadForm';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 interface PodcastEpisode {
   id: string;
@@ -44,6 +46,7 @@ const Content = () => {
   const [podcastEpisodes, setPodcastEpisodes] = useState<PodcastEpisode[]>([]);
   const [contentTypeFilter, setContentTypeFilter] = useState<string>("all");
   const [tagFilter, setTagFilter] = useState<string>("all");
+  const [showPodcastUpload, setShowPodcastUpload] = useState(false);
 
   useEffect(() => {
     fetchPodcastEpisodes();
@@ -161,7 +164,7 @@ const Content = () => {
               </div>
             </div>
 
-            {isAuthenticated && user?.role === 'admin' && (
+            {isAuthenticated && (
               <div className="flex justify-center gap-4 mb-8">
                 <Button 
                   onClick={() => navigate('/blog/new')}
@@ -170,6 +173,24 @@ const Content = () => {
                   <FilePen className="w-4 h-4" />
                   New Blog Post
                 </Button>
+                
+                <Dialog open={showPodcastUpload} onOpenChange={setShowPodcastUpload}>
+                  <DialogTrigger asChild>
+                    <Button 
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Upload Podcast
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>Upload New Podcast Episode</DialogTitle>
+                    </DialogHeader>
+                    <PodcastUploadForm />
+                  </DialogContent>
+                </Dialog>
               </div>
             )}
 
