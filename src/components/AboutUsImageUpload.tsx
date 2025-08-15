@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Upload, X, Image } from 'lucide-react';
+import { Upload, X, Edit2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
 import { useAuthStore } from '@/stores/authStore';
+import ImageEditor from './ImageEditor';
 
 interface AboutUsImageUploadProps {
   onImageChange: (imageUrl: string | null) => void;
@@ -12,6 +13,7 @@ interface AboutUsImageUploadProps {
 
 const AboutUsImageUpload = ({ onImageChange, currentImageUrl }: AboutUsImageUploadProps) => {
   const [uploading, setUploading] = useState(false);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { isAuthenticated } = useAuthStore();
 
@@ -91,48 +93,109 @@ const AboutUsImageUpload = ({ onImageChange, currentImageUrl }: AboutUsImageUplo
     }
   };
 
+  const handleSaveEditedImage = async (editedImageBlob: Blob) => {
+    if (!isAuthenticated) return;
+
+    setUploading(true);
+    
+    try {
+      // Delete existing image if it exists
+      if (currentImageUrl) {
+        const fileName = currentImageUrl.split('/').pop();
+        if (fileName) {
+          await supabase.storage
+            .from('about-us')
+            .remove([fileName]);
+        }
+      }
+
+      // Upload edited image
+      const fileName = `about-us-edited-${Date.now()}.png`;
+      const { data, error } = await supabase.storage
+        .from('about-us')
+        .upload(fileName, editedImageBlob);
+
+      if (error) throw error;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('about-us')
+        .getPublicUrl(data.path);
+
+      onImageChange(publicUrl);
+      toast.success("Edited image saved successfully!");
+    } catch (error) {
+      console.error('Error saving edited image:', error);
+      toast.error("Failed to save edited image");
+    } finally {
+      setUploading(false);
+    }
+  };
+
   if (!isAuthenticated) {
     return null;
   }
 
   return (
-    <div className="absolute top-4 right-4 z-10">
-      <div className="flex gap-2">
-        {currentImageUrl && (
+    <>
+      <div className="absolute top-4 right-4 z-10">
+        <div className="flex gap-2">
+          {currentImageUrl && (
+            <>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setIsEditorOpen(true)}
+                className="rounded-full h-8 w-8 p-0 bg-background/80 backdrop-blur-sm hover:bg-background/90"
+                title="Edit image"
+              >
+                <Edit2 size={16} />
+              </Button>
+              <Button
+                size="sm"
+                variant="destructive"
+                onClick={handleRemoveImage}
+                className="rounded-full h-8 w-8 p-0"
+                title="Remove image"
+              >
+                <X size={16} />
+              </Button>
+            </>
+          )}
+          
           <Button
             size="sm"
-            variant="destructive"
-            onClick={handleRemoveImage}
-            className="rounded-full h-8 w-8 p-0"
-            title="Remove image"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="rounded-full h-8 w-8 p-0 bg-accent1 hover:bg-accent1/90"
+            title="Upload image"
           >
-            <X size={16} />
+            {uploading ? (
+              <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+            ) : (
+              <Upload size={16} />
+            )}
           </Button>
-        )}
-        
-        <Button
-          size="sm"
-          onClick={() => fileInputRef.current?.click()}
-          disabled={uploading}
-          className="rounded-full h-8 w-8 p-0 bg-accent1 hover:bg-accent1/90"
-          title="Upload image"
-        >
-          {uploading ? (
-            <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
-          ) : (
-            <Upload size={16} />
-          )}
-        </Button>
+        </div>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileUpload}
+          className="hidden"
+        />
       </div>
 
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        onChange={handleFileUpload}
-        className="hidden"
-      />
-    </div>
+      {currentImageUrl && (
+        <ImageEditor
+          imageUrl={currentImageUrl}
+          isOpen={isEditorOpen}
+          onClose={() => setIsEditorOpen(false)}
+          onSave={handleSaveEditedImage}
+        />
+      )}
+    </>
   );
 };
 
