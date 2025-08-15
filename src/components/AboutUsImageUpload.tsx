@@ -94,34 +94,51 @@ const AboutUsImageUpload = ({ onImageChange, currentImageUrl }: AboutUsImageUplo
   };
 
   const handleSaveEditedImage = async (editedImageBlob: Blob) => {
-    if (!isAuthenticated) return;
+    console.log('handleSaveEditedImage called with blob size:', editedImageBlob.size);
+    
+    if (!isAuthenticated) {
+      console.error('User not authenticated');
+      return;
+    }
 
     setUploading(true);
     
     try {
+      console.log('Starting upload process...');
+      
       // Delete existing image if it exists
       if (currentImageUrl) {
+        console.log('Deleting existing image:', currentImageUrl);
         const fileName = currentImageUrl.split('/').pop();
         if (fileName) {
           await supabase.storage
             .from('about-us')
             .remove([fileName]);
+          console.log('Existing image deleted');
         }
       }
 
       // Upload edited image
       const fileName = `about-us-edited-${Date.now()}.png`;
+      console.log('Uploading new image:', fileName);
+      
       const { data, error } = await supabase.storage
         .from('about-us')
         .upload(fileName, editedImageBlob);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Upload error:', error);
+        throw error;
+      }
+
+      console.log('Upload successful:', data);
 
       // Get public URL
       const { data: { publicUrl } } = supabase.storage
         .from('about-us')
         .getPublicUrl(data.path);
 
+      console.log('Public URL:', publicUrl);
       onImageChange(publicUrl);
       toast.success("Edited image saved successfully!");
     } catch (error) {

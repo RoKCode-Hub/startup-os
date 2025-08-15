@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Canvas as FabricCanvas, FabricImage } from 'fabric';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { ZoomIn, ZoomOut, Palette, Save, RotateCcw } from 'lucide-react';
 import { toast } from '@/components/ui/sonner';
 
@@ -147,26 +147,43 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
   };
 
   const handleSave = () => {
-    if (!fabricCanvas) return;
+    console.log('Save button clicked');
+    if (!fabricCanvas) {
+      console.error('No fabric canvas available');
+      return;
+    }
 
-    // Convert canvas to data URL and then to blob
-    const dataURL = fabricCanvas.toDataURL({
-      format: 'png',
-      quality: 1.0,
-      multiplier: 1
-    });
-
-    // Convert data URL to blob
-    fetch(dataURL)
-      .then(res => res.blob())
-      .then(blob => {
-        onSave(blob);
-        toast.success("Image saved successfully!");
-        onClose();
-      })
-      .catch(() => {
-        toast.error("Failed to save image");
+    try {
+      console.log('Converting canvas to data URL...');
+      // Convert canvas to data URL and then to blob
+      const dataURL = fabricCanvas.toDataURL({
+        format: 'png',
+        quality: 1.0,
+        multiplier: 1
       });
+      
+      console.log('Data URL created, length:', dataURL.length);
+
+      // Convert data URL to blob
+      fetch(dataURL)
+        .then(res => {
+          console.log('Converting to blob...');
+          return res.blob();
+        })
+        .then(blob => {
+          console.log('Blob created, size:', blob.size);
+          onSave(blob);
+          toast.success("Image saved successfully!");
+          onClose();
+        })
+        .catch((error) => {
+          console.error('Error converting to blob:', error);
+          toast.error("Failed to save image");
+        });
+    } catch (error) {
+      console.error('Error in handleSave:', error);
+      toast.error("Failed to save image");
+    }
   };
 
   return (
@@ -174,6 +191,9 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
       <DialogContent className="max-w-4xl">
         <DialogHeader>
           <DialogTitle>Edit Image</DialogTitle>
+          <DialogDescription>
+            Adjust your image with filters, zoom, and color effects. Click Save Changes when you're done.
+          </DialogDescription>
         </DialogHeader>
         
         <div className="space-y-4">
