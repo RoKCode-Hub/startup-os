@@ -73,7 +73,7 @@ const BlogEdit = () => {
       handlers: {
         image: imageHandler
       }
-    },
+    }
   }), []);
 
   const formats = [
