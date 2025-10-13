@@ -55,7 +55,7 @@ const Navbar = () => {
             alt="Startup OS Logo" 
             className={cn(
               "h-12 w-auto transition-all duration-300",
-              isLightBackgroundPage ? "filter brightness-0" : ""
+              (scrolled || isLightBackgroundPage) ? "filter brightness-0" : ""
             )}
           />
         </Link>
