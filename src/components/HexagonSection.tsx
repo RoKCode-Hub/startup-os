@@ -23,8 +23,8 @@ const hexagonElements: HexagonElement[] = [
     id: 'execution',
     label: 'Execution',
     content: {
-      title: 'Effective Execution Framework',
-      description: 'Great ideas mean nothing without proper execution. A solid execution framework includes clear processes, accountability systems, and the ability to move quickly from planning to implementation. This ensures your startup can deliver on its promises consistently.'
+      title: 'Execution',
+      description: "Ideas are easy - execution is the difference. This is how your team turns plans into measurable progress: getting things done, the will to win, and tracking outcomes. It's about creating focus and accountability without adding bureaucracy."
     }
   },
   {
