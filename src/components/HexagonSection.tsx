@@ -102,13 +102,14 @@ const HexagonSection = () => {
                 
                 const isSelected = selectedElement.id === element.id;
                 const offsetX = (element.id === 'execution' || element.id === 'leadership') ? 15 : 0;
+                const offsetY = element.id === 'direction' ? 8 : (element.id === 'collaboration' ? -8 : 0);
                 
                 return (
                   <g key={element.id}>
                     {/* Text label only - circles removed */}
                     <text
                       x={x + offsetX}
-                      y={y + 5}
+                      y={y + 5 + offsetY}
                       textAnchor="middle"
                       className={`text-sm font-medium cursor-pointer transition-all duration-300 hover:fill-gray-400 ${
                         isSelected ? 'fill-accent1' : 'fill-white'
