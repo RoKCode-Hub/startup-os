@@ -13,7 +13,7 @@ interface HexagonElement {
 const hexagonElements: HexagonElement[] = [
   {
     id: 'vision',
-    label: 'Vision',
+    label: 'Direction',
     content: {
       title: 'Clear Vision & Strategy',
       description: 'A well-defined vision provides direction and purpose for your startup. It serves as the North Star that guides decision-making and aligns your team toward common goals. Without a clear vision, startups often lose focus and struggle to make consistent progress.'
@@ -29,7 +29,7 @@ const hexagonElements: HexagonElement[] = [
   },
   {
     id: 'culture',
-    label: 'Culture',
+    label: 'Leadership',
     content: {
       title: 'Strong Company Culture',
       description: 'Culture is the foundation that determines how your team works together, makes decisions, and treats customers. A strong culture attracts top talent, improves retention, and creates a competitive advantage that is difficult for competitors to replicate.'
@@ -37,7 +37,7 @@ const hexagonElements: HexagonElement[] = [
   },
   {
     id: 'systems',
-    label: 'Systems',
+    label: 'Collaboration',
     content: {
       title: 'Scalable Systems & Processes',
       description: 'As your startup grows, manual processes become bottlenecks. Implementing scalable systems and processes early allows you to handle increased complexity without proportionally increasing overhead or compromising quality.'
@@ -45,7 +45,7 @@ const hexagonElements: HexagonElement[] = [
   },
   {
     id: 'metrics',
-    label: 'Metrics',
+    label: 'SPS',
     content: {
       title: 'Data-Driven Decision Making',
       description: 'Successful startups track the right metrics and use data to guide their decisions. This includes understanding key performance indicators, customer behavior patterns, and financial metrics that truly impact business growth.'
@@ -53,7 +53,7 @@ const hexagonElements: HexagonElement[] = [
   },
   {
     id: 'team',
-    label: 'Team',
+    label: 'Data',
     content: {
       title: 'High-Performance Team',
       description: 'Your team is your most valuable asset. Building a high-performance team means hiring the right people, providing proper training and development, and creating an environment where everyone can do their best work.'
