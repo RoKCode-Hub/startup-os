@@ -182,8 +182,8 @@ const HexagonSection = () => {
         </div>
         
         {/* Content on the right */}
-        <div className="space-y-2 lg:pl-4 flex-1 max-w-xl">
-          <div className="transition-all duration-500 ease-in-out min-h-[300px] flex flex-col justify-start">
+        <div className="lg:pl-4 flex-1 max-w-xl">
+          <div className="transition-all duration-500 ease-in-out min-h-[300px] flex flex-col justify-start mb-4">
             <h3 className="text-3xl font-bold mb-6 text-white">
               {selectedElement.content.title}
             </h3>
@@ -193,7 +193,7 @@ const HexagonSection = () => {
           </div>
           
           {/* Element indicators */}
-          <div className="flex flex-wrap gap-2 -mt-8">
+          <div className="flex flex-wrap gap-2">
             {hexagonElements.map((element) => (
               <button
                 key={element.id}
