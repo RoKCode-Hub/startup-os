@@ -111,8 +111,8 @@ const HexagonSection = () => {
                       x={x + offsetX}
                       y={y + 5 + offsetY}
                       textAnchor="middle"
-                      className={`text-sm font-medium cursor-pointer transition-all duration-300 hover:fill-gray-400 ${
-                        isSelected ? 'fill-accent1' : 'fill-white'
+                      className={`text-sm font-medium cursor-pointer transition-all duration-300 ${
+                        isSelected ? 'fill-accent1' : 'fill-white hover:fill-accent1'
                       }`}
                       onClick={() => setSelectedElement(element)}
                     >
@@ -201,7 +201,7 @@ const HexagonSection = () => {
                 className={`px-3.5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                   selectedElement.id === element.id
                     ? 'bg-accent1 text-white'
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    : 'bg-gray-700 text-gray-300 hover:bg-accent1 hover:text-white'
                 }`}
               >
                 {element.label}
