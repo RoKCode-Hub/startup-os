@@ -101,7 +101,7 @@ const HexagonSection = () => {
                 const y = 200 + radius * Math.sin(radian - Math.PI / 2);
                 
                 const isSelected = selectedElement.id === element.id;
-                const offsetX = (element.id === 'execution' || element.id === 'leadership') ? 15 : 0;
+                const offsetX = element.id === 'execution' ? 15 : (element.id === 'leadership' ? 20 : 0);
                 const offsetY = element.id === 'direction' ? 8 : (element.id === 'collaboration' ? -8 : 0);
                 
                 return (
