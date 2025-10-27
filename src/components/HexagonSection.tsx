@@ -39,8 +39,8 @@ const hexagonElements: HexagonElement[] = [
     id: 'collaboration',
     label: 'Collaboration',
     content: {
-      title: 'Scalable Systems & Processes',
-      description: 'As your startup grows, manual processes become bottlenecks. Implementing scalable systems and processes early allows you to handle increased complexity without proportionally increasing overhead or compromising quality.'
+      title: 'Collaboration',
+      description: "Collaboration is how your culture shows up in daily work. It's about how teams communicate, make decisions, and solve problems together. The goal: open and fast collaboration that builds trust, makes things happen and enables high-performance."
     }
   },
   {
