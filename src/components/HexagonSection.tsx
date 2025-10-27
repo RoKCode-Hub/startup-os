@@ -193,7 +193,7 @@ const HexagonSection = () => {
           </div>
           
           {/* Element indicators */}
-          <div className="flex flex-wrap gap-2 mt-4">
+          <div className="flex flex-wrap gap-2 -mt-8">
             {hexagonElements.map((element) => (
               <button
                 key={element.id}
