@@ -12,7 +12,7 @@ interface HexagonElement {
 
 const hexagonElements: HexagonElement[] = [
   {
-    id: 'vision',
+    id: 'direction',
     label: 'Direction',
     content: {
       title: 'Clear Vision & Strategy',
@@ -28,7 +28,7 @@ const hexagonElements: HexagonElement[] = [
     }
   },
   {
-    id: 'culture',
+    id: 'leadership',
     label: 'Leadership',
     content: {
       title: 'Strong Company Culture',
@@ -36,7 +36,7 @@ const hexagonElements: HexagonElement[] = [
     }
   },
   {
-    id: 'systems',
+    id: 'collaboration',
     label: 'Collaboration',
     content: {
       title: 'Scalable Systems & Processes',
@@ -44,7 +44,7 @@ const hexagonElements: HexagonElement[] = [
     }
   },
   {
-    id: 'metrics',
+    id: 'sps',
     label: 'SPS',
     content: {
       title: 'Data-Driven Decision Making',
@@ -52,7 +52,7 @@ const hexagonElements: HexagonElement[] = [
     }
   },
   {
-    id: 'team',
+    id: 'data',
     label: 'Data',
     content: {
       title: 'High-Performance Team',
