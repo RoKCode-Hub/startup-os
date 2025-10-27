@@ -18,6 +18,7 @@ import Login from "./pages/Login";
 import Imprint from "./pages/Imprint";
 import DataPrivacy from "./pages/DataPrivacy";
 import ProtectedRoute from "./components/ProtectedRoute";
+import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <CookieBanner />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
