@@ -31,8 +31,8 @@ const hexagonElements: HexagonElement[] = [
     id: 'leadership',
     label: 'Leadership',
     content: {
-      title: 'Strong Company Culture',
-      description: 'Culture is the foundation that determines how your team works together, makes decisions, and treats customers. A strong culture attracts top talent, improves retention, and creates a competitive advantage that is difficult for competitors to replicate.'
+      title: 'Leadership',
+      description: "Leadership drives clarity and momentum. It's about setting direction, enabling your team to perform, and making tough decisions with confidence and consistency. Strong leaders create focus, build trust, and help others grow with the business."
     }
   },
   {
