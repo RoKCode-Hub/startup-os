@@ -47,8 +47,8 @@ const hexagonElements: HexagonElement[] = [
     id: 'sps',
     label: 'SPS',
     content: {
-      title: 'Data-Driven Decision Making',
-      description: 'Successful startups track the right metrics and use data to guide their decisions. This includes understanding key performance indicators, customer behavior patterns, and financial metrics that truly impact business growth.'
+      title: 'Systems, Processes & Structures',
+      description: "Every growing company needs structure - but the right kind. You need processes, but only a few key ones that drive your business and that you optimise. It's about creating clarity and consistency without killing speed and creativity."
     }
   },
   {
