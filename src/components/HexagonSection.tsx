@@ -32,7 +32,7 @@ const hexagonElements: HexagonElement[] = [
     label: 'Leadership',
     content: {
       title: 'Leadership',
-      description: "Leadership drives clarity and momentum. It's about setting direction, enabling your team to perform, and making tough decisions with confidence and consistency. Strong leaders create focus, build trust, and help others grow with the business."
+      description: "Leadership drives clarity and momentum. It's about setting direction, enabling your team to perform, and making tough decisions with confidence and consistency. Strong leaders create focus, build trust, and enable high-performance and growth."
     }
   },
   {
