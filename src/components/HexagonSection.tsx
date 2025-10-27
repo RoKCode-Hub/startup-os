@@ -56,7 +56,7 @@ const hexagonElements: HexagonElement[] = [
     label: 'Data',
     content: {
       title: 'Data',
-      description: 'Data keeps your gut honest. This includes understanding key performance indicators, customer behavior patterns, and financial metrics that truly impact business growth.'
+      description: 'Data keeps your gut honest. This is about setting up the right metrics, tools, and habits to measure what matters. The best teams use data not just to prove success but to learn, improve, and adapt faster than the market.'
     }
   }
 ];
