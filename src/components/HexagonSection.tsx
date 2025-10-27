@@ -101,12 +101,13 @@ const HexagonSection = () => {
                 const y = 200 + radius * Math.sin(radian - Math.PI / 2);
                 
                 const isSelected = selectedElement.id === element.id;
+                const offsetX = (element.id === 'execution' || element.id === 'leadership') ? 15 : 0;
                 
                 return (
                   <g key={element.id}>
                     {/* Text label only - circles removed */}
                     <text
-                      x={x}
+                      x={x + offsetX}
                       y={y + 5}
                       textAnchor="middle"
                       className={`text-sm font-medium cursor-pointer transition-all duration-300 hover:fill-gray-400 ${
