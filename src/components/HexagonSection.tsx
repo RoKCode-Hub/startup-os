@@ -55,8 +55,8 @@ const hexagonElements: HexagonElement[] = [
     id: 'data',
     label: 'Data',
     content: {
-      title: 'High-Performance Team',
-      description: 'Your team is your most valuable asset. Building a high-performance team means hiring the right people, providing proper training and development, and creating an environment where everyone can do their best work.'
+      title: 'Data',
+      description: 'Data keeps your gut honest. This includes understanding key performance indicators, customer behavior patterns, and financial metrics that truly impact business growth.'
     }
   }
 ];
