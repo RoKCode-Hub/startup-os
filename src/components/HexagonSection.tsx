@@ -16,7 +16,7 @@ const hexagonElements: HexagonElement[] = [
     label: 'Direction',
     content: {
       title: 'Direction',
-      description: "It's all about being very clear about the direction you are heading and what you want to achieve. This clarity must extend not just to the founders or the leadership team, but to everyone in your company. Whatever you call it — mission, purpose, north star, etc. — without a clear direction, your company loses focus and struggles to make consistent progress."
+      description: "It's all about being very clear about the direction you are heading and what you want to achieve. This clarity must extend not just to the founders or the leadership team, but to everyone in your company. Whatever you call it - mission, purpose, north star, etc. - without a clear direction, your company loses focus and struggles to make consistent progress."
     }
   },
   {
