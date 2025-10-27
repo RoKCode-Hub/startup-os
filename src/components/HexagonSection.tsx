@@ -73,8 +73,8 @@ const HexagonSection = () => {
     >
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start lg:items-start">
         {/* Hexagon on the left */}
-        <div className="flex justify-center lg:justify-start flex-shrink-0 lg:-mt-32 w-full lg:w-auto">
-          <div className="relative w-full max-w-[450px] lg:max-w-[580px] aspect-square flex-shrink-0">
+        <div className="flex justify-center lg:justify-start flex-shrink-0 w-full lg:w-auto">
+          <div className="relative w-full max-w-[450px] h-[450px] lg:w-[580px] lg:h-[580px] flex-shrink-0">
             {/* SVG Hexagon */}
             <svg 
               width="100%" 
