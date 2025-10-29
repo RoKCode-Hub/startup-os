@@ -264,9 +264,7 @@ const Index = () => {
                     </>
                   ) : (
                     <>
-                      <p className="text-sm text-gray-500 mb-4">
-                        By <span className="font-medium text-black">{(item as any).author}</span>
-                      </p>
+                      <div className="mb-4"></div>
                       <Button 
                         variant="outline" 
                         className="flex items-center gap-3 w-full justify-center rounded-full border-accent1 text-accent1 hover:bg-accent1 hover:text-white"

@@ -293,22 +293,10 @@ const Content = () => {
                           </div>
                         )}
                         
-                        <div className="flex items-center justify-between mt-auto">
-                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            {item.type === 'blog' ? (
-                              <>
-                                <span>By {item.author}</span>
-                                {item.category && item.category.length > 0 && (
-                                  <>
-                                    <span>•</span>
-                                    <span>{item.category.join(', ')}</span>
-                                  </>
-                                )}
-                              </>
-                            ) : (
-                              item.guests && <span>Guests: {item.guests}</span>
-                            )}
-                          </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      {item.type === 'podcast' && item.guests && <span>Guests: {item.guests}</span>}
+                    </div>
                           
                           <div className="flex items-center gap-2">
                             {isAuthenticated && (

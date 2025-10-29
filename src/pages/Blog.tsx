@@ -82,7 +82,7 @@ const Blog = () => {
                   <h3 className="text-xl font-bold mb-2">{post.title}</h3>
                   <p className="text-gray-700 mb-4">{post.excerpt}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">By {post.author}</span>
+                    <span className="text-sm text-gray-600">{post.date}</span>
                     <div className="flex items-center gap-2">
                       {isAdmin && (
                         <>

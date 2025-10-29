@@ -56,10 +56,8 @@ const BlogPost = () => {
                   </span>
                 ))}
               </div>
-              <div className="flex items-center gap-2 text-gray-600">
-                <span>By {post.author}</span>
-                <span>•</span>
-                <span>{post.date}</span>
+              <div className="text-gray-600">
+                {post.date}
               </div>
             </div>
             
