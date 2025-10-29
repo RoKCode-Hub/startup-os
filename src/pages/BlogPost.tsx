@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { useEffect } from "react";
 
 const BlogPost = () => {
   const { id } = useParams<{ id: string }>();
@@ -12,6 +13,11 @@ const BlogPost = () => {
   const { getPostById } = useBlogStore();
   
   const post = getPostById(id!);
+  
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
   
   if (!post) {
     return (
