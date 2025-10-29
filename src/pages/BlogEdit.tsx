@@ -10,12 +10,21 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useBlogStore } from '@/stores/blogStore';
 import { useToast } from '@/components/ui/use-toast';
 import { CalendarIcon } from 'lucide-react';
 import { format, parse } from 'date-fns';
 import { cn } from '@/lib/utils';
+
+const CATEGORIES = [
+  "Leadership",
+  "Execution",
+  "Direction",
+  "Collaboration",
+  "Systems Processes and Structure",
+  "Data"
+];
 
 const BlogEdit = () => {
   const { id } = useParams();
@@ -26,7 +35,7 @@ const BlogEdit = () => {
   const post = getPostById(id!);
   
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('');
+  const [categories, setCategories] = useState<string[]>([]);
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
   const [publishDate, setPublishDate] = useState<Date>(new Date());
@@ -39,7 +48,7 @@ const BlogEdit = () => {
     }
     
     setTitle(post.title);
-    setCategory(post.category);
+    setCategories(Array.isArray(post.category) ? post.category : [post.category]);
     setExcerpt(post.excerpt);
     setContent(post.content);
     
@@ -100,10 +109,10 @@ const BlogEdit = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!title.trim() || !content.trim() || !excerpt.trim()) {
+    if (!title.trim() || !content.trim() || !excerpt.trim() || categories.length === 0) {
       toast({
         title: "Validation Error",
-        description: "Please fill in all required fields.",
+        description: "Please fill in all required fields and select at least one category.",
         variant: "destructive",
       });
       return;
@@ -114,7 +123,7 @@ const BlogEdit = () => {
     try {
       await editPost(id!, {
         title: title.trim(),
-        category,
+        category: categories,
         excerpt: excerpt.trim(),
         content,
         date: format(publishDate, 'MMMM d, yyyy'),
@@ -135,6 +144,14 @@ const BlogEdit = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const toggleCategory = (category: string) => {
+    setCategories(prev => 
+      prev.includes(category)
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
+    );
   };
 
   if (!post) {
@@ -170,20 +187,26 @@ const BlogEdit = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="category">Category</Label>
-              <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Development">Development</SelectItem>
-                  <SelectItem value="Design">Design</SelectItem>
-                  <SelectItem value="AI">AI</SelectItem>
-                  <SelectItem value="Technology">Technology</SelectItem>
-                  <SelectItem value="Business">Business</SelectItem>
-                  <SelectItem value="Strategy">Strategy</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label className="block text-sm font-medium mb-3">
+                Categories (select at least one)
+              </Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-4 border rounded-lg">
+                {CATEGORIES.map((cat) => (
+                  <div key={cat} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`category-edit-${cat}`}
+                      checked={categories.includes(cat)}
+                      onCheckedChange={() => toggleCategory(cat)}
+                    />
+                    <label
+                      htmlFor={`category-edit-${cat}`}
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                    >
+                      {cat}
+                    </label>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="space-y-2">

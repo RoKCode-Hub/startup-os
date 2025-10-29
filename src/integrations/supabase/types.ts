@@ -17,7 +17,7 @@ export type Database = {
       blog_posts: {
         Row: {
           author: string
-          category: string
+          category: string[]
           content: string
           created_at: string
           date: string
@@ -31,7 +31,7 @@ export type Database = {
         }
         Insert: {
           author: string
-          category: string
+          category?: string[]
           content: string
           created_at?: string
           date: string
@@ -45,7 +45,7 @@ export type Database = {
         }
         Update: {
           author?: string
-          category?: string
+          category?: string[]
           content?: string
           created_at?: string
           date?: string

@@ -71,7 +71,13 @@ const Blog = () => {
                 <div className="h-48 bg-gray-100"></div>
                 <CardContent className="p-6">
                   <div className="flex justify-between items-center mb-3">
-                    <span className="text-sm text-gray-600">{post.category}</span>
+                    <div className="flex flex-wrap gap-1">
+                      {post.category.map((cat, index) => (
+                        <span key={index} className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">
+                          {cat}
+                        </span>
+                      ))}
+                    </div>
                     <span className="text-sm text-gray-600">{post.date}</span>
                   </div>
                   <h3 className="text-xl font-bold mb-2">{post.title}</h3>

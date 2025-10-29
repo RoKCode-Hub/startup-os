@@ -49,11 +49,16 @@ const BlogPost = () => {
             
             <div className="mb-8">
               <h1 className="text-3xl md:text-4xl font-bold mb-6">{post.title}</h1>
-              <div className="flex items-center justify-between mb-8 text-gray-600">
-                <span>{post.category}</span>
-                <span className="mx-2">•</span>
+              <div className="flex items-center flex-wrap gap-2 mb-4">
+                {post.category.map((cat, index) => (
+                  <span key={index} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+                    {cat}
+                  </span>
+                ))}
+              </div>
+              <div className="flex items-center gap-2 text-gray-600">
                 <span>By {post.author}</span>
-                <span className="mx-2">•</span>
+                <span>•</span>
                 <span>{post.date}</span>
               </div>
             </div>

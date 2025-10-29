@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Checkbox } from "@/components/ui/checkbox";
 import { FilePen, CalendarIcon } from "lucide-react";
 import { useBlogStore } from "@/stores/blogStore";
 import ReactQuill from "react-quill";
@@ -17,13 +18,22 @@ import "react-quill/dist/quill.snow.css";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
+const CATEGORIES = [
+  "Leadership",
+  "Execution",
+  "Direction",
+  "Collaboration",
+  "Systems Processes and Structure",
+  "Data"
+];
+
 const BlogEditor = () => {
   const navigate = useNavigate();
   const { addPost } = useBlogStore();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [excerpt, setExcerpt] = useState("");
-  const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState<string[]>([]);
   const [publishDate, setPublishDate] = useState<Date>(new Date());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageResizeEnabled, setImageResizeEnabled] = useState(false);
@@ -106,8 +116,8 @@ const BlogEditor = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!title.trim() || !content.trim() || !excerpt.trim() || !category.trim()) {
-      toast.error("Please fill in all fields");
+    if (!title.trim() || !content.trim() || !excerpt.trim() || categories.length === 0) {
+      toast.error("Please fill in all fields and select at least one category");
       return;
     }
     
@@ -117,7 +127,7 @@ const BlogEditor = () => {
       title: title.trim(),
       content: content.trim(),
       excerpt: excerpt.trim(),
-      category: category.trim(),
+      category: categories,
       author: "Admin", // Default author, could be made dynamic
       date: format(publishDate, 'MMMM d, yyyy'),
       tags: [] // Default empty tags, could be enhanced with tag selection
@@ -133,6 +143,14 @@ const BlogEditor = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const toggleCategory = (category: string) => {
+    setCategories(prev => 
+      prev.includes(category)
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
+    );
   };
 
   return (
@@ -162,16 +180,26 @@ const BlogEditor = () => {
               </div>
               
               <div>
-                <label htmlFor="category" className="block text-sm font-medium mb-2">
-                  Category
-                </label>
-                <Input
-                  id="category"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  placeholder="E.g. Development, Design, Technology"
-                  className="w-full"
-                />
+                <Label className="block text-sm font-medium mb-3">
+                  Categories (select at least one)
+                </Label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-4 border rounded-lg">
+                  {CATEGORIES.map((cat) => (
+                    <div key={cat} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`category-${cat}`}
+                        checked={categories.includes(cat)}
+                        onCheckedChange={() => toggleCategory(cat)}
+                      />
+                      <label
+                        htmlFor={`category-${cat}`}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                      >
+                        {cat}
+                      </label>
+                    </div>
+                  ))}
+                </div>
               </div>
               
               <div>

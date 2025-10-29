@@ -215,13 +215,19 @@ const Index = () => {
               
               <CardContent className="p-8 flex flex-col h-80">
                 <div className="flex justify-between items-start mb-3 text-sm">
-                  <span className={`px-3 py-1 rounded-full font-medium ${
-                    item.type === 'podcast' 
-                      ? 'bg-accent1/20 text-accent1' 
-                      : 'bg-gray-200 text-gray-800'
-                  }`}>
-                    {item.type === 'podcast' ? 'Podcast' : (item as any).category}
-                  </span>
+                  <div className="flex flex-wrap gap-1">
+                    {item.type === 'podcast' ? (
+                      <span className="px-3 py-1 rounded-full font-medium bg-accent1/20 text-accent1">
+                        Podcast
+                      </span>
+                    ) : (
+                      (item as any).category.map((cat: string, idx: number) => (
+                        <span key={idx} className="px-2 py-1 rounded-full font-medium bg-gray-200 text-gray-800 text-xs">
+                          {cat}
+                        </span>
+                      ))
+                    )}
+                  </div>
                   <div className="flex items-center gap-2">
                     <span className="text-gray-500">
                       {item.date}

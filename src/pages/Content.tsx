@@ -298,10 +298,10 @@ const Content = () => {
                             {item.type === 'blog' ? (
                               <>
                                 <span>By {item.author}</span>
-                                {item.category && (
+                                {item.category && item.category.length > 0 && (
                                   <>
                                     <span>•</span>
-                                    <span>{item.category}</span>
+                                    <span>{item.category.join(', ')}</span>
                                   </>
                                 )}
                               </>

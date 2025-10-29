@@ -8,7 +8,7 @@ export interface BlogPost {
   excerpt: string;
   author: string;
   date: string;
-  category: string;
+  category: string[];
   tags: string[];
   published?: boolean;
 }
