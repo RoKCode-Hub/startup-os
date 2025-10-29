@@ -103,7 +103,7 @@ const BlogEditor = () => {
     "image",
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!title.trim() || !content.trim() || !excerpt.trim() || !category.trim()) {
@@ -114,7 +114,6 @@ const BlogEditor = () => {
     setIsSubmitting(true);
     
     const newPost = {
-      id: Date.now(),
       title: title.trim(),
       content: content.trim(),
       excerpt: excerpt.trim(),
@@ -125,7 +124,7 @@ const BlogEditor = () => {
     };
     
     try {
-      addPost(newPost);
+      await addPost(newPost);
       toast.success("Blog post published successfully!");
       navigate("/blog");
     } catch (error) {

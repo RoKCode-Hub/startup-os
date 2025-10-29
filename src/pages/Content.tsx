@@ -44,18 +44,19 @@ const STARTUP_OS_TAGS = [
 
 const Content = () => {
   const navigate = useNavigate();
-  const { posts, deletePost } = useBlogStore();
+  const { posts, fetchPosts, deletePost } = useBlogStore();
   const { isAuthenticated, user } = useAuthStore();
   const [podcastEpisodes, setPodcastEpisodes] = useState<PodcastEpisode[]>([]);
   const [contentTypeFilter, setContentTypeFilter] = useState<string>("all");
   const [tagFilter, setTagFilter] = useState<string>("all");
   const [showPodcastUpload, setShowPodcastUpload] = useState(false);
   const [editingEpisode, setEditingEpisode] = useState<PodcastEpisode | null>(null);
-  const [deletingBlogId, setDeletingBlogId] = useState<number | null>(null);
+  const [deletingBlogId, setDeletingBlogId] = useState<string | null>(null);
 
   useEffect(() => {
+    fetchPosts();
     fetchPodcastEpisodes();
-  }, []);
+  }, [fetchPosts]);
 
   const fetchPodcastEpisodes = async () => {
     try {
@@ -112,9 +113,9 @@ const Content = () => {
     return item.type === 'blog' ? item.date : item.created_at;
   };
 
-  const handleDeleteBlogPost = () => {
+  const handleDeleteBlogPost = async () => {
     if (deletingBlogId) {
-      deletePost(deletingBlogId);
+      await deletePost(deletingBlogId);
       setDeletingBlogId(null);
       toast({
         title: "Blog post deleted",

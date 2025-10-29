@@ -11,7 +11,7 @@ const BlogPost = () => {
   const navigate = useNavigate();
   const { getPostById } = useBlogStore();
   
-  const post = getPostById(Number(id));
+  const post = getPostById(id!);
   
   if (!post) {
     return (

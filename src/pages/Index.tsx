@@ -15,7 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
-  const { posts } = useBlogStore();
+  const { posts, fetchPosts } = useBlogStore();
   const navigate = useNavigate();
   const [aboutUsImage, setAboutUsImage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,6 +23,8 @@ const Index = () => {
   
   // Load about us image on component mount
   useEffect(() => {
+    fetchPosts();
+    
     const loadAboutUsImage = async () => {
       try {
         const { data } = await supabase.storage
@@ -44,7 +46,7 @@ const Index = () => {
     };
 
     loadAboutUsImage();
-  }, []);
+  }, [fetchPosts]);
   
   // Get the latest 3 posts
   const latestPosts = posts.slice(0, 3);

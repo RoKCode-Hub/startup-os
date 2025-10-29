@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -10,20 +10,23 @@ import { useBlogStore } from "@/stores/blogStore";
 import { useAuthStore } from "@/stores/authStore";
 import { FilePen, Trash2 } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const Blog = () => {
   const navigate = useNavigate();
-  const { posts, deletePost, clearAllPosts } = useBlogStore();
+  const { posts, fetchPosts, deletePost, loading } = useBlogStore();
   const { isAuthenticated, user } = useAuthStore();
   const isAdmin = isAuthenticated && !!user;
-  const [deletingBlogId, setDeletingBlogId] = useState<number | null>(null);
-  
-  console.log('Blog page - Current posts count:', posts.length);
+  const [deletingBlogId, setDeletingBlogId] = useState<string | null>(null);
+  const { toast } = useToast();
 
-  const handleDeleteBlogPost = () => {
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
+
+  const handleDeleteBlogPost = async () => {
     if (deletingBlogId) {
-      deletePost(deletingBlogId);
+      await deletePost(deletingBlogId);
       setDeletingBlogId(null);
       toast({
         title: "Blog post deleted",
@@ -44,26 +47,23 @@ const Blog = () => {
           className="pt-16"
         >
           {isAdmin && (
-            <div className="flex justify-end mb-8 gap-2">
-              <Button 
-                onClick={() => {
-                  clearAllPosts();
-                  toast({
-                    title: "All posts cleared",
-                    description: "All blog posts have been removed from storage.",
-                  });
-                }} 
-                variant="outline"
-                className="flex items-center gap-2"
-              >
-                Clear All
-              </Button>
+            <div className="flex justify-end mb-8">
               <Button onClick={() => navigate("/blog/new")} className="flex items-center gap-2">
                 <FilePen className="h-4 w-4" />
                 New Post
               </Button>
             </div>
           )}
+          
+          {loading ? (
+            <div className="text-center py-12">
+              <p className="text-lg text-muted-foreground">Loading posts...</p>
+            </div>
+          ) : posts.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-lg text-muted-foreground">No blog posts yet.</p>
+            </div>
+          ) : null}
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((post) => (

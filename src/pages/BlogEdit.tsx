@@ -23,7 +23,7 @@ const BlogEdit = () => {
   const { getPostById, editPost } = useBlogStore();
   const { toast } = useToast();
   
-  const post = getPostById(Number(id));
+  const post = getPostById(id!);
   
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
@@ -97,7 +97,7 @@ const BlogEdit = () => {
     'link', 'image'
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!title.trim() || !content.trim() || !excerpt.trim()) {
@@ -112,7 +112,7 @@ const BlogEdit = () => {
     setIsSubmitting(true);
 
     try {
-      editPost(Number(id), {
+      await editPost(id!, {
         title: title.trim(),
         category,
         excerpt: excerpt.trim(),
