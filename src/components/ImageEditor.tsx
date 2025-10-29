@@ -47,28 +47,28 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
       setFabricCanvas(canvas);
 
       // Create Fabric image from the already-loaded img element
-      FabricImage.fromObject({ src: img.src }).then((fabricImg) => {
-        // Scale image to fit canvas
-        const scale = Math.min(
-          canvas.width! / fabricImg.width!,
-          canvas.height! / fabricImg.height!
-        );
-        
-        fabricImg.set({
-          scaleX: scale,
-          scaleY: scale,
-          left: (canvas.width! - fabricImg.width! * scale) / 2,
-          top: (canvas.height! - fabricImg.height! * scale) / 2,
-        });
-
-        canvas.add(fabricImg);
-        canvas.centerObject(fabricImg);
-        setOriginalImage(fabricImg);
-        canvas.renderAll();
-        setIsImageLoading(false);
-        console.log('Canvas ready');
-        toast.success("Image loaded successfully!");
+      const fabricImg = new FabricImage(img);
+      
+      // Scale image to fit canvas
+      const scale = Math.min(
+        canvas.width! / fabricImg.width!,
+        canvas.height! / fabricImg.height!
+      );
+      
+      fabricImg.set({
+        scaleX: scale,
+        scaleY: scale,
+        left: (canvas.width! - fabricImg.width! * scale) / 2,
+        top: (canvas.height! - fabricImg.height! * scale) / 2,
       });
+
+      canvas.add(fabricImg);
+      canvas.centerObject(fabricImg);
+      setOriginalImage(fabricImg);
+      canvas.renderAll();
+      setIsImageLoading(false);
+      console.log('Canvas ready with image');
+      toast.success("Image loaded successfully!");
     };
 
     img.onerror = (error) => {
