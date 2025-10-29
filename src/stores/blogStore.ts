@@ -19,6 +19,7 @@ interface BlogStore {
   editPost: (id: number, updatedPost: Partial<BlogPost>) => void;
   deletePost: (id: number) => void;
   getPostById: (id: number) => BlogPost | undefined;
+  clearAllPosts: () => void;
 }
 
 const initialPosts = [
@@ -105,6 +106,7 @@ export const useBlogStore = create<BlogStore>()(
         });
       },
       getPostById: (id) => get().posts.find((post) => post.id === id),
+      clearAllPosts: () => set({ posts: [] }),
     }),
     {
       name: 'blog-storage',

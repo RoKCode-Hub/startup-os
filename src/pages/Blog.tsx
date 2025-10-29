@@ -14,7 +14,7 @@ import { toast } from "@/hooks/use-toast";
 
 const Blog = () => {
   const navigate = useNavigate();
-  const { posts, deletePost } = useBlogStore();
+  const { posts, deletePost, clearAllPosts } = useBlogStore();
   const { isAuthenticated, user } = useAuthStore();
   const isAdmin = isAuthenticated && !!user;
   const [deletingBlogId, setDeletingBlogId] = useState<number | null>(null);
@@ -44,7 +44,20 @@ const Blog = () => {
           className="pt-16"
         >
           {isAdmin && (
-            <div className="flex justify-end mb-8">
+            <div className="flex justify-end mb-8 gap-2">
+              <Button 
+                onClick={() => {
+                  clearAllPosts();
+                  toast({
+                    title: "All posts cleared",
+                    description: "All blog posts have been removed from storage.",
+                  });
+                }} 
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                Clear All
+              </Button>
               <Button onClick={() => navigate("/blog/new")} className="flex items-center gap-2">
                 <FilePen className="h-4 w-4" />
                 New Post
