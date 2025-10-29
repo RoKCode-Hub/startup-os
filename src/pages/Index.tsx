@@ -79,6 +79,7 @@ const Index = () => {
 
   const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    e.stopPropagation();
     setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
@@ -101,8 +102,10 @@ const Index = () => {
         description: "We'll get back to you as soon as possible.",
       });
 
-      // Reset form
-      e.currentTarget.reset();
+      // Reset form without scrolling
+      requestAnimationFrame(() => {
+        e.currentTarget.reset();
+      });
     } catch (error) {
       console.error('Error sending message:', error);
       toast({
