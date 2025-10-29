@@ -12,11 +12,14 @@ import { useBlogStore } from "@/stores/blogStore";
 import { useNavigate } from "react-router-dom";
 import { Play } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const { posts } = useBlogStore();
   const navigate = useNavigate();
   const [aboutUsImage, setAboutUsImage] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
   
   // Load about us image on component mount
   useEffect(() => {
@@ -73,6 +76,44 @@ const Index = () => {
       guests: "Lisa Chen, COO of DistantWork"
     }
   ];
+
+  const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      subject: formData.get('subject') as string,
+      message: formData.get('message') as string,
+    };
+
+    try {
+      const { data: result, error } = await supabase.functions.invoke('send-contact-email', {
+        body: data,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Message sent!",
+        description: "We'll get back to you as soon as possible.",
+      });
+
+      // Reset form
+      e.currentTarget.reset();
+    } catch (error) {
+      console.error('Error sending message:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -252,13 +293,15 @@ const Index = () => {
           <div className="absolute -top-6 -left-6 w-12 h-12 border-t-2 border-l-2 border-accent1/30"></div>
           <div className="absolute -bottom-6 -right-6 w-12 h-12 border-b-2 border-r-2 border-accent1/30"></div>
           
-          <form className="space-y-8 bg-gray-800 p-8 md:p-12 rounded-2xl shadow-elegant">
+          <form onSubmit={handleContactSubmit} className="space-y-8 bg-gray-800 p-8 md:p-12 rounded-2xl shadow-elegant">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium mb-2 text-gray-300">Name</label>
                 <input 
                   type="text" 
-                  id="name" 
+                  id="name"
+                  name="name"
+                  required
                   className="w-full bg-gray-700 border border-gray-600 rounded-lg p-4 text-white focus:border-accent1 focus:ring-2 focus:ring-accent1/30 focus:outline-none transition-all"
                   placeholder="Your Name"
                 />
@@ -267,7 +310,9 @@ const Index = () => {
                 <label htmlFor="email" className="block text-sm font-medium mb-2 text-gray-300">Email</label>
                 <input 
                   type="email" 
-                  id="email" 
+                  id="email"
+                  name="email"
+                  required
                   className="w-full bg-gray-700 border border-gray-600 rounded-lg p-4 text-white focus:border-accent1 focus:ring-2 focus:ring-accent1/30 focus:outline-none transition-all"
                   placeholder="contact@howto-venture.com"
                 />
@@ -277,7 +322,9 @@ const Index = () => {
               <label htmlFor="subject" className="block text-sm font-medium mb-2 text-gray-300">Subject</label>
               <input 
                 type="text" 
-                id="subject" 
+                id="subject"
+                name="subject"
+                required
                 className="w-full bg-gray-700 border border-gray-600 rounded-lg p-4 text-white focus:border-accent1 focus:ring-2 focus:ring-accent1/30 focus:outline-none transition-all"
                 placeholder="Project Inquiry"
               />
@@ -285,15 +332,21 @@ const Index = () => {
             <div>
               <label htmlFor="message" className="block text-sm font-medium mb-2 text-gray-300">Message</label>
               <textarea 
-                id="message" 
+                id="message"
+                name="message"
+                required
                 rows={5}
                 className="w-full bg-gray-700 border border-gray-600 rounded-lg p-4 text-white focus:border-accent1 focus:ring-2 focus:ring-accent1/30 focus:outline-none transition-all"
                 placeholder="Tell us about your project..."
               ></textarea>
             </div>
             <div>
-              <Button className="w-full bg-accent1 text-white hover:bg-accent1/90 py-6 rounded-lg text-lg font-medium">
-                Send Message
+              <Button 
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-accent1 text-white hover:bg-accent1/90 py-6 rounded-lg text-lg font-medium disabled:opacity-50"
+              >
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </Button>
             </div>
           </form>
