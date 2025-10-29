@@ -52,14 +52,6 @@ const Index = () => {
   // Mock podcast episodes data
   const podcastEpisodes = [
     {
-      id: 1,
-      title: "Founding a Tech Startup",
-      description: "We talk with successful founders about the challenges of starting a tech company.",
-      duration: "45:23",
-      date: "May 2, 2025",
-      guests: "Emily White, CEO of TechLaunch"
-    },
-    {
       id: 2,
       title: "Venture Capital Insights",
       description: "Understanding how VCs evaluate startups and what they look for in founders.",
