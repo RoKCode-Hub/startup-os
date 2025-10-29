@@ -266,7 +266,10 @@ const Index = () => {
                       <Button 
                         variant="outline" 
                         className="flex items-center gap-3 w-full justify-center rounded-full border-accent1 text-accent1 hover:bg-accent1 hover:text-white"
-                        onClick={() => navigate(`/blog/post/${item.id}`)}
+                        onClick={() => {
+                          navigate(`/blog/post/${item.id}`);
+                          window.scrollTo(0, 0);
+                        }}
                       >
                         Read More
                       </Button>
