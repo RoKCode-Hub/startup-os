@@ -28,62 +28,56 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
       return;
     }
 
-    console.log('Preloading image...');
+    console.log('Initializing canvas and loading image...');
     setIsImageLoading(true);
 
-    // Preload the image using native HTML Image element for faster loading
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    
-    img.onload = () => {
-      console.log('Image preloaded, initializing canvas...');
-      
-      const canvas = new FabricCanvas(canvasRef.current!, {
-        width: 600,
-        height: 400,
-        backgroundColor: '#ffffff',
+    // Initialize canvas first
+    const canvas = new FabricCanvas(canvasRef.current, {
+      width: 600,
+      height: 400,
+      backgroundColor: '#ffffff',
+    });
+
+    console.log('Canvas created');
+    setFabricCanvas(canvas);
+
+    // Load image using FabricImage.fromURL (recommended for Fabric.js v6)
+    FabricImage.fromURL(imageUrl, {
+      crossOrigin: 'anonymous'
+    })
+      .then((img) => {
+        console.log('Image loaded successfully');
+        
+        // Scale image to fit canvas
+        const scale = Math.min(
+          canvas.width! / img.width!,
+          canvas.height! / img.height!
+        );
+        
+        img.set({
+          scaleX: scale,
+          scaleY: scale,
+          left: (canvas.width! - img.width! * scale) / 2,
+          top: (canvas.height! - img.height! * scale) / 2,
+        });
+
+        canvas.add(img);
+        canvas.centerObject(img);
+        setOriginalImage(img);
+        canvas.renderAll();
+        setIsImageLoading(false);
+        console.log('Image added to canvas and ready');
+        toast.success("Image loaded successfully!");
+      })
+      .catch((error) => {
+        console.error('Error loading image:', error);
+        setIsImageLoading(false);
+        toast.error("Failed to load image");
       });
-
-      setFabricCanvas(canvas);
-
-      // Create Fabric image from the already-loaded img element
-      const fabricImg = new FabricImage(img);
-      
-      // Scale image to fit canvas
-      const scale = Math.min(
-        canvas.width! / fabricImg.width!,
-        canvas.height! / fabricImg.height!
-      );
-      
-      fabricImg.set({
-        scaleX: scale,
-        scaleY: scale,
-        left: (canvas.width! - fabricImg.width! * scale) / 2,
-        top: (canvas.height! - fabricImg.height! * scale) / 2,
-      });
-
-      canvas.add(fabricImg);
-      canvas.centerObject(fabricImg);
-      setOriginalImage(fabricImg);
-      canvas.renderAll();
-      setIsImageLoading(false);
-      console.log('Canvas ready with image');
-      toast.success("Image loaded successfully!");
-    };
-
-    img.onerror = (error) => {
-      console.error('Error loading image:', error);
-      setIsImageLoading(false);
-      toast.error("Failed to load image");
-    };
-
-    img.src = imageUrl;
 
     return () => {
-      console.log('Cleaning up...');
-      if (fabricCanvas) {
-        fabricCanvas.dispose();
-      }
+      console.log('Cleaning up canvas...');
+      canvas.dispose();
       setFabricCanvas(null);
       setOriginalImage(null);
     };
