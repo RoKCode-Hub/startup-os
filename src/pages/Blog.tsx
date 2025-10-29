@@ -15,6 +15,8 @@ const Blog = () => {
   const { posts } = useBlogStore();
   const { isAuthenticated, user } = useAuthStore();
   const isAdmin = isAuthenticated && !!user;
+  
+  console.log('Blog page - Current posts count:', posts.length);
 
   return (
     <div className="min-h-screen flex flex-col">

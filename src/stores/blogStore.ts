@@ -96,9 +96,14 @@ export const useBlogStore = create<BlogStore>()(
           post.id === id ? { ...post, ...updatedPost } : post
         )
       })),
-      deletePost: (id) => set((state) => ({
-        posts: state.posts.filter((post) => post.id !== id)
-      })),
+      deletePost: (id) => {
+        console.log('Deleting post with id:', id);
+        set((state) => {
+          const newPosts = state.posts.filter((post) => post.id !== id);
+          console.log('Posts after delete:', newPosts.length, 'posts remaining');
+          return { posts: newPosts };
+        });
+      },
       getPostById: (id) => get().posts.find((post) => post.id === id),
     }),
     {
