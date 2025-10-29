@@ -28,56 +28,62 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
       return;
     }
 
-    console.log('Initializing Fabric.js canvas...');
+    console.log('Preloading image...');
     setIsImageLoading(true);
 
-    const canvas = new FabricCanvas(canvasRef.current, {
-      width: 600,
-      height: 400,
-      backgroundColor: '#ffffff',
-    });
-
-    console.log('Canvas created:', canvas);
-    setFabricCanvas(canvas);
-
-    // Load the image
-    console.log('Loading image from URL:', imageUrl);
-    FabricImage.fromURL(imageUrl, {
-      crossOrigin: 'anonymous'
-    }).then((img) => {
-      console.log('Image loaded successfully:', img);
+    // Preload the image using native HTML Image element for faster loading
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    
+    img.onload = () => {
+      console.log('Image preloaded, initializing canvas...');
       
-      // Scale image to fit canvas
-      const scale = Math.min(
-        canvas.width! / img.width!,
-        canvas.height! / img.height!
-      );
-      
-      console.log('Scaling image with factor:', scale);
-      
-      img.set({
-        scaleX: scale,
-        scaleY: scale,
-        left: (canvas.width! - img.width! * scale) / 2,
-        top: (canvas.height! - img.height! * scale) / 2,
+      const canvas = new FabricCanvas(canvasRef.current!, {
+        width: 600,
+        height: 400,
+        backgroundColor: '#ffffff',
       });
 
-      canvas.add(img);
-      canvas.centerObject(img);
-      setOriginalImage(img);
-      canvas.renderAll();
-      setIsImageLoading(false);
-      console.log('Image added to canvas successfully');
-      toast.success("Image loaded successfully!");
-    }).catch((error) => {
+      setFabricCanvas(canvas);
+
+      // Create Fabric image from the already-loaded img element
+      FabricImage.fromObject({ src: img.src }).then((fabricImg) => {
+        // Scale image to fit canvas
+        const scale = Math.min(
+          canvas.width! / fabricImg.width!,
+          canvas.height! / fabricImg.height!
+        );
+        
+        fabricImg.set({
+          scaleX: scale,
+          scaleY: scale,
+          left: (canvas.width! - fabricImg.width! * scale) / 2,
+          top: (canvas.height! - fabricImg.height! * scale) / 2,
+        });
+
+        canvas.add(fabricImg);
+        canvas.centerObject(fabricImg);
+        setOriginalImage(fabricImg);
+        canvas.renderAll();
+        setIsImageLoading(false);
+        console.log('Canvas ready');
+        toast.success("Image loaded successfully!");
+      });
+    };
+
+    img.onerror = (error) => {
       console.error('Error loading image:', error);
       setIsImageLoading(false);
       toast.error("Failed to load image");
-    });
+    };
+
+    img.src = imageUrl;
 
     return () => {
-      console.log('Disposing canvas...');
-      canvas.dispose();
+      console.log('Cleaning up...');
+      if (fabricCanvas) {
+        fabricCanvas.dispose();
+      }
       setFabricCanvas(null);
       setOriginalImage(null);
     };
