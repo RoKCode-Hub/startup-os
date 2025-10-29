@@ -17,15 +17,19 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [fabricCanvas, setFabricCanvas] = useState<FabricCanvas | null>(null);
   const [originalImage, setOriginalImage] = useState<FabricImage | null>(null);
+  const [isImageLoading, setIsImageLoading] = useState(false);
   const [isGrayscale, setIsGrayscale] = useState(false);
   const [zoom, setZoom] = useState([100]);
   const [brightness, setBrightness] = useState([0]);
   const [contrast, setContrast] = useState([0]);
 
   useEffect(() => {
-    if (!canvasRef.current || !isOpen) return;
+    if (!canvasRef.current || !isOpen) {
+      return;
+    }
 
     console.log('Initializing Fabric.js canvas...');
+    setIsImageLoading(true);
 
     const canvas = new FabricCanvas(canvasRef.current, {
       width: 600,
@@ -62,16 +66,20 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
       canvas.centerObject(img);
       setOriginalImage(img);
       canvas.renderAll();
+      setIsImageLoading(false);
       console.log('Image added to canvas successfully');
       toast.success("Image loaded successfully!");
     }).catch((error) => {
       console.error('Error loading image:', error);
+      setIsImageLoading(false);
       toast.error("Failed to load image");
     });
 
     return () => {
       console.log('Disposing canvas...');
       canvas.dispose();
+      setFabricCanvas(null);
+      setOriginalImage(null);
     };
   }, [imageUrl, isOpen]);
 
@@ -337,9 +345,13 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
               <Button variant="outline" onClick={onClose}>
                 Cancel
               </Button>
-              <Button onClick={handleSave} className="flex items-center gap-2">
+              <Button 
+                onClick={handleSave} 
+                className="flex items-center gap-2"
+                disabled={isImageLoading || !fabricCanvas || !originalImage}
+              >
                 <Save size={16} />
-                Save Changes
+                {isImageLoading ? "Loading..." : "Save Changes"}
               </Button>
             </div>
           </div>
