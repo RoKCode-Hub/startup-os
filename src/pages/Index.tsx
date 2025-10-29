@@ -49,25 +49,32 @@ const Index = () => {
   // Get the latest 3 posts
   const latestPosts = posts.slice(0, 3);
   
-  // Mock podcast episodes data
-  const podcastEpisodes = [
-    {
-      id: 2,
-      title: "Venture Capital Insights",
-      description: "Understanding how VCs evaluate startups and what they look for in founders.",
-      duration: "51:07",
-      date: "April 25, 2025",
-      guests: "Mark Johnson, Partner at Horizon Ventures"
-    },
-    {
-      id: 3,
-      title: "Building Remote Teams",
-      description: "How to build and manage highly effective remote teams across time zones.",
-      duration: "38:15",
-      date: "April 18, 2025",
-      guests: "Lisa Chen, COO of DistantWork"
-    }
-  ];
+  // Fetch real podcast episodes from database
+  const [podcastEpisodes, setPodcastEpisodes] = useState<any[]>([]);
+  
+  useEffect(() => {
+    const fetchPodcasts = async () => {
+      const { data } = await supabase
+        .from('podcast_episodes')
+        .select('*')
+        .eq('published', true)
+        .order('created_at', { ascending: false })
+        .limit(3);
+      
+      if (data) {
+        setPodcastEpisodes(data.map(ep => ({
+          id: ep.id,
+          title: ep.title,
+          description: ep.description,
+          duration: ep.duration,
+          date: new Date(ep.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+          guests: ep.guests
+        })));
+      }
+    };
+    
+    fetchPodcasts();
+  }, []);
 
   const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
