@@ -18,8 +18,13 @@ const AboutUsImageUpload = ({ onImageChange, currentImageUrl }: AboutUsImageUplo
   const { isAuthenticated } = useAuthStore();
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('handleFileUpload called');
     const file = event.target.files?.[0];
-    if (!file) return;
+    console.log('Selected file:', file);
+    if (!file) {
+      console.log('No file selected');
+      return;
+    }
 
     if (!isAuthenticated) {
       toast.error("You must be logged in to upload images");
@@ -182,7 +187,11 @@ const AboutUsImageUpload = ({ onImageChange, currentImageUrl }: AboutUsImageUplo
           
           <Button
             size="sm"
-            onClick={() => fileInputRef.current?.click()}
+            onClick={() => {
+              console.log('Upload button clicked');
+              console.log('fileInputRef.current:', fileInputRef.current);
+              fileInputRef.current?.click();
+            }}
             disabled={uploading}
             className="rounded-full h-8 w-8 p-0 bg-accent1 hover:bg-accent1/90"
             title="Upload image"
