@@ -63,10 +63,6 @@ const BlogPost = () => {
               </div>
             </div>
             
-            <div className="h-64 bg-gray-100 mb-8 rounded">
-              {/* Post featured image would go here */}
-            </div>
-            
             <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: post.content }} />
           </div>
         </div>
