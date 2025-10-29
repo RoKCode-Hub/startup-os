@@ -67,22 +67,34 @@ const Blog = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((post) => (
-              <Card key={post.id} className="overflow-hidden hover:shadow-md transition-shadow duration-300">
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-center mb-3">
-                    <div className="flex flex-wrap gap-1">
+              <Card 
+                key={post.id} 
+                className="group overflow-hidden border border-gray-200 hover:border-primary/30 shadow-sm hover:shadow-xl transition-all duration-300 bg-white"
+              >
+                <CardContent className="p-6 flex flex-col h-full">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex flex-wrap gap-2">
                       {post.category.map((cat, index) => (
-                        <span key={index} className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">
+                        <span 
+                          key={index} 
+                          className="text-xs px-3 py-1 bg-primary/10 text-primary rounded-full font-medium"
+                        >
                           {cat}
                         </span>
                       ))}
                     </div>
-                    <span className="text-sm text-gray-600">{post.date}</span>
                   </div>
-                  <h3 className="text-xl font-bold mb-2">{post.title}</h3>
-                  <p className="text-gray-700 mb-4">{post.excerpt}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">{post.date}</span>
+                  
+                  <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                    {post.title}
+                  </h3>
+                  
+                  <p className="text-muted-foreground mb-4 line-clamp-3 flex-grow">
+                    {post.excerpt}
+                  </p>
+                  
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <span className="text-sm text-muted-foreground">{post.date}</span>
                     <div className="flex items-center gap-2">
                       {isAdmin && (
                         <>
@@ -105,12 +117,14 @@ const Blog = () => {
                           </Button>
                         </>
                       )}
-                      <button 
+                      <Button
+                        variant="outline"
+                        size="sm"
                         onClick={() => navigate(`/blog/post/${post.id}`)} 
-                        className="text-black font-medium hover:underline"
+                        className="font-medium border-primary/20 text-primary hover:bg-primary hover:text-white transition-colors"
                       >
                         Read More
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </CardContent>
