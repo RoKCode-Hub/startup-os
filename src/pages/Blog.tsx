@@ -8,15 +8,29 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useBlogStore } from "@/stores/blogStore";
 import { useAuthStore } from "@/stores/authStore";
-import { FilePen } from "lucide-react";
+import { FilePen, Trash2 } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { toast } from "@/hooks/use-toast";
 
 const Blog = () => {
   const navigate = useNavigate();
-  const { posts } = useBlogStore();
+  const { posts, deletePost } = useBlogStore();
   const { isAuthenticated, user } = useAuthStore();
   const isAdmin = isAuthenticated && !!user;
+  const [deletingBlogId, setDeletingBlogId] = useState<number | null>(null);
   
   console.log('Blog page - Current posts count:', posts.length);
+
+  const handleDeleteBlogPost = () => {
+    if (deletingBlogId) {
+      deletePost(deletingBlogId);
+      setDeletingBlogId(null);
+      toast({
+        title: "Blog post deleted",
+        description: "The blog post has been successfully deleted.",
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -53,15 +67,25 @@ const Blog = () => {
                     <span className="text-sm text-gray-600">By {post.author}</span>
                     <div className="flex items-center gap-2">
                       {isAdmin && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => navigate(`/blog/edit/${post.id}`)}
-                          className="flex items-center gap-1"
-                        >
-                          <FilePen className="h-3 w-3" />
-                          Edit
-                        </Button>
+                        <>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => navigate(`/blog/edit/${post.id}`)}
+                            className="flex items-center gap-1"
+                          >
+                            <FilePen className="h-3 w-3" />
+                            Edit
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setDeletingBlogId(post.id)}
+                            className="flex items-center gap-1 text-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </>
                       )}
                       <button 
                         onClick={() => navigate(`/blog/post/${post.id}`)} 
@@ -77,6 +101,23 @@ const Blog = () => {
           </div>
         </Section>
       </main>
+      
+      <AlertDialog open={!!deletingBlogId} onOpenChange={() => setDeletingBlogId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the blog post.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteBlogPost} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       
       <Footer />
     </div>
