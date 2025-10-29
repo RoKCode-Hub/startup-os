@@ -14,11 +14,13 @@ import {
 } from "@/components/ui/select";
 import { useBlogStore } from '@/stores/blogStore';
 import { useAuthStore } from '@/stores/authStore';
-import { FilePen, Play, Filter, Plus } from 'lucide-react';
+import { FilePen, Play, Filter, Plus, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import PodcastUploadForm from '@/components/PodcastUploadForm';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import PodcastEditForm from '@/components/PodcastEditForm';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { toast } from '@/hooks/use-toast';
 
 interface PodcastEpisode {
   id: string;
@@ -42,13 +44,14 @@ const STARTUP_OS_TAGS = [
 
 const Content = () => {
   const navigate = useNavigate();
-  const { posts } = useBlogStore();
+  const { posts, deletePost } = useBlogStore();
   const { isAuthenticated, user } = useAuthStore();
   const [podcastEpisodes, setPodcastEpisodes] = useState<PodcastEpisode[]>([]);
   const [contentTypeFilter, setContentTypeFilter] = useState<string>("all");
   const [tagFilter, setTagFilter] = useState<string>("all");
   const [showPodcastUpload, setShowPodcastUpload] = useState(false);
   const [editingEpisode, setEditingEpisode] = useState<PodcastEpisode | null>(null);
+  const [deletingBlogId, setDeletingBlogId] = useState<number | null>(null);
 
   useEffect(() => {
     fetchPodcastEpisodes();
@@ -107,6 +110,17 @@ const Content = () => {
 
   const getDisplayDate = (item: typeof allContent[0]) => {
     return item.type === 'blog' ? item.date : item.created_at;
+  };
+
+  const handleDeleteBlogPost = () => {
+    if (deletingBlogId) {
+      deletePost(deletingBlogId);
+      setDeletingBlogId(null);
+      toast({
+        title: "Blog post deleted",
+        description: "The blog post has been successfully deleted.",
+      });
+    }
   };
 
   return (
@@ -297,21 +311,33 @@ const Content = () => {
                           
                           <div className="flex items-center gap-2">
                             {isAuthenticated && (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => {
-                                  if (item.type === 'blog') {
-                                    navigate(`/blog/edit/${item.id}`);
-                                  } else {
-                                    setEditingEpisode(item as PodcastEpisode);
-                                  }
-                                }}
-                                className="flex items-center gap-1"
-                              >
-                                <FilePen className="h-3 w-3" />
-                                Edit
-                              </Button>
+                              <>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => {
+                                    if (item.type === 'blog') {
+                                      navigate(`/blog/edit/${item.id}`);
+                                    } else {
+                                      setEditingEpisode(item as PodcastEpisode);
+                                    }
+                                  }}
+                                  className="flex items-center gap-1"
+                                >
+                                  <FilePen className="h-3 w-3" />
+                                  Edit
+                                </Button>
+                                {item.type === 'blog' && (
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => setDeletingBlogId(item.id)}
+                                    className="flex items-center gap-1 text-destructive hover:text-destructive"
+                                  >
+                                    <Trash2 className="h-3 w-3" />
+                                  </Button>
+                                )}
+                              </>
                             )}
                             <Button 
                               variant="outline" 
@@ -355,6 +381,23 @@ const Content = () => {
           </div>
         </div>
       </main>
+
+      <AlertDialog open={!!deletingBlogId} onOpenChange={() => setDeletingBlogId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the blog post.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteBlogPost} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <Footer />
     </div>
