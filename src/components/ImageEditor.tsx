@@ -59,6 +59,10 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
           scaleY: scale,
           left: (canvas.width! - img.width! * scale) / 2,
           top: (canvas.height! - img.height! * scale) / 2,
+          selectable: true, // Make image movable
+          hasControls: false, // Disable resize controls
+          hasBorders: true, // Show selection border
+          lockRotation: true, // Prevent rotation
         });
 
         canvas.add(img);
@@ -67,7 +71,7 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
         canvas.renderAll();
         setIsImageLoading(false);
         console.log('Image added to canvas and ready');
-        toast.success("Image loaded successfully!");
+        toast.success("Image loaded - drag to reposition!");
       })
       .catch((error) => {
         console.error('Error loading image:', error);
@@ -236,7 +240,7 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
         <DialogHeader>
           <DialogTitle>Edit Image</DialogTitle>
           <DialogDescription>
-            Adjust your image with filters, zoom, and color effects. Click Save Changes when you're done.
+            Adjust your image with filters, zoom, and color effects. Drag the image to reposition it. Click Save Changes when you're done.
           </DialogDescription>
         </DialogHeader>
         
