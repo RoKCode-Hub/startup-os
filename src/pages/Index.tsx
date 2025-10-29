@@ -202,16 +202,14 @@ const Index = () => {
             return mixedContent;
           })().map((item) => (
             <Card key={`${item.type}-${item.id}`} className="overflow-hidden rounded-xl transition-all duration-300 card-hover border-0 shadow-soft hover:shadow-elegant bg-white">
-              {/* Unified header image section for both blog and podcast */}
-              <div className="h-56 relative overflow-hidden">
-                {item.type === 'blog' ? (
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-100"></div>
-                ) : (
+              {/* Header image section for podcast only */}
+              {item.type === 'podcast' && (
+                <div className="h-56 relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent1/20 to-accent1/10 flex items-center justify-center">
                     <Play size={48} className="text-accent1" />
                   </div>
-                )}
-              </div>
+                </div>
+              )}
               
               <CardContent className="p-8 flex flex-col h-80">
                 <div className="flex justify-between items-start mb-3 text-sm">
