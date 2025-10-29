@@ -69,7 +69,7 @@ const Blog = () => {
             {posts.map((post) => (
               <Card 
                 key={post.id} 
-                className="group overflow-hidden border border-gray-200 hover:border-primary/30 shadow-sm hover:shadow-xl transition-all duration-300 bg-white"
+                className="group overflow-hidden border-2 border-gray-200 hover:border-primary/50 shadow-lg hover:shadow-2xl transition-all duration-300 bg-white rounded-xl hover:-translate-y-1"
               >
                 <CardContent className="p-6 flex flex-col h-full">
                   <div className="flex justify-between items-start mb-4">
