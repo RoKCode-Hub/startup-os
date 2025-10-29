@@ -7,10 +7,15 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { FilePen } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { FilePen, CalendarIcon } from "lucide-react";
 import { useBlogStore } from "@/stores/blogStore";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 const BlogEditor = () => {
   const navigate = useNavigate();
@@ -19,6 +24,7 @@ const BlogEditor = () => {
   const [content, setContent] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [category, setCategory] = useState("");
+  const [publishDate, setPublishDate] = useState<Date>(new Date());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageResizeEnabled, setImageResizeEnabled] = useState(false);
 
@@ -114,11 +120,7 @@ const BlogEditor = () => {
       excerpt: excerpt.trim(),
       category: category.trim(),
       author: "Admin", // Default author, could be made dynamic
-      date: new Date().toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric'
-      }),
+      date: format(publishDate, 'MMMM d, yyyy'),
       tags: [] // Default empty tags, could be enhanced with tag selection
     };
     
@@ -171,6 +173,36 @@ const BlogEditor = () => {
                   placeholder="E.g. Development, Design, Technology"
                   className="w-full"
                 />
+              </div>
+              
+              <div>
+                <Label htmlFor="publishDate" className="block text-sm font-medium mb-2">
+                  Publish Date
+                </Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      id="publishDate"
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !publishDate && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {publishDate ? format(publishDate, "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={publishDate}
+                      onSelect={(date) => date && setPublishDate(date)}
+                      initialFocus
+                      className={cn("p-3 pointer-events-auto")}
+                    />
+                  </PopoverContent>
+                </Popover>
               </div>
               
               <div>

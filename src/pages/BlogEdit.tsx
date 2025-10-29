@@ -8,9 +8,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useBlogStore } from '@/stores/blogStore';
 import { useToast } from '@/components/ui/use-toast';
+import { CalendarIcon } from 'lucide-react';
+import { format, parse } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 const BlogEdit = () => {
   const { id } = useParams();
@@ -24,6 +29,7 @@ const BlogEdit = () => {
   const [category, setCategory] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
+  const [publishDate, setPublishDate] = useState<Date>(new Date());
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -36,6 +42,15 @@ const BlogEdit = () => {
     setCategory(post.category);
     setExcerpt(post.excerpt);
     setContent(post.content);
+    
+    // Parse the existing date string
+    try {
+      const parsedDate = parse(post.date, 'MMMM d, yyyy', new Date());
+      setPublishDate(parsedDate);
+    } catch (error) {
+      console.error('Error parsing date:', error);
+      setPublishDate(new Date());
+    }
   }, [post, navigate]);
 
   const imageHandler = () => {
@@ -102,6 +117,7 @@ const BlogEdit = () => {
         category,
         excerpt: excerpt.trim(),
         content,
+        date: format(publishDate, 'MMMM d, yyyy'),
       });
 
       toast({
@@ -180,6 +196,34 @@ const BlogEdit = () => {
                 rows={3}
                 required
               />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="publishDate">Publish Date</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    id="publishDate"
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !publishDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {publishDate ? format(publishDate, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={publishDate}
+                    onSelect={(date) => date && setPublishDate(date)}
+                    initialFocus
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
 
             <div className="space-y-2">
