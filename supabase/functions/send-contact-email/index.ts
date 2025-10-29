@@ -52,7 +52,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         from: 'Contact Form <onboarding@resend.dev>',
-        to: ['contact@howto-venture.com'], // Update this to your email
+        to: ['robin@startup-os.com'],
         reply_to: email,
         subject: `Contact Form: ${subject}`,
         html: `
