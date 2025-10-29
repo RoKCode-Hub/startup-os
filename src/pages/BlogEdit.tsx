@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -40,6 +40,29 @@ const BlogEdit = () => {
   const [content, setContent] = useState('');
   const [publishDate, setPublishDate] = useState<Date>(new Date());
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imageResizeEnabled, setImageResizeEnabled] = useState(false);
+
+  const quillRef = useRef<ReactQuill | null>(null);
+
+  // Register image resize module once on client and avoid race conditions
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const Quill = (await import('quill')).default;
+        if (!mounted) return;
+        (window as any).Quill = Quill;
+        const mod: any = await import('quill-image-resize-module');
+        const ImageResize = mod?.default ?? mod;
+        Quill.register('modules/imageResize', ImageResize);
+        if (mounted) setImageResizeEnabled(true);
+      } catch (e) {
+        console.error('Failed to set up Quill image resize:', e);
+        if (mounted) setImageResizeEnabled(false);
+      }
+    })();
+    return () => { mounted = false };
+  }, []);
 
   useEffect(() => {
     if (!post) {
@@ -73,10 +96,12 @@ const BlogEdit = () => {
       if (file) {
         const reader = new FileReader();
         reader.onload = () => {
-          const quill = (window as any).quillEditor;
+          const quill = quillRef.current?.getEditor?.();
+          const range = quill?.getSelection(true);
           if (quill) {
-            const range = quill.getSelection();
-            quill.insertEmbed(range.index, 'image', reader.result);
+            const index = range ? range.index : 0;
+            quill.insertEmbed(index, 'image', reader.result as string, 'user');
+            quill.setSelection(index + 1, 0, 'user');
           }
         };
         reader.readAsDataURL(file);
@@ -97,8 +122,10 @@ const BlogEdit = () => {
       handlers: {
         image: imageHandler
       }
-    }
-  }), []);
+    },
+    ...(imageResizeEnabled ? { imageResize: {} } : {}),
+    clipboard: { matchVisual: false }
+  }), [imageResizeEnabled]);
 
   const formats = [
     'header', 'bold', 'italic', 'underline', 'strike',
@@ -253,13 +280,15 @@ const BlogEdit = () => {
               <Label>Content *</Label>
               <div className="min-h-[400px]">
                 <ReactQuill
+                  key={imageResizeEnabled ? 'quill-with-resize' : 'quill-no-resize'}
+                  ref={quillRef}
                   theme="snow"
                   value={content}
                   onChange={setContent}
                   modules={modules}
                   formats={formats}
                   placeholder="Write your blog post content here..."
-                  style={{ height: '350px' }}
+                  className="bg-background rounded-md"
                 />
               </div>
             </div>
