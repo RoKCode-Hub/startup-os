@@ -178,101 +178,40 @@ const Index = () => {
         title="Latest Content"
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Create alternating pattern: blog, podcast, blog, podcast, etc. */}
-          {(() => {
-            const mixedContent = [];
-            
-            for (let i = 0; i < 3; i++) {
-              if (i % 2 === 0) {
-                // Even index: add blog post
-                const postIndex = Math.floor(i / 2);
-                if (postIndex < latestPosts.length) {
-                  mixedContent.push({ ...latestPosts[postIndex], type: 'blog' });
-                }
-              } else {
-                // Odd index: add podcast episode
-                const podcastIndex = Math.floor(i / 2);
-                if (podcastIndex < podcastEpisodes.length) {
-                  mixedContent.push({ ...podcastEpisodes[podcastIndex], type: 'podcast' });
-                }
-              }
-            }
-            return mixedContent;
-          })().map((item) => (
-            <Card key={`${item.type}-${item.id}`} className="overflow-hidden rounded-xl transition-all duration-300 card-hover border-2 border-gray-200 shadow-lg hover:shadow-2xl hover:border-accent1/30 bg-white">
-              {/* Header image section for podcast only */}
-              {item.type === 'podcast' && (
-                <div className="h-56 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-accent1/20 to-accent1/10 flex items-center justify-center">
-                    <Play size={48} className="text-accent1" />
-                  </div>
-                </div>
-              )}
-              
+          {latestPosts.map((item) => (
+            <Card key={item.id} className="overflow-hidden rounded-xl transition-all duration-300 card-hover border-2 border-gray-200 shadow-lg hover:shadow-2xl hover:border-accent1/30 bg-white">
               <CardContent className="p-8 flex flex-col h-80">
                 <div className="flex justify-between items-start mb-3 text-sm">
                   <div className="flex flex-wrap gap-1">
-                    {item.type === 'podcast' ? (
-                      <span className="px-3 py-1 rounded-full font-medium bg-accent1/20 text-accent1">
-                        Podcast
+                    {item.category.map((cat: string, idx: number) => (
+                      <span key={idx} className="px-2 py-1 rounded-full font-medium bg-gray-200 text-gray-800 text-xs">
+                        {cat}
                       </span>
-                    ) : (
-                      (item as any).category.map((cat: string, idx: number) => (
-                        <span key={idx} className="px-2 py-1 rounded-full font-medium bg-gray-200 text-gray-800 text-xs">
-                          {cat}
-                        </span>
-                      ))
-                    )}
+                    ))}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-500">
-                      {item.date}
-                    </span>
-                    {item.type === 'podcast' && (
-                      <span className="bg-accent1/20 text-accent1 px-3 py-1 rounded-full font-medium">
-                        {(item as any).duration}
-                      </span>
-                    )}
-                  </div>
+                  <span className="text-gray-500">
+                    {item.date}
+                  </span>
                 </div>
                 <h3 className="font-bold mb-3 leading-tight text-xl text-black">
                   {item.title}
                 </h3>
                 <p className="mb-4 line-clamp-2 leading-relaxed text-gray-600 flex-grow">
-                  {item.type === 'podcast' ? (item as any).description : (item as any).excerpt}
+                  {item.excerpt}
                 </p>
                 
-                {/* Fixed height bottom section for consistent button positioning */}
                 <div className="mt-auto">
-                  {item.type === 'podcast' ? (
-                    <>
-                      <p className="text-sm text-gray-500 mb-4">
-                        With <span className="font-medium text-black">{(item as any).guests}</span>
-                      </p>
-                      <Button 
-                        variant="outline" 
-                        className="flex items-center gap-3 w-full justify-center rounded-full border-accent1 text-accent1 hover:bg-accent1 hover:text-white"
-                        onClick={() => navigate(`/podcast`)}
-                      >
-                        <Play size={18} />
-                        Listen Now
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      <div className="mb-4"></div>
-                      <Button 
-                        variant="outline" 
-                        className="flex items-center gap-3 w-full justify-center rounded-full border-accent1 text-accent1 hover:bg-accent1 hover:text-white"
-                        onClick={() => {
-                          navigate(`/blog/post/${item.id}`);
-                          window.scrollTo(0, 0);
-                        }}
-                      >
-                        Read More
-                      </Button>
-                    </>
-                  )}
+                  <div className="mb-4"></div>
+                  <Button 
+                    variant="outline" 
+                    className="flex items-center gap-3 w-full justify-center rounded-full border-accent1 text-accent1 hover:bg-accent1 hover:text-white"
+                    onClick={() => {
+                      navigate(`/blog/post/${item.id}`);
+                      window.scrollTo(0, 0);
+                    }}
+                  >
+                    Read More
+                  </Button>
                 </div>
               </CardContent>
             </Card>
