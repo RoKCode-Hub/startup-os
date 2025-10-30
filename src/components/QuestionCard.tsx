@@ -25,7 +25,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     >
       <h4 className="text-lg font-medium mb-6">{question}</h4>
       <div className="flex items-center justify-center space-x-4">
-        <span className="text-sm text-muted-foreground">Low</span>
+        <span className="text-sm text-muted-foreground">Strongly disagree</span>
         <div className="flex space-x-3">
           {[1, 2, 3, 4, 5].map((value) => (
             <RatingButton
@@ -36,7 +36,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             />
           ))}
         </div>
-        <span className="text-sm text-muted-foreground">High</span>
+        <span className="text-sm text-muted-foreground">Strongly agree</span>
       </div>
     </div>
   );
