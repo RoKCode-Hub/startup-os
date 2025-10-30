@@ -177,7 +177,6 @@ const Index = () => {
       <Section
         id="latest-content"
         title="Latest Content"
-        description="Our newest podcast episodes and blog posts"
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Create alternating pattern: blog, podcast, blog, podcast, etc. */}
