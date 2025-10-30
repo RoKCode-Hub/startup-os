@@ -258,9 +258,17 @@ const HealthCheck = () => {
                       /{categories.reduce((sum, cat) => sum + cat.maxScore, 0)}
                     </span>
                   </div>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground mb-6">
                     Overall business health score across all categories
                   </p>
+                  <Button 
+                    asChild
+                    className="bg-destructive hover:bg-destructive/90 text-white"
+                  >
+                    <a href="mailto:robin@startup-os.com">
+                      Get in touch
+                    </a>
+                  </Button>
                 </CardContent>
               </Card>
               
