@@ -68,7 +68,6 @@ const HexagonSection = () => {
     <Section 
       id="startup-os-elements" 
       title="Key Components of a Startup OS"
-      description="Click on the component to see how it contributes to startup success"
       dark={true}
       className="!pb-16 md:!pb-20"
     >
