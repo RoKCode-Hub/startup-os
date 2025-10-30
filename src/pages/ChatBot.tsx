@@ -106,69 +106,6 @@ const ChatBot = () => {
           </div>
         </Section>
 
-        {/* Features Section */}
-        <Section
-          id="features"
-          title="What You'll Get"
-          description="Comprehensive startup guidance across all key areas"
-          className="py-16"
-        >
-          <div className="max-w-6xl mx-auto">
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {features.map((feature, index) => (
-                <Card key={index} className="p-6 border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 bg-card/80 backdrop-blur-sm">
-                  <CardContent className="p-0">
-                    <div className="flex items-center justify-center w-12 h-12 bg-primary/10 rounded-lg mb-4">
-                      <feature.icon size={24} className="text-primary" />
-                    </div>
-                    <h3 className="text-lg font-semibold mb-2 text-foreground">{feature.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </Section>
-
-        {/* Benefits Section */}
-        <Section
-          id="benefits"
-          title="Why Choose StartupOS Coach?"
-          description="Everything you need to build and scale your startup"
-          className="py-16"
-        >
-          <div className="max-w-4xl mx-auto">
-            <Card className="p-8 border-0 shadow-xl bg-card/80 backdrop-blur-sm">
-              <CardContent className="p-0">
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="space-y-4">
-                    {benefits.map((benefit, index) => (
-                      <div key={index} className="flex items-start space-x-3">
-                        <CheckCircle size={20} className="text-primary mt-1 flex-shrink-0" />
-                        <p className="text-foreground">{benefit}</p>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-semibold text-foreground">Ready to Get Started?</h3>
-                    <p className="text-muted-foreground">
-                      Join thousands of entrepreneurs who are already using StartupOS Coach to build better businesses. 
-                      Get instant access to expert guidance and start making better decisions today.
-                    </p>
-                    <Button 
-                      onClick={handleLaunchCoach}
-                      className="w-full md:w-auto rounded-xl"
-                    >
-                      <MessageSquare className="mr-2" size={16} />
-                      Start Coaching Session
-                      <ExternalLink className="ml-2" size={14} />
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </Section>
       </main>
       
       <Footer />
