@@ -201,7 +201,7 @@ const Index = () => {
             }
             return mixedContent;
           })().map((item) => (
-            <Card key={`${item.type}-${item.id}`} className="overflow-hidden rounded-xl transition-all duration-300 card-hover border-0 shadow-soft hover:shadow-elegant bg-white">
+            <Card key={`${item.type}-${item.id}`} className="overflow-hidden rounded-xl transition-all duration-300 card-hover border-2 border-gray-200 shadow-lg hover:shadow-2xl hover:border-accent1/30 bg-white">
               {/* Header image section for podcast only */}
               {item.type === 'podcast' && (
                 <div className="h-56 relative overflow-hidden">
