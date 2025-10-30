@@ -28,7 +28,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <CookieBanner />
-      <BrowserRouter>
+      <BrowserRouter future={{ v7_startTransition: true }}>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/blog" element={<Blog />} />
