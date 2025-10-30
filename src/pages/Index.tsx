@@ -131,7 +131,6 @@ const Index = () => {
       <Section 
         id="about" 
         title="About Us"
-        description="We are passionate about helping founders succeed."
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div className="order-2 md:order-1">
