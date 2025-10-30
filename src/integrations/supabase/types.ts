@@ -59,6 +59,54 @@ export type Database = {
         }
         Relationships: []
       }
+      categories: {
+        Row: {
+          created_at: string
+          description: string
+          display_order: number
+          icon: string
+          id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          display_order: number
+          icon: string
+          id?: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          display_order?: number
+          icon?: string
+          id?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      health_check_responses: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       podcast_episodes: {
         Row: {
           audio_path: string
@@ -100,6 +148,77 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      questions: {
+        Row: {
+          category_id: string
+          created_at: string
+          display_order: number
+          id: string
+          text: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          display_order: number
+          id?: string
+          text: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questions_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      response_answers: {
+        Row: {
+          created_at: string
+          id: string
+          question_id: string
+          rating: number
+          response_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          question_id: string
+          rating: number
+          response_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          question_id?: string
+          rating?: number
+          response_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "response_answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "response_answers_response_id_fkey"
+            columns: ["response_id"]
+            isOneToOne: false
+            referencedRelation: "health_check_responses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
