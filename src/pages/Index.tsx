@@ -153,7 +153,7 @@ const Index = () => {
               onImageChange={setAboutUsImage} 
               currentImageUrl={aboutUsImage}
             />
-            <div className="aspect-square rounded-2xl overflow-hidden shadow-elegant flex items-center justify-center w-3/4">
+            <div className="aspect-square rounded-2xl overflow-hidden flex items-center justify-center w-3/4">
               {aboutUsImage ? (
                 <img 
                   src={aboutUsImage} 
@@ -161,7 +161,7 @@ const Index = () => {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-muted-foreground opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
               )}
