@@ -10,7 +10,7 @@ import { useBlogStore } from "@/stores/blogStore";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import aboutUsPortrait from "@/assets/about-us-portrait.jpg";
+import aboutUsPortrait from "@/assets/about-us-portrait.png";
 
 const Index = () => {
   const { posts, fetchPosts } = useBlogStore();
