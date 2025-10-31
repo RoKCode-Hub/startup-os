@@ -30,8 +30,14 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
       imageUrl 
     });
     
-    if (!canvasRef.current || !isOpen) {
-      console.log('ImageEditor: Not initializing - canvasRef or isOpen missing');
+    if (!isOpen) {
+      console.log('ImageEditor: Dialog not open, skipping initialization');
+      return;
+    }
+
+    if (!canvasRef.current) {
+      console.log('ImageEditor: Canvas ref not ready yet, will retry');
+      // Canvas not ready yet, wait for next render
       return;
     }
 
@@ -99,11 +105,13 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
 
     return () => {
       console.log('ImageEditor: Cleaning up canvas');
-      canvas.dispose();
+      if (canvas) {
+        canvas.dispose();
+      }
       setFabricCanvas(null);
       setOriginalImage(null);
     };
-  }, [imageUrl, isOpen]);
+  }, [imageUrl, isOpen, canvasRef.current]);
 
   const applyFilters = () => {
     if (!originalImage || !fabricCanvas) return;
