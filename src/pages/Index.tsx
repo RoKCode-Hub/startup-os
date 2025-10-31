@@ -192,7 +192,7 @@ const Index = () => {
           <div className="flex flex-col items-center text-center">
             <h3 className="text-2xl font-bold mb-4">Interim</h3>
             <p className="text-lg leading-relaxed opacity-80">
-              Add your description for interim services here.
+              When you want more than sparring, I roll up my sleeves and join your team for a defined period - implementing or optimizing the key components of your operating system on the ground. This support bridges the gap between strategy and execution, enabling you to hit your next growth milestone with clarity and momentum.
             </p>
           </div>
         </div>
