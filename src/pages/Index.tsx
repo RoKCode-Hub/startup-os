@@ -184,7 +184,7 @@ const Index = () => {
           <div className="flex flex-col items-center text-center">
             <h3 className="text-2xl font-bold mb-4">Sparring</h3>
             <p className="text-lg leading-relaxed opacity-80">
-              Add your description for sparring services here.
+              We step in as your sparring partner to refine and optimise your startup's operating system. Together we challenge the status quo, align your team around clear priorities and unlock greater execution speed. You'll gain actionable frameworks, fresh perspectives and a co-pilot who holds you to the highest standards.
             </p>
           </div>
           
