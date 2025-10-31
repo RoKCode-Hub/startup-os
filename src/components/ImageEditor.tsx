@@ -36,10 +36,10 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
         return;
       }
 
-      console.log('Initializing canvas with dimensions 600x400');
+      console.log('Initializing canvas with dimensions 800x600');
       const canvas = new FabricCanvas(canvasRef.current, {
-        width: 600,
-        height: 400,
+        width: 800,
+        height: 600,
         backgroundColor: '#f5f5f5',
       });
 
@@ -163,7 +163,7 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
       const dataURL = fabricCanvas.toDataURL({
         format: 'png',
         quality: 1.0,
-        multiplier: 1
+        multiplier: 3
       });
 
       fetch(dataURL)
