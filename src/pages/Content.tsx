@@ -34,12 +34,12 @@ interface PodcastEpisode {
 }
 
 const STARTUP_OS_TAGS = [
-  "Strategy",
-  "People", 
-  "Operations",
-  "Product",
-  "Marketing",
-  "Finance"
+  "Direction",
+  "Execution", 
+  "Leadership",
+  "Collaboration",
+  "Systems, Processes & Structures",
+  "Data"
 ];
 
 const Content = () => {
