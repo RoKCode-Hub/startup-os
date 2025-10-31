@@ -26,52 +26,68 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
 
   // Initialize canvas and load image
   useEffect(() => {
-    if (!isOpen || !canvasRef.current) return;
+    if (!isOpen) return;
 
-    const canvas = new FabricCanvas(canvasRef.current, {
-      width: 600,
-      height: 400,
-      backgroundColor: '#f5f5f5',
-    });
+    // Small delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      if (!canvasRef.current) {
+        console.error('Canvas ref still not available after delay');
+        return;
+      }
 
-    setFabricCanvas(canvas);
-    setIsLoading(true);
-
-    FabricImage.fromURL(imageUrl, { crossOrigin: 'anonymous' })
-      .then((img) => {
-        const scale = Math.min(
-          canvas.width! / img.width!,
-          canvas.height! / img.height!
-        );
-        
-        setInitialScale(scale);
-        
-        img.set({
-          scaleX: scale,
-          scaleY: scale,
-          left: (canvas.width! - img.width! * scale) / 2,
-          top: (canvas.height! - img.height! * scale) / 2,
-          selectable: true,
-          hasControls: false,
-          hasBorders: true,
-          lockRotation: true,
-        });
-
-        canvas.add(img);
-        canvas.centerObject(img);
-        setOriginalImage(img);
-        canvas.renderAll();
-        setIsLoading(false);
-        toast.success("Image loaded! Drag to reposition.");
-      })
-      .catch((error) => {
-        console.error('Error loading image:', error);
-        setIsLoading(false);
-        toast.error("Failed to load image");
+      console.log('Initializing canvas with dimensions 600x400');
+      const canvas = new FabricCanvas(canvasRef.current, {
+        width: 600,
+        height: 400,
+        backgroundColor: '#f5f5f5',
       });
 
+      setFabricCanvas(canvas);
+      setIsLoading(true);
+      console.log('Loading image from:', imageUrl);
+
+      FabricImage.fromURL(imageUrl, { crossOrigin: 'anonymous' })
+        .then((img) => {
+          console.log('Image loaded successfully:', img.width, 'x', img.height);
+          const scale = Math.min(
+            canvas.width! / img.width!,
+            canvas.height! / img.height!
+          );
+          
+          setInitialScale(scale);
+          console.log('Calculated initial scale:', scale);
+          
+          img.set({
+            scaleX: scale,
+            scaleY: scale,
+            left: (canvas.width! - img.width! * scale) / 2,
+            top: (canvas.height! - img.height! * scale) / 2,
+            selectable: true,
+            hasControls: false,
+            hasBorders: true,
+            lockRotation: true,
+          });
+
+          canvas.add(img);
+          canvas.centerObject(img);
+          setOriginalImage(img);
+          canvas.renderAll();
+          setIsLoading(false);
+          console.log('Image added to canvas and rendered');
+          toast.success("Image loaded! Drag to reposition.");
+        })
+        .catch((error) => {
+          console.error('Error loading image:', error);
+          setIsLoading(false);
+          toast.error("Failed to load image. Check console for details.");
+        });
+    }, 100);
+
     return () => {
-      canvas.dispose();
+      clearTimeout(timer);
+      if (fabricCanvas) {
+        fabricCanvas.dispose();
+      }
       setFabricCanvas(null);
       setOriginalImage(null);
       setIsLoading(false);
