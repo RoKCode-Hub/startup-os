@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 const Index = () => {
   const { posts, fetchPosts } = useBlogStore();
   const navigate = useNavigate();
-  const [aboutUsImage, setAboutUsImage] = useState<string | null>('/lovable-uploads/about-us-profile.jpg');
+  const [aboutUsImage, setAboutUsImage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   
@@ -158,8 +158,7 @@ const Index = () => {
                 <img 
                   src={aboutUsImage} 
                   alt="About Us" 
-                  className="w-full h-auto object-contain rounded-2xl"
-                  loading="eager"
+                  className="w-full h-full object-cover rounded-2xl aspect-square"
                 />
               ) : (
                 <div className="w-full aspect-square flex items-center justify-center bg-transparent">
