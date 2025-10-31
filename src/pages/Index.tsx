@@ -169,6 +169,18 @@ const Index = () => {
         </div>
       </Section>
       
+      {/* How We Support You Section */}
+      <Section 
+        id="support" 
+        title="How We Support You"
+      >
+        <div className="text-center max-w-3xl mx-auto">
+          <p className="text-lg leading-relaxed opacity-80">
+            Content coming soon...
+          </p>
+        </div>
+      </Section>
+      
       {/* Hexagon Section */}
       <HexagonSection />
       
