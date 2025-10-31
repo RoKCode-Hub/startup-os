@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 const Index = () => {
   const { posts, fetchPosts } = useBlogStore();
   const navigate = useNavigate();
-  const [aboutUsImage, setAboutUsImage] = useState<string | null>(null);
+  const [aboutUsImage, setAboutUsImage] = useState<string | null>('/lovable-uploads/about-us-profile.jpg');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   
