@@ -42,9 +42,7 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
     setFabricCanvas(canvas);
 
     // Load image using FabricImage.fromURL (recommended for Fabric.js v6)
-    FabricImage.fromURL(imageUrl, {
-      crossOrigin: 'anonymous'
-    })
+    FabricImage.fromURL(imageUrl)
       .then((img) => {
         console.log('Image loaded successfully');
         
