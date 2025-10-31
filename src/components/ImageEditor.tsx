@@ -28,29 +28,20 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
       return;
     }
 
-    console.log('Initializing canvas and loading image...');
     setIsImageLoading(true);
 
     // Initialize canvas first
     const canvas = new FabricCanvas(canvasRef.current, {
       width: 600,
       height: 400,
-      backgroundColor: '#ffffff',
+      backgroundColor: '#f5f5f5',
     });
 
-    console.log('Canvas created');
     setFabricCanvas(canvas);
 
-    // Fetch image as blob first to avoid CORS taint issues
-    fetch(imageUrl)
-      .then(response => response.blob())
-      .then(blob => {
-        const objectUrl = URL.createObjectURL(blob);
-        return FabricImage.fromURL(objectUrl);
-      })
+    // Load image directly - Supabase URLs are already public
+    FabricImage.fromURL(imageUrl, { crossOrigin: 'anonymous' })
       .then((img) => {
-        console.log('Image loaded successfully');
-        
         // Scale image to fit canvas
         const scale = Math.min(
           canvas.width! / img.width!,
@@ -62,10 +53,10 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
           scaleY: scale,
           left: (canvas.width! - img.width! * scale) / 2,
           top: (canvas.height! - img.height! * scale) / 2,
-          selectable: true, // Make image movable
-          hasControls: false, // Disable resize controls
-          hasBorders: true, // Show selection border
-          lockRotation: true, // Prevent rotation
+          selectable: true,
+          hasControls: false,
+          hasBorders: true,
+          lockRotation: true,
         });
 
         canvas.add(img);
@@ -73,8 +64,7 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
         setOriginalImage(img);
         canvas.renderAll();
         setIsImageLoading(false);
-        console.log('Image added to canvas and ready');
-        toast.success("Image loaded - drag to reposition!");
+        toast.success("Image ready - drag to reposition!");
       })
       .catch((error) => {
         console.error('Error loading image:', error);
@@ -83,7 +73,6 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
       });
 
     return () => {
-      console.log('Cleaning up canvas...');
       canvas.dispose();
       setFabricCanvas(null);
       setOriginalImage(null);
@@ -249,9 +238,17 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
         
         <div className="space-y-4">
           {/* Canvas */}
-          <div className="flex justify-center">
+          <div className="flex justify-center relative">
             <div className="border border-border rounded-lg overflow-hidden">
               <canvas ref={canvasRef} className="max-w-full" />
+              {isImageLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+                  <div className="text-center space-y-2">
+                    <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto" />
+                    <p className="text-sm text-muted-foreground">Loading image...</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
