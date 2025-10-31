@@ -25,9 +25,11 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
 
   useEffect(() => {
     if (!canvasRef.current || !isOpen) {
+      console.log('ImageEditor: Not initializing - canvasRef or isOpen missing', { canvasRef: !!canvasRef.current, isOpen });
       return;
     }
 
+    console.log('ImageEditor: Starting initialization with imageUrl:', imageUrl);
     setIsImageLoading(true);
 
     // Initialize canvas first
@@ -38,10 +40,20 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
     });
 
     setFabricCanvas(canvas);
+    console.log('ImageEditor: Canvas initialized');
 
-    // Load image directly - Supabase URLs are already public
-    FabricImage.fromURL(imageUrl, { crossOrigin: 'anonymous' })
-      .then((img) => {
+    // Load image with better error handling
+    const loadImage = async () => {
+      try {
+        console.log('ImageEditor: Loading image from URL:', imageUrl);
+        
+        // Try loading with crossOrigin for Supabase storage
+        const img = await FabricImage.fromURL(imageUrl, { 
+          crossOrigin: 'anonymous'
+        });
+        
+        console.log('ImageEditor: Image loaded successfully', { width: img.width, height: img.height });
+        
         // Scale image to fit canvas
         const scale = Math.min(
           canvas.width! / img.width!,
@@ -64,15 +76,20 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
         setOriginalImage(img);
         canvas.renderAll();
         setIsImageLoading(false);
+        console.log('ImageEditor: Image added to canvas and rendered');
         toast.success("Image ready - drag to reposition!");
-      })
-      .catch((error) => {
-        console.error('Error loading image:', error);
+      } catch (error) {
+        console.error('ImageEditor: Error loading image:', error);
+        console.error('ImageEditor: Failed URL:', imageUrl);
         setIsImageLoading(false);
-        toast.error("Failed to load image");
-      });
+        toast.error("Failed to load image. Please try again.");
+      }
+    };
+
+    loadImage();
 
     return () => {
+      console.log('ImageEditor: Cleaning up canvas');
       canvas.dispose();
       setFabricCanvas(null);
       setOriginalImage(null);
