@@ -49,22 +49,7 @@ const Section = ({
           {description && (
             <p className="text-xl opacity-80 leading-relaxed max-w-3xl mx-auto">{description}</p>
           )}
-          <svg 
-            className="mx-auto mt-8" 
-            width="80" 
-            height="8" 
-            viewBox="0 0 80 8" 
-            fill="none" 
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path 
-              d="M2 4.5C10 3.8 15 5.2 25 4.3C35 3.4 45 5.8 55 4.5C65 3.2 70 5.5 78 4.2" 
-              stroke="currentColor" 
-              strokeWidth="2.5" 
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <div className="h-1 w-16 bg-accent1 mx-auto mt-8"></div>
         </div>
         {children}
       </div>
