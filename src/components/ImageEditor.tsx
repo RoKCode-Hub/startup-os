@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Canvas as FabricCanvas, FabricImage } from 'fabric';
+import { filters } from 'fabric';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
@@ -98,22 +99,22 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
   useEffect(() => {
     if (!originalImage || !fabricCanvas) return;
 
-    const cssFilters = [];
-    if (brightness[0] !== 0) {
-      cssFilters.push(`brightness(${100 + brightness[0]}%)`);
-    }
-    if (contrast[0] !== 0) {
-      cssFilters.push(`contrast(${100 + contrast[0]}%)`);
-    }
+    const fabricFilters: any[] = [];
+    
     if (isGrayscale) {
-      cssFilters.push('grayscale(100%)');
+      fabricFilters.push(new filters.Grayscale());
+    }
+    
+    if (brightness[0] !== 0) {
+      fabricFilters.push(new filters.Brightness({ brightness: brightness[0] / 100 }));
+    }
+    
+    if (contrast[0] !== 0) {
+      fabricFilters.push(new filters.Contrast({ contrast: contrast[0] / 100 }));
     }
 
-    const imgElement = originalImage.getElement();
-    if (imgElement) {
-      imgElement.style.filter = cssFilters.join(' ');
-    }
-
+    originalImage.filters = fabricFilters;
+    originalImage.applyFilters();
     fabricCanvas.renderAll();
   }, [isGrayscale, brightness, contrast, originalImage, fabricCanvas]);
 
@@ -139,10 +140,8 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
     setBrightness([0]);
     setContrast([0]);
 
-    const imgElement = originalImage.getElement();
-    if (imgElement) {
-      imgElement.style.filter = '';
-    }
+    originalImage.filters = [];
+    originalImage.applyFilters();
     
     originalImage.set({
       scaleX: initialScale,
