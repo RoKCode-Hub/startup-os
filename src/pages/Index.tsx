@@ -1,51 +1,25 @@
-
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import HexagonSection from "@/components/HexagonSection";
 import Section from "@/components/Section";
 import Footer from "@/components/Footer";
-import AboutUsImageUpload from "@/components/AboutUsImageUpload";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useBlogStore } from "@/stores/blogStore";
 import { useNavigate } from "react-router-dom";
-import { Play } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import aboutUsPortrait from "@/assets/about-us-portrait.jpg";
 
 const Index = () => {
   const { posts, fetchPosts } = useBlogStore();
   const navigate = useNavigate();
-  const [aboutUsImage, setAboutUsImage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   
-  // Load about us image on component mount
   useEffect(() => {
     fetchPosts();
-    
-    const loadAboutUsImage = async () => {
-      try {
-        const { data } = await supabase.storage
-          .from('about-us')
-          .list('', {
-            limit: 1,
-            sortBy: { column: 'created_at', order: 'desc' }
-          });
-        
-        if (data && data.length > 0) {
-          const { data: { publicUrl } } = supabase.storage
-            .from('about-us')
-            .getPublicUrl(data[0].name);
-          setAboutUsImage(publicUrl);
-        }
-      } catch (error) {
-        console.error('Error loading about us image:', error);
-      }
-    };
-
-    loadAboutUsImage();
   }, [fetchPosts]);
   
   // Get the latest 3 posts
@@ -149,24 +123,13 @@ const Index = () => {
             </Button>
           </div>
           <div className="order-1 md:order-2 relative bg-transparent">
-            <AboutUsImageUpload 
-              onImageChange={setAboutUsImage} 
-              currentImageUrl={aboutUsImage}
-            />
             <div className="w-3/4 bg-transparent">
-              {aboutUsImage ? (
-                <img 
-                  src={aboutUsImage} 
-                  alt="About Us" 
-                  className="w-full h-full object-cover rounded-2xl aspect-square"
-                />
-              ) : (
-                <div className="w-full aspect-square flex items-center justify-center bg-transparent">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-muted-foreground opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                  </svg>
-                </div>
-              )}
+              <img 
+                src={aboutUsPortrait} 
+                alt="About Us - Professional portrait" 
+                className="w-full h-auto object-contain rounded-2xl"
+                loading="eager"
+              />
             </div>
           </div>
         </div>
