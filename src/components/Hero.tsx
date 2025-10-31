@@ -51,7 +51,7 @@ const Hero = () => {
       
       {/* Scroll Indicator with click functionality */}
       <div 
-        className="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce fade-in-up stagger-3 cursor-pointer"
+        className="absolute bottom-12 left-1/2 transform -translate-x-1/2 fade-in-up stagger-3 cursor-pointer"
         onClick={scrollToAbout}
       >
         <svg 

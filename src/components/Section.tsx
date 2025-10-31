@@ -57,7 +57,7 @@ const Section = ({
       {/* Scroll Indicator */}
       {nextSectionId && (
         <div 
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer z-20"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer z-20"
           onClick={scrollToNextSection}
         >
           <svg 
