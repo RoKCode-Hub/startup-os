@@ -123,7 +123,7 @@ const Index = () => {
             </Button>
           </div>
           <div className="order-1 md:order-2 relative bg-transparent">
-            <div className="w-2/3 bg-transparent">
+            <div className="w-1/2 bg-transparent">
               <img 
                 src={aboutUsPortrait} 
                 alt="About Us - Professional portrait" 
