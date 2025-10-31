@@ -167,7 +167,12 @@ const AboutUsImageUpload = ({ onImageChange, currentImageUrl }: AboutUsImageUplo
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => setIsEditorOpen(true)}
+                onClick={() => {
+                  console.log('Edit button clicked');
+                  console.log('Current image URL:', currentImageUrl);
+                  setIsEditorOpen(true);
+                  console.log('Editor open state set to true');
+                }}
                 className="rounded-full h-8 w-8 p-0 bg-background/80 backdrop-blur-sm hover:bg-background/90"
                 title="Edit image"
               >

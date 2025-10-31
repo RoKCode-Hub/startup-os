@@ -24,12 +24,18 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
   const [contrast, setContrast] = useState([0]);
 
   useEffect(() => {
+    console.log('ImageEditor useEffect triggered', { 
+      hasCanvasRef: !!canvasRef.current, 
+      isOpen, 
+      imageUrl 
+    });
+    
     if (!canvasRef.current || !isOpen) {
-      console.log('ImageEditor: Not initializing - canvasRef or isOpen missing', { canvasRef: !!canvasRef.current, isOpen });
+      console.log('ImageEditor: Not initializing - canvasRef or isOpen missing');
       return;
     }
 
-    console.log('ImageEditor: Starting initialization with imageUrl:', imageUrl);
+    console.log('ImageEditor: Starting initialization');
     setIsImageLoading(true);
 
     // Initialize canvas first
@@ -45,14 +51,17 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
     // Load image with better error handling
     const loadImage = async () => {
       try {
-        console.log('ImageEditor: Loading image from URL:', imageUrl);
+        console.log('ImageEditor: Attempting to load image from:', imageUrl);
+        console.log('ImageEditor: Image URL type:', typeof imageUrl);
+        console.log('ImageEditor: Image URL length:', imageUrl?.length);
         
-        // Try loading with crossOrigin for Supabase storage
+        // Try loading the image
         const img = await FabricImage.fromURL(imageUrl, { 
           crossOrigin: 'anonymous'
         });
         
-        console.log('ImageEditor: Image loaded successfully', { width: img.width, height: img.height });
+        console.log('ImageEditor: FabricImage created successfully');
+        console.log('ImageEditor: Image dimensions:', { width: img.width, height: img.height });
         
         // Scale image to fit canvas
         const scale = Math.min(
@@ -242,6 +251,8 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
       toast.error("Failed to save image");
     }
   };
+
+  console.log('ImageEditor render', { isOpen, hasCanvas: !!fabricCanvas, hasImage: !!originalImage, isLoading: isImageLoading });
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
