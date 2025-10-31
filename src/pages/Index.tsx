@@ -131,6 +131,7 @@ const Index = () => {
       <Section 
         id="about" 
         title="About Us"
+        nextSectionId="support"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div className="order-2 md:order-1">
@@ -173,9 +174,10 @@ const Index = () => {
       <div className="w-full h-px bg-black"></div>
       
       {/* How We Support You Section */}
-      <Section
+      <Section 
         id="support" 
         title="How We Support You"
+        nextSectionId="startup-os-elements"
       >
         <div className="text-center max-w-3xl mx-auto">
           <p className="text-lg leading-relaxed opacity-80">
@@ -191,6 +193,7 @@ const Index = () => {
       <Section
         id="latest-content"
         title="Latest Content"
+        nextSectionId="contact"
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {latestPosts.map((item) => (

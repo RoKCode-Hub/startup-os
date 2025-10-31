@@ -70,6 +70,7 @@ const HexagonSection = () => {
       title="The Startup Operating System"
       dark={true}
       className="!pb-16 md:!pb-20"
+      nextSectionId="latest-content"
     >
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start lg:items-start">
         {/* Hexagon on the left */}

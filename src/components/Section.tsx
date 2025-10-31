@@ -9,6 +9,7 @@ interface SectionProps {
   children: ReactNode;
   dark?: boolean;
   className?: string;
+  nextSectionId?: string;
 }
 
 const Section = ({ 
@@ -17,8 +18,14 @@ const Section = ({
   description, 
   children, 
   dark = false,
-  className 
+  className,
+  nextSectionId
 }: SectionProps) => {
+  const scrollToNextSection = () => {
+    if (nextSectionId) {
+      document.getElementById(nextSectionId)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   return (
     <section 
       id={id}
@@ -46,6 +53,29 @@ const Section = ({
         </div>
         {children}
       </div>
+      
+      {/* Scroll Indicator */}
+      {nextSectionId && (
+        <div 
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer z-20"
+          onClick={scrollToNextSection}
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="36" 
+            height="36" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+            className="opacity-70 hover:opacity-100 transition-opacity"
+          >
+            <path d="M12 5v14M19 12l-7 7-7-7" />
+          </svg>
+        </div>
+      )}
     </section>
   );
 };
