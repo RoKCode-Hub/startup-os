@@ -31,9 +31,10 @@ interface PodcastEpisode {
   audio_url: string;
   created_at: string;
   tags?: string[];
+  category?: string[];
 }
 
-const STARTUP_OS_TAGS = [
+const STARTUP_OS_CATEGORIES = [
   "Direction",
   "Execution", 
   "Leadership",
@@ -47,7 +48,7 @@ const Content = () => {
   const { posts, fetchPosts, deletePost } = useBlogStore();
   const { isAuthenticated, user } = useAuthStore();
   const [podcastEpisodes, setPodcastEpisodes] = useState<PodcastEpisode[]>([]);
-  const [tagFilter, setTagFilter] = useState<string>("all");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [showPodcastUpload, setShowPodcastUpload] = useState(false);
   const [editingEpisode, setEditingEpisode] = useState<PodcastEpisode | null>(null);
   const [deletingBlogId, setDeletingBlogId] = useState<string | null>(null);
@@ -67,13 +68,13 @@ const Content = () => {
 
       if (error) throw error;
       
-      // Add mock tags to podcast episodes for demo
-      const episodesWithTags = (data || []).map((episode, index) => ({
+      // Add mock categories to podcast episodes for demo
+      const episodesWithCategories = (data || []).map((episode, index) => ({
         ...episode,
-        tags: STARTUP_OS_TAGS.slice(index % 3, (index % 3) + 2) // Assign 2 tags to each episode
+        category: STARTUP_OS_CATEGORIES.slice(index % 3, (index % 3) + 2) // Assign 2 categories to each episode
       }));
       
-      setPodcastEpisodes(episodesWithTags);
+      setPodcastEpisodes(episodesWithCategories);
     } catch (error) {
       console.error('Error fetching podcast episodes:', error);
     }
@@ -95,8 +96,8 @@ const Content = () => {
 
   // Apply filters
   const filteredContent = allContent.filter(item => {
-    const matchesTag = tagFilter === "all" || (item.tags && item.tags.includes(tagFilter));
-    return matchesTag;
+    const matchesCategory = categoryFilter === "all" || (item.category && item.category.includes(categoryFilter));
+    return matchesCategory;
   });
 
   const formatDate = (dateString: string) => {
@@ -139,19 +140,19 @@ const Content = () => {
             <div className="flex flex-col sm:flex-row gap-4 mb-8 p-4 bg-card rounded-lg border">
               <div className="flex items-center gap-2">
                 <Filter className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-medium">Filter by tag:</span>
+                <span className="text-sm font-medium">Filter by category:</span>
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4 flex-1">
                 <div className="min-w-[160px]">
-                  <Select value={tagFilter} onValueChange={setTagFilter}>
+                  <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                     <SelectTrigger className="bg-background border-border z-50">
-                      <SelectValue placeholder="Startup OS Tag" />
+                      <SelectValue placeholder="Startup OS Category" />
                     </SelectTrigger>
                     <SelectContent className="bg-background border-border shadow-lg z-50">
-                      <SelectItem value="all">All Tags</SelectItem>
-                      {STARTUP_OS_TAGS.map(tag => (
-                        <SelectItem key={tag} value={tag}>{tag}</SelectItem>
+                      <SelectItem value="all">All Categories</SelectItem>
+                      {STARTUP_OS_CATEGORIES.map(category => (
+                        <SelectItem key={category} value={category}>{category}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -259,17 +260,17 @@ const Content = () => {
                           {item.type === 'blog' ? item.excerpt : item.description}
                         </p>
                         
-                        {/* Tags */}
-                        {item.tags && item.tags.length > 0 && (
+                        {/* Categories */}
+                        {item.category && item.category.length > 0 && (
                           <div className="flex flex-wrap gap-1 mb-3">
-                            {item.tags.map(tag => (
+                            {item.category.map(cat => (
                               <Badge 
-                                key={tag} 
+                                key={cat} 
                                 variant="secondary" 
                                 className="text-xs bg-secondary/50 hover:bg-secondary/70 cursor-pointer px-2 py-1"
-                                onClick={() => setTagFilter(tag)}
+                                onClick={() => setCategoryFilter(cat)}
                               >
-                                {tag}
+                                {cat}
                               </Badge>
                             ))}
                           </div>
@@ -340,7 +341,7 @@ const Content = () => {
                 <Button 
                   variant="outline" 
                   onClick={() => {
-                    setTagFilter("all");
+                    setCategoryFilter("all");
                   }}
                   className="mt-4"
                 >
