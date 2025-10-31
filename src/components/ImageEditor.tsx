@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { ZoomIn, ZoomOut, Palette, Save, RotateCcw } from 'lucide-react';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 
 interface ImageEditorProps {
   imageUrl: string;
@@ -17,34 +17,17 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [fabricCanvas, setFabricCanvas] = useState<FabricCanvas | null>(null);
   const [originalImage, setOriginalImage] = useState<FabricImage | null>(null);
-  const [isImageLoading, setIsImageLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isGrayscale, setIsGrayscale] = useState(false);
   const [zoom, setZoom] = useState([100]);
   const [brightness, setBrightness] = useState([0]);
   const [contrast, setContrast] = useState([0]);
+  const [initialScale, setInitialScale] = useState(1);
 
+  // Initialize canvas and load image
   useEffect(() => {
-    console.log('ImageEditor useEffect triggered', { 
-      hasCanvasRef: !!canvasRef.current, 
-      isOpen, 
-      imageUrl 
-    });
-    
-    if (!isOpen) {
-      console.log('ImageEditor: Dialog not open, skipping initialization');
-      return;
-    }
+    if (!isOpen || !canvasRef.current) return;
 
-    if (!canvasRef.current) {
-      console.log('ImageEditor: Canvas ref not ready yet, will retry');
-      // Canvas not ready yet, wait for next render
-      return;
-    }
-
-    console.log('ImageEditor: Starting initialization');
-    setIsImageLoading(true);
-
-    // Initialize canvas first
     const canvas = new FabricCanvas(canvasRef.current, {
       width: 600,
       height: 400,
@@ -52,28 +35,16 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
     });
 
     setFabricCanvas(canvas);
-    console.log('ImageEditor: Canvas initialized');
+    setIsLoading(true);
 
-    // Load image with better error handling
-    const loadImage = async () => {
-      try {
-        console.log('ImageEditor: Attempting to load image from:', imageUrl);
-        console.log('ImageEditor: Image URL type:', typeof imageUrl);
-        console.log('ImageEditor: Image URL length:', imageUrl?.length);
-        
-        // Try loading the image
-        const img = await FabricImage.fromURL(imageUrl, { 
-          crossOrigin: 'anonymous'
-        });
-        
-        console.log('ImageEditor: FabricImage created successfully');
-        console.log('ImageEditor: Image dimensions:', { width: img.width, height: img.height });
-        
-        // Scale image to fit canvas
+    FabricImage.fromURL(imageUrl, { crossOrigin: 'anonymous' })
+      .then((img) => {
         const scale = Math.min(
           canvas.width! / img.width!,
           canvas.height! / img.height!
         );
+        
+        setInitialScale(scale);
         
         img.set({
           scaleX: scale,
@@ -90,40 +61,27 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
         canvas.centerObject(img);
         setOriginalImage(img);
         canvas.renderAll();
-        setIsImageLoading(false);
-        console.log('ImageEditor: Image added to canvas and rendered');
-        toast.success("Image ready - drag to reposition!");
-      } catch (error) {
-        console.error('ImageEditor: Error loading image:', error);
-        console.error('ImageEditor: Failed URL:', imageUrl);
-        setIsImageLoading(false);
-        toast.error("Failed to load image. Please try again.");
-      }
-    };
-
-    loadImage();
+        setIsLoading(false);
+        toast.success("Image loaded! Drag to reposition.");
+      })
+      .catch((error) => {
+        console.error('Error loading image:', error);
+        setIsLoading(false);
+        toast.error("Failed to load image");
+      });
 
     return () => {
-      console.log('ImageEditor: Cleaning up canvas');
-      if (canvas) {
-        canvas.dispose();
-      }
+      canvas.dispose();
       setFabricCanvas(null);
       setOriginalImage(null);
+      setIsLoading(false);
     };
-  }, [imageUrl, isOpen, canvasRef.current]);
+  }, [imageUrl, isOpen]);
 
-  const applyFilters = () => {
+  // Apply filters
+  useEffect(() => {
     if (!originalImage || !fabricCanvas) return;
 
-    // Apply grayscale using CSS filter
-    if (isGrayscale) {
-      originalImage.set('filters', ['grayscale(100%)']);
-    } else {
-      originalImage.set('filters', []);
-    }
-
-    // Apply brightness and contrast using CSS filters
     const cssFilters = [];
     if (brightness[0] !== 0) {
       cssFilters.push(`brightness(${100 + brightness[0]}%)`);
@@ -135,119 +93,69 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
       cssFilters.push('grayscale(100%)');
     }
 
-    // Apply CSS filters to the image element
     const imgElement = originalImage.getElement();
     if (imgElement) {
       imgElement.style.filter = cssFilters.join(' ');
     }
 
     fabricCanvas.renderAll();
-  };
-
-  useEffect(() => {
-    applyFilters();
   }, [isGrayscale, brightness, contrast, originalImage, fabricCanvas]);
 
-  const handleZoom = () => {
-    if (!originalImage || !fabricCanvas) {
-      console.log('Cannot zoom: missing originalImage or fabricCanvas');
-      return;
-    }
-
-    // Store the original scale for reference
-    const originalScale = Math.min(
-      fabricCanvas.width! / originalImage.width!,
-      fabricCanvas.height! / originalImage.height!
-    );
+  // Apply zoom
+  useEffect(() => {
+    if (!originalImage || !fabricCanvas) return;
 
     const zoomLevel = zoom[0] / 100;
-    const newScale = originalScale * zoomLevel;
-    
-    console.log('Applying zoom:', zoomLevel, 'New scale:', newScale);
+    const newScale = initialScale * zoomLevel;
     
     originalImage.set({
       scaleX: newScale,
       scaleY: newScale,
     });
     fabricCanvas.renderAll();
-  };
-
-  useEffect(() => {
-    // Only apply zoom if image is loaded
-    if (originalImage && fabricCanvas) {
-      handleZoom();
-    }
-  }, [zoom, originalImage, fabricCanvas]);
+  }, [zoom, originalImage, fabricCanvas, initialScale]);
 
   const handleReset = () => {
     if (!originalImage || !fabricCanvas) return;
 
-    // Reset all properties
     setIsGrayscale(false);
     setZoom([100]);
     setBrightness([0]);
     setContrast([0]);
 
-    // Reset image filters
     const imgElement = originalImage.getElement();
     if (imgElement) {
       imgElement.style.filter = '';
     }
     
-    // Reset scale to fit canvas
-    const scale = Math.min(
-      fabricCanvas.width! / originalImage.width!,
-      fabricCanvas.height! / originalImage.height!
-    );
-    
     originalImage.set({
-      scaleX: scale,
-      scaleY: scale,
+      scaleX: initialScale,
+      scaleY: initialScale,
     });
 
     fabricCanvas.centerObject(originalImage);
     fabricCanvas.renderAll();
-    toast.success("Image reset to original");
+    toast.success("Reset to original");
   };
 
   const handleSave = () => {
-    console.log('Save button clicked');
-    console.log('fabricCanvas state:', fabricCanvas);
-    console.log('originalImage state:', originalImage);
-    
-    if (!fabricCanvas) {
-      console.error('No fabric canvas available');
-      toast.error("Canvas not ready. Please wait for the image to load.");
-      return;
-    }
-
-    if (!originalImage) {
-      console.error('No original image available');
-      toast.error("No image loaded to save.");
+    if (!fabricCanvas || !originalImage) {
+      toast.error("Canvas not ready");
       return;
     }
 
     try {
-      console.log('Converting canvas to data URL...');
-      // Convert canvas to data URL and then to blob
       const dataURL = fabricCanvas.toDataURL({
         format: 'png',
         quality: 1.0,
         multiplier: 1
       });
-      
-      console.log('Data URL created, length:', dataURL.length);
 
-      // Convert data URL to blob
       fetch(dataURL)
-        .then(res => {
-          console.log('Converting to blob...');
-          return res.blob();
-        })
+        .then(res => res.blob())
         .then(blob => {
-          console.log('Blob created, size:', blob.size);
           onSave(blob);
-          toast.success("Image saved successfully!");
+          toast.success("Image saved!");
           onClose();
         })
         .catch((error) => {
@@ -260,24 +168,21 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
     }
   };
 
-  console.log('ImageEditor render', { isOpen, hasCanvas: !!fabricCanvas, hasImage: !!originalImage, isLoading: isImageLoading });
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl">
         <DialogHeader>
           <DialogTitle>Edit Image</DialogTitle>
           <DialogDescription>
-            Adjust your image with filters, zoom, and color effects. Drag the image to reposition it. Click Save Changes when you're done.
+            Drag to reposition. Adjust filters and zoom. Click Save Changes when done.
           </DialogDescription>
         </DialogHeader>
         
         <div className="space-y-4">
-          {/* Canvas */}
           <div className="flex justify-center relative">
             <div className="border border-border rounded-lg overflow-hidden">
               <canvas ref={canvasRef} className="max-w-full" />
-              {isImageLoading && (
+              {isLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm">
                   <div className="text-center space-y-2">
                     <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto" />
@@ -288,23 +193,19 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
             </div>
           </div>
 
-          {/* Controls */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Color Controls */}
             <div className="space-y-3">
               <h3 className="text-sm font-medium">Color & Effects</h3>
               
-              <div className="flex items-center gap-2">
-                <Button
-                  size="sm"
-                  variant={isGrayscale ? "default" : "outline"}
-                  onClick={() => setIsGrayscale(!isGrayscale)}
-                  className="flex items-center gap-2"
-                >
-                  <Palette size={16} />
-                  Black & White
-                </Button>
-              </div>
+              <Button
+                size="sm"
+                variant={isGrayscale ? "default" : "outline"}
+                onClick={() => setIsGrayscale(!isGrayscale)}
+                className="flex items-center gap-2"
+              >
+                <Palette size={16} />
+                Black & White
+              </Button>
 
               <div className="space-y-2">
                 <label className="text-xs text-muted-foreground">Brightness: {brightness[0]}%</label>
@@ -314,7 +215,6 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
                   min={-100}
                   max={100}
                   step={1}
-                  className="w-full"
                 />
               </div>
 
@@ -326,12 +226,10 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
                   min={-100}
                   max={100}
                   step={1}
-                  className="w-full"
                 />
               </div>
             </div>
 
-            {/* Size Controls */}
             <div className="space-y-3">
               <h3 className="text-sm font-medium">Size & Zoom</h3>
               
@@ -343,7 +241,6 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
                   min={10}
                   max={300}
                   step={5}
-                  className="w-full"
                 />
               </div>
 
@@ -370,7 +267,6 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
             </div>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex justify-between pt-4">
             <Button
               variant="outline"
@@ -388,10 +284,10 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
               <Button 
                 onClick={handleSave} 
                 className="flex items-center gap-2"
-                disabled={isImageLoading || !fabricCanvas || !originalImage}
+                disabled={isLoading || !fabricCanvas || !originalImage}
               >
                 <Save size={16} />
-                {isImageLoading ? "Loading..." : "Save Changes"}
+                {isLoading ? "Loading..." : "Save Changes"}
               </Button>
             </div>
           </div>

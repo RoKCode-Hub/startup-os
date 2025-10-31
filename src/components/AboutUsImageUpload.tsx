@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Upload, X, Edit2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 import { useAuthStore } from '@/stores/authStore';
 import ImageEditor from './ImageEditor';
 
@@ -18,26 +18,19 @@ const AboutUsImageUpload = ({ onImageChange, currentImageUrl }: AboutUsImageUplo
   const { isAuthenticated } = useAuthStore();
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('handleFileUpload called');
     const file = event.target.files?.[0];
-    console.log('Selected file:', file);
-    if (!file) {
-      console.log('No file selected');
-      return;
-    }
+    if (!file) return;
 
     if (!isAuthenticated) {
       toast.error("You must be logged in to upload images");
       return;
     }
 
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       toast.error("Please select an image file");
       return;
     }
 
-    // Validate file size (5MB max)
     if (file.size > 5 * 1024 * 1024) {
       toast.error("Image must be less than 5MB");
       return;
@@ -50,9 +43,7 @@ const AboutUsImageUpload = ({ onImageChange, currentImageUrl }: AboutUsImageUplo
       if (currentImageUrl) {
         const fileName = currentImageUrl.split('/').pop();
         if (fileName) {
-          await supabase.storage
-            .from('about-us')
-            .remove([fileName]);
+          await supabase.storage.from('about-us').remove([fileName]);
         }
       }
 
@@ -64,7 +55,6 @@ const AboutUsImageUpload = ({ onImageChange, currentImageUrl }: AboutUsImageUplo
 
       if (error) throw error;
 
-      // Get public URL
       const { data: { publicUrl } } = supabase.storage
         .from('about-us')
         .getPublicUrl(data.path);
@@ -76,6 +66,9 @@ const AboutUsImageUpload = ({ onImageChange, currentImageUrl }: AboutUsImageUplo
       toast.error("Failed to upload image");
     } finally {
       setUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
@@ -85,9 +78,7 @@ const AboutUsImageUpload = ({ onImageChange, currentImageUrl }: AboutUsImageUplo
     try {
       const fileName = currentImageUrl.split('/').pop();
       if (fileName) {
-        await supabase.storage
-          .from('about-us')
-          .remove([fileName]);
+        await supabase.storage.from('about-us').remove([fileName]);
       }
 
       onImageChange(null);
@@ -99,51 +90,31 @@ const AboutUsImageUpload = ({ onImageChange, currentImageUrl }: AboutUsImageUplo
   };
 
   const handleSaveEditedImage = async (editedImageBlob: Blob) => {
-    console.log('handleSaveEditedImage called with blob size:', editedImageBlob.size);
-    
-    if (!isAuthenticated) {
-      console.error('User not authenticated');
-      return;
-    }
+    if (!isAuthenticated) return;
 
     setUploading(true);
     
     try {
-      console.log('Starting upload process...');
-      
-      // Delete existing image if it exists
+      // Delete existing image
       if (currentImageUrl) {
-        console.log('Deleting existing image:', currentImageUrl);
         const fileName = currentImageUrl.split('/').pop();
         if (fileName) {
-          await supabase.storage
-            .from('about-us')
-            .remove([fileName]);
-          console.log('Existing image deleted');
+          await supabase.storage.from('about-us').remove([fileName]);
         }
       }
 
       // Upload edited image
       const fileName = `about-us-edited-${Date.now()}.png`;
-      console.log('Uploading new image:', fileName);
-      
       const { data, error } = await supabase.storage
         .from('about-us')
         .upload(fileName, editedImageBlob);
 
-      if (error) {
-        console.error('Upload error:', error);
-        throw error;
-      }
+      if (error) throw error;
 
-      console.log('Upload successful:', data);
-
-      // Get public URL
       const { data: { publicUrl } } = supabase.storage
         .from('about-us')
         .getPublicUrl(data.path);
 
-      console.log('Public URL:', publicUrl);
       onImageChange(publicUrl);
       toast.success("Edited image saved successfully!");
     } catch (error) {
@@ -167,12 +138,7 @@ const AboutUsImageUpload = ({ onImageChange, currentImageUrl }: AboutUsImageUplo
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => {
-                  console.log('Edit button clicked');
-                  console.log('Current image URL:', currentImageUrl);
-                  setIsEditorOpen(true);
-                  console.log('Editor open state set to true');
-                }}
+                onClick={() => setIsEditorOpen(true)}
                 className="rounded-full h-8 w-8 p-0 bg-background/80 backdrop-blur-sm hover:bg-background/90"
                 title="Edit image"
               >
@@ -192,11 +158,7 @@ const AboutUsImageUpload = ({ onImageChange, currentImageUrl }: AboutUsImageUplo
           
           <Button
             size="sm"
-            onClick={() => {
-              console.log('Upload button clicked');
-              console.log('fileInputRef.current:', fileInputRef.current);
-              fileInputRef.current?.click();
-            }}
+            onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
             className="rounded-full h-8 w-8 p-0 bg-accent1 hover:bg-accent1/90"
             title="Upload image"
