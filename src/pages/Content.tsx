@@ -47,7 +47,6 @@ const Content = () => {
   const { posts, fetchPosts, deletePost } = useBlogStore();
   const { isAuthenticated, user } = useAuthStore();
   const [podcastEpisodes, setPodcastEpisodes] = useState<PodcastEpisode[]>([]);
-  const [contentTypeFilter, setContentTypeFilter] = useState<string>("all");
   const [tagFilter, setTagFilter] = useState<string>("all");
   const [showPodcastUpload, setShowPodcastUpload] = useState(false);
   const [editingEpisode, setEditingEpisode] = useState<PodcastEpisode | null>(null);
@@ -96,9 +95,8 @@ const Content = () => {
 
   // Apply filters
   const filteredContent = allContent.filter(item => {
-    const matchesContentType = contentTypeFilter === "all" || item.type === contentTypeFilter;
     const matchesTag = tagFilter === "all" || (item.tags && item.tags.includes(tagFilter));
-    return matchesContentType && matchesTag;
+    return matchesTag;
   });
 
   const formatDate = (dateString: string) => {
@@ -141,23 +139,10 @@ const Content = () => {
             <div className="flex flex-col sm:flex-row gap-4 mb-8 p-4 bg-card rounded-lg border">
               <div className="flex items-center gap-2">
                 <Filter className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-medium">Filters:</span>
+                <span className="text-sm font-medium">Filter by tag:</span>
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4 flex-1">
-                <div className="min-w-[160px]">
-                  <Select value={contentTypeFilter} onValueChange={setContentTypeFilter}>
-                    <SelectTrigger className="bg-background border-border z-50">
-                      <SelectValue placeholder="Content Type" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background border-border shadow-lg z-50">
-                      <SelectItem value="all">All Content</SelectItem>
-                      <SelectItem value="blog">Blog Posts</SelectItem>
-                      <SelectItem value="podcast">Podcasts</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
                 <div className="min-w-[160px]">
                   <Select value={tagFilter} onValueChange={setTagFilter}>
                     <SelectTrigger className="bg-background border-border z-50">
@@ -355,7 +340,6 @@ const Content = () => {
                 <Button 
                   variant="outline" 
                   onClick={() => {
-                    setContentTypeFilter("all");
                     setTagFilter("all");
                   }}
                   className="mt-4"
