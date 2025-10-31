@@ -169,8 +169,11 @@ const Index = () => {
         </div>
       </Section>
       
+      {/* Separator */}
+      <div className="w-full h-px bg-black"></div>
+      
       {/* How We Support You Section */}
-      <Section 
+      <Section
         id="support" 
         title="How We Support You"
       >
