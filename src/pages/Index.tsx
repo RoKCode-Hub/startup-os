@@ -158,8 +158,7 @@ const Index = () => {
                 <img 
                   src={aboutUsImage} 
                   alt="About Us" 
-                  className="w-full h-full object-contain rounded-2xl aspect-square"
-                  loading="eager"
+                  className="w-full h-full object-cover rounded-2xl aspect-square"
                 />
               ) : (
                 <div className="w-full aspect-square flex items-center justify-center bg-transparent">
