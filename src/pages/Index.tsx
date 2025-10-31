@@ -170,8 +170,19 @@ const Index = () => {
         </div>
       </Section>
       
-      {/* Separator */}
-      <div className="w-full h-px bg-black"></div>
+      {/* Hand-drawn Separator */}
+      <div className="w-full flex justify-center py-8">
+        <svg width="200" height="20" viewBox="0 0 200 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-80">
+          <path 
+            d="M 2 10 Q 25 8, 50 10 T 100 11 T 150 9 T 198 10" 
+            stroke="black" 
+            strokeWidth="2.5" 
+            strokeLinecap="round"
+            fill="none"
+            style={{ strokeDasharray: '0' }}
+          />
+        </svg>
+      </div>
       
       {/* How We Support You Section */}
       <Section 
