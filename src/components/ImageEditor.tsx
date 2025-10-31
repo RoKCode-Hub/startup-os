@@ -41,8 +41,13 @@ const ImageEditor = ({ imageUrl, isOpen, onClose, onSave }: ImageEditorProps) =>
     console.log('Canvas created');
     setFabricCanvas(canvas);
 
-    // Load image using FabricImage.fromURL (recommended for Fabric.js v6)
-    FabricImage.fromURL(imageUrl)
+    // Fetch image as blob first to avoid CORS taint issues
+    fetch(imageUrl)
+      .then(response => response.blob())
+      .then(blob => {
+        const objectUrl = URL.createObjectURL(blob);
+        return FabricImage.fromURL(objectUrl);
+      })
       .then((img) => {
         console.log('Image loaded successfully');
         
