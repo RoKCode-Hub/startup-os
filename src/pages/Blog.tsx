@@ -43,7 +43,7 @@ const Blog = () => {
         <Section
           id="blog-header"
           title="Our Blog"
-          description="Insights, thoughts and stories about startup development, design and technology"
+          description="Frameworks, scripts, insights and thoughts about startup operating systems"
           className="pt-16"
         >
           {isAdmin && (
