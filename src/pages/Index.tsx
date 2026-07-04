@@ -184,9 +184,6 @@ const Index = () => {
                       </span>
                     ))}
                   </div>
-                  <span className="text-gray-500">
-                    {item.date}
-                  </span>
                 </div>
                 <h3 className="font-bold mb-3 leading-tight text-xl text-black">
                   {item.title}
