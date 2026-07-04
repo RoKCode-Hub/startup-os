@@ -169,7 +169,8 @@ const Index = () => {
       {/* Latest Content Section - Combined Podcast & Blog */}
       <Section
         id="latest-content"
-        title="Latest Content"
+        title="Latest Posts"
+        description="Frameworks, scripts, insights and thoughts about startup operating systems"
         nextSectionId="contact"
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
