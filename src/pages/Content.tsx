@@ -242,9 +242,6 @@ const Content = () => {
                           }`}>
                             {item.type === 'blog' ? 'Blog Post' : 'Podcast'}
                           </span>
-                          <span className="text-xs text-muted-foreground">
-                            {formatDate(getDisplayDate(item))}
-                          </span>
                           {item.type === 'podcast' && item.duration && (
                             <span className="text-xs text-muted-foreground">
                               {item.duration}
