@@ -134,6 +134,9 @@ const Content = () => {
               <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-accent1 to-accent2 bg-clip-text text-transparent">
                 All Content
               </h1>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Frameworks, scripts, insights and thoughts about startup operating systems
+              </p>
             </div>
 
             {/* Filters */}
